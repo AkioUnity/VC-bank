@@ -1,0 +1,321 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{0CFEDB97-164C-49B6-A492-BCE5D1D5A7E6}</ProjectGuid>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <Keyword>ManagedCProj</Keyword>
+    <RootNamespace>Datenbank</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CLRSupport>Pure</CLRSupport>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <CLRSupport>Pure</CLRSupport>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>
+      </AdditionalDependencies>
+      <SubSystem>Windows</SubSystem>
+      <EntryPointSymbol>main</EntryPointSymbol>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
+      <PreprocessorDefinitions>WIN32;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>
+      </AdditionalDependencies>
+      <SubSystem>Windows</SubSystem>
+      <EntryPointSymbol>main</EntryPointSymbol>
+      <AdditionalLibraryDirectories>
+      </AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <Reference Include="*Microsoft.VisualBasic, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+    <Reference Include="*System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+    <Reference Include="*System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+    <Reference Include="*System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+    <Reference Include="Microsoft.Office.Interop.Excel, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" />
+    <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="Microsoft.VisualBasic.PowerPacks, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Forms.DataVisualization" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\..\db gfx\cog.ico" />
+    <None Include="app.ico" />
+    <None Include="cog.ico" />
+    <None Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="admin.cpp" />
+    <ClCompile Include="adresse.cpp" />
+    <ClCompile Include="adress_plankosten.cpp" />
+    <ClCompile Include="adress_uebersicht_result.cpp" />
+    <ClCompile Include="adress_uebersicht_search.cpp" />
+    <ClCompile Include="AssemblyInfo.cpp" />
+    <ClCompile Include="auswertung_uebersicht.cpp" />
+    <ClCompile Include="bewilligung_auswertung_form.cpp" />
+    <ClCompile Include="bewilligung_class.cpp" />
+    <ClCompile Include="bewilligung_form.cpp" />
+    <ClCompile Include="bewilligung_result_form.cpp" />
+    <ClCompile Include="bew_ztr_result.cpp" />
+    <ClCompile Include="bew_ztr_search.cpp" />
+    <ClCompile Include="choose_printer.cpp" />
+    <ClCompile Include="Datenbank.cpp" />
+    <ClCompile Include="ExcelExport.cpp" />
+    <ClCompile Include="fremdfoerdermittel_form.cpp" />
+    <ClCompile Include="fremdfoerderung_class.cpp" />
+    <ClCompile Include="gesamt_uebersicht_result.cpp" />
+    <ClCompile Include="gesamt_uebersicht_search.cpp" />
+    <ClCompile Include="helper.cpp" />
+    <ClCompile Include="jahreszuteilung.cpp" />
+    <ClCompile Include="kostengr_uebersicht_result.cpp" />
+    <ClCompile Include="kostengr_uebersicht_search.cpp" />
+    <ClCompile Include="login.cpp" />
+    <ClCompile Include="MyInsertStatement.cpp" />
+    <ClCompile Include="MyRecordSet.cpp" />
+    <ClCompile Include="MyResult.cpp" />
+    <ClCompile Include="My_Connection.cpp" />
+    <ClCompile Include="open_project_form.cpp" />
+    <ClCompile Include="optionen.cpp" />
+    <ClCompile Include="programm.cpp" />
+    <ClCompile Include="project_class.cpp" />
+    <ClCompile Include="project_form.cpp" />
+    <ClCompile Include="Set_DB_path.cpp" />
+    <ClCompile Include="stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="test.cpp" />
+    <ClCompile Include="verwendungsnachweis_form.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="admin.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
+    <ClInclude Include="adresse.h" />
+    <ClInclude Include="adress_plankosten.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
+    <ClInclude Include="adress_uebersicht_result.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
+    <ClInclude Include="adress_uebersicht_search.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
+    <ClInclude Include="auswertung_uebersicht.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
+    <ClInclude Include="bewilligung_auswertung_form.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
+    <ClInclude Include="bewilligung_class.h" />
+    <ClInclude Include="bewilligung_form.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
+    <ClInclude Include="bewilligung_result_form.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
+    <ClInclude Include="bew_ztr_result.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
+    <ClInclude Include="bew_ztr_search.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
+    <ClInclude Include="choose_printer.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
+    <ClInclude Include="ExcelExport.h" />
+    <ClInclude Include="fremdfoerdermittel_form.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
+    <ClInclude Include="fremdfoerderung_class.h" />
+    <ClInclude Include="gesamt_uebersicht_result.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
+    <ClInclude Include="gesamt_uebersicht_search.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
+    <ClInclude Include="helper.h" />
+    <ClInclude Include="jahreszuteilung.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
+    <ClInclude Include="kostengr_uebersicht_result.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
+    <ClInclude Include="kostengr_uebersicht_search.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
+    <ClInclude Include="login.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
+    <ClInclude Include="Menue.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
+    <ClInclude Include="MyInsertStatement.h" />
+    <ClInclude Include="MyRecordSet.h" />
+    <ClInclude Include="MyResult.h" />
+    <ClInclude Include="My_Connection.h" />
+    <ClInclude Include="open_project_form.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
+    <ClInclude Include="optionen.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
+    <ClInclude Include="programm.h" />
+    <ClInclude Include="project_class.h" />
+    <ClInclude Include="project_form.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="Set_DB_path.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="test.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
+    <ClInclude Include="verwendungsnachweis_form.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="app.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="admin.resx">
+      <DependentUpon>admin.h</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="adress_plankosten.resx">
+      <DependentUpon>adress_plankosten.h</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="adress_uebersicht_result.resx">
+      <DependentUpon>adress_uebersicht_result.h</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="adress_uebersicht_search.resx">
+      <DependentUpon>adress_uebersicht_search.h</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="auswertung_uebersicht.resx">
+      <DependentUpon>auswertung_uebersicht.h</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="bewilligung_auswertung_form.resx">
+      <DependentUpon>bewilligung_auswertung_form.h</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="bewilligung_form.resx">
+      <DependentUpon>bewilligung_form.h</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="bewilligung_result_form.resx">
+      <DependentUpon>bewilligung_result_form.h</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="bew_ztr_result.resx">
+      <DependentUpon>bew_ztr_result.h</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="bew_ztr_search.resx">
+      <DependentUpon>bew_ztr_search.h</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="choose_printer.resx">
+      <DependentUpon>choose_printer.h</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form1.resX" />
+    <EmbeddedResource Include="fremdfoerdermittel_form.resx">
+      <DependentUpon>fremdfoerdermittel_form.h</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="gesamt_uebersicht_result.resx">
+      <DependentUpon>gesamt_uebersicht_result.h</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="gesamt_uebersicht_search.resx">
+      <DependentUpon>gesamt_uebersicht_search.h</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="jahreszuteilung.resx">
+      <DependentUpon>jahreszuteilung.h</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="kostengr_uebersicht_result.resx">
+      <DependentUpon>kostengr_uebersicht_result.h</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="kostengr_uebersicht_search.resx">
+      <DependentUpon>kostengr_uebersicht_search.h</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="login.resx">
+      <DependentUpon>login.h</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Menue.resX">
+      <DependentUpon>Menue.h</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="open_project_form.resx">
+      <DependentUpon>open_project_form.h</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="optionen.resx">
+      <DependentUpon>optionen.h</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="project_form.resx">
+      <DependentUpon>project_form.h</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Set_DB_path.resx">
+      <DependentUpon>Set_DB_path.h</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="test.resx">
+      <DependentUpon>test.h</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="verwendungsnachweis_form.resx">
+      <DependentUpon>verwendungsnachweis_form.h</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
