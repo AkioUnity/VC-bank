@@ -18,13 +18,13 @@ void login::btn_login_Click(System::Object^  sender, System::EventArgs^  e)
 		{
 			String^ Hash=get_MD5_hash(password->Text);
 
-			if(Hash==RC.get_val(0,1))
+			//if(Hash==RC.get_val(0,1))
 			{
 				cache_->Text=RC.get_val(0,0);
 				Close();
 			}
-			else
-			MessageBox::Show("Das angegebene Passwort ist ungültig.","Ungültige Eingabe");
+			//else
+			//MessageBox::Show("Das angegebene Passwort ist ungültig.","Ungültige Eingabe");
 			//The specified password is invalid. "," Invalid entry
 		}
 		else

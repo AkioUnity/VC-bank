@@ -412,24 +412,20 @@ System::Void admin::btn_add_strasse_Click(System::Object^  sender, System::Event
 	MyRecordSet RC("SELECT * FROM Strassen");
 	MyRecordSet RC_Stadt("SELECT ID FROM Staedte WHERE Stadt='"+cB_staedte->Text+"'");
 	MyRecordSet RC_Gebiet("SELECT ID FROM Gebiete WHERE Stadt_ID="+RC_Stadt.get_val(0,0)+" AND Gebiet='"+cB_gebiete->Text+"'");
-	if(tB_Strasse->Text!="" && tB_Strasse_Chiffre->Text!="")
+	if(tB_Strasse->Text!="")
 	{
 		if(cB_Strassen->FindStringExact(tB_Strasse->Text)==-1)
 		{
-			MyInsertStatement("INSERT INTO Strassen (ID,Gebiet_ID,Strasse,Chiffre) VALUES ("+RC.get_new_id()+","+RC_Gebiet.get_val(0,0)+",'"+tB_Strasse->Text+"','"+tB_Strasse_Chiffre->Text+"')");
-			tB_Strasse->Text="";
-			tB_Strasse_Chiffre->Text="";
+			MyInsertStatement("INSERT INTO Strassen (ID,Gebiet_ID,Strasse) VALUES ("+RC.get_new_id()+","+RC_Gebiet.get_val(0,0)+",'"+tB_Strasse->Text+"')");
+			tB_Strasse->Text="";			
 			load_strassen_entries();	
 		}
 		else
 			Windows::Forms::MessageBox::Show("Die Adresse wurde schon eingetragen","Eintrag nicht möglich");
 	}
 	else
-	{
-		if(tB_Strasse->Text=="")
-			Windows::Forms::MessageBox::Show("Bitte geben Sie eine Adresse an.","Eintrag unvollständig");
-		else
-			Windows::Forms::MessageBox::Show("Bitte geben Sie eine Chiffre an.","Eintrag unvollständig");
+	{	
+		Windows::Forms::MessageBox::Show("Bitte geben Sie eine Adresse an.","Eintrag unvollständig");	
 	}
 }
 

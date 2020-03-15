@@ -111,8 +111,9 @@ System::Void Form1::Form1_Load(System::Object^  sender, System::EventArgs^  e)
 	check_for_DB_path();
 	System::Windows::Forms::Label^  cache = gcnew System::Windows::Forms::Label();
 	cache->Text="-1";
-	Form^ user = gcnew login(cache);
-	user->ShowDialog();
+	cache->Text = "4";
+	//Form^ user = gcnew login(cache);
+	//user->ShowDialog();
 	if(cache->Text=="-1") {
 		Close();
 		return;

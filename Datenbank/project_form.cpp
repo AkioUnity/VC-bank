@@ -1004,12 +1004,12 @@ void project_form::show_project()
 		if(strassen_liste->Count!=0)
 		{
 			strassen->Enabled=true;
-			for each(String^ eintrag in strassen_liste)
+			/*for each(String^ eintrag in strassen_liste)
 			{
 				MyRecordSet RC_Chiffre("SELECT Chiffre FROM Strassen WHERE Gebiet_ID="+RC_Gebiet.get_val(0,0)+" AND Strasse='"+eintrag+"'");
 
 				strassen->Items->Add(eintrag+" ["+RC_Chiffre.get_val(0,0)+"]");
-			}
+			}*/
 			if(adress_index<strassen_liste->Count && adress_index!=-1)
 				strassen->SelectedIndex=adress_index;
 			else

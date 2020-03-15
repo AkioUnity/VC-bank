@@ -90,7 +90,7 @@ namespace Datenbank {
 	private: System::Windows::Forms::Label^  label18;
 	private: System::Windows::Forms::TextBox^  tB_kostenart_nr;
 	private: System::Windows::Forms::TextBox^  tb_kostengr_abk;
-	private: System::Windows::Forms::TextBox^  tB_Strasse_Chiffre;
+
 	private: System::Windows::Forms::TabPage^  Adresse;
 	private: System::Windows::Forms::Button^  btn_save;
 	private: System::Windows::Forms::TextBox^  tB_ort;
@@ -113,7 +113,9 @@ namespace Datenbank {
 	private: System::Windows::Forms::ListBox^  lB_user;
 	private: System::Windows::Forms::Label^  label29;
 	private: System::Windows::Forms::Button^  btn_reset_pwd;
-	private: System::Windows::Forms::Label^  label5;
+	private: System::Windows::Forms::Label^  label_Nummer;
+	private: System::Windows::Forms::Label^  labelName;
+
 	protected: 
 
 	private:
@@ -159,8 +161,8 @@ namespace Datenbank {
 			this->programm_nr = (gcnew System::Windows::Forms::TextBox());
 			this->tabControl1 = (gcnew System::Windows::Forms::TabControl());
 			this->tabPage1 = (gcnew System::Windows::Forms::TabPage());
-			this->label5 = (gcnew System::Windows::Forms::Label());
-			this->tB_Strasse_Chiffre = (gcnew System::Windows::Forms::TextBox());
+			this->label_Nummer = (gcnew System::Windows::Forms::Label());
+			this->labelName = (gcnew System::Windows::Forms::Label());
 			this->tB_gebiet = (gcnew System::Windows::Forms::TextBox());
 			this->btn_rem_gebiet = (gcnew System::Windows::Forms::Button());
 			this->btn_add_gebiet = (gcnew System::Windows::Forms::Button());
@@ -275,7 +277,7 @@ namespace Datenbank {
 			// 
 			// btn_del_prog
 			// 
-			this->btn_del_prog->Image = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"btn_del_prog.Image")));
+			this->btn_del_prog->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"btn_del_prog.Image")));
 			this->btn_del_prog->Location = System::Drawing::Point(347, 110);
 			this->btn_del_prog->Name = L"btn_del_prog";
 			this->btn_del_prog->Size = System::Drawing::Size(23, 23);
@@ -285,8 +287,8 @@ namespace Datenbank {
 			// 
 			// btn_add_prog
 			// 
-			this->btn_add_prog->Image = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"btn_add_prog.Image")));
-			this->btn_add_prog->Location = System::Drawing::Point(347, 139);
+			this->btn_add_prog->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"btn_add_prog.Image")));
+			this->btn_add_prog->Location = System::Drawing::Point(347, 162);
 			this->btn_add_prog->Name = L"btn_add_prog";
 			this->btn_add_prog->Size = System::Drawing::Size(23, 23);
 			this->btn_add_prog->TabIndex = 15;
@@ -295,7 +297,7 @@ namespace Datenbank {
 			// 
 			// btn_del_kostenart
 			// 
-			this->btn_del_kostenart->Image = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"btn_del_kostenart.Image")));
+			this->btn_del_kostenart->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"btn_del_kostenart.Image")));
 			this->btn_del_kostenart->Location = System::Drawing::Point(315, 38);
 			this->btn_del_kostenart->Name = L"btn_del_kostenart";
 			this->btn_del_kostenart->Size = System::Drawing::Size(23, 23);
@@ -305,7 +307,7 @@ namespace Datenbank {
 			// 
 			// btn_add_kostenart
 			// 
-			this->btn_add_kostenart->Image = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"btn_add_kostenart.Image")));
+			this->btn_add_kostenart->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"btn_add_kostenart.Image")));
 			this->btn_add_kostenart->Location = System::Drawing::Point(315, 89);
 			this->btn_add_kostenart->Name = L"btn_add_kostenart";
 			this->btn_add_kostenart->Size = System::Drawing::Size(23, 23);
@@ -315,7 +317,7 @@ namespace Datenbank {
 			// 
 			// btn_del_sach_ges
 			// 
-			this->btn_del_sach_ges->Image = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"btn_del_sach_ges.Image")));
+			this->btn_del_sach_ges->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"btn_del_sach_ges.Image")));
 			this->btn_del_sach_ges->Location = System::Drawing::Point(316, 142);
 			this->btn_del_sach_ges->Name = L"btn_del_sach_ges";
 			this->btn_del_sach_ges->Size = System::Drawing::Size(23, 23);
@@ -325,7 +327,7 @@ namespace Datenbank {
 			// 
 			// btn_add_sach_ges
 			// 
-			this->btn_add_sach_ges->Image = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"btn_add_sach_ges.Image")));
+			this->btn_add_sach_ges->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"btn_add_sach_ges.Image")));
 			this->btn_add_sach_ges->Location = System::Drawing::Point(315, 197);
 			this->btn_add_sach_ges->Name = L"btn_add_sach_ges";
 			this->btn_add_sach_ges->Size = System::Drawing::Size(23, 23);
@@ -345,9 +347,9 @@ namespace Datenbank {
 			// 
 			// tB_prog
 			// 
-			this->tB_prog->Location = System::Drawing::Point(89, 139);
+			this->tB_prog->Location = System::Drawing::Point(160, 139);
 			this->tB_prog->Name = L"tB_prog";
-			this->tB_prog->Size = System::Drawing::Size(183, 20);
+			this->tB_prog->Size = System::Drawing::Size(210, 20);
 			this->tB_prog->TabIndex = 13;
 			// 
 			// tB_kostenart
@@ -366,15 +368,15 @@ namespace Datenbank {
 			// 
 			// tB_Strasse
 			// 
-			this->tB_Strasse->Location = System::Drawing::Point(88, 192);
+			this->tB_Strasse->Location = System::Drawing::Point(89, 221);
 			this->tB_Strasse->Name = L"tB_Strasse";
 			this->tB_Strasse->Size = System::Drawing::Size(253, 20);
 			this->tB_Strasse->TabIndex = 18;
 			// 
 			// btn_del_stasse
 			// 
-			this->btn_del_stasse->Image = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"btn_del_stasse.Image")));
-			this->btn_del_stasse->Location = System::Drawing::Point(347, 164);
+			this->btn_del_stasse->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"btn_del_stasse.Image")));
+			this->btn_del_stasse->Location = System::Drawing::Point(348, 193);
 			this->btn_del_stasse->Name = L"btn_del_stasse";
 			this->btn_del_stasse->Size = System::Drawing::Size(23, 23);
 			this->btn_del_stasse->TabIndex = 17;
@@ -383,8 +385,8 @@ namespace Datenbank {
 			// 
 			// btn_add_strasse
 			// 
-			this->btn_add_strasse->Image = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"btn_add_strasse.Image")));
-			this->btn_add_strasse->Location = System::Drawing::Point(347, 193);
+			this->btn_add_strasse->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"btn_add_strasse.Image")));
+			this->btn_add_strasse->Location = System::Drawing::Point(348, 222);
 			this->btn_add_strasse->Name = L"btn_add_strasse";
 			this->btn_add_strasse->Size = System::Drawing::Size(23, 23);
 			this->btn_add_strasse->TabIndex = 20;
@@ -394,7 +396,7 @@ namespace Datenbank {
 			// label10
 			// 
 			this->label10->AutoSize = true;
-			this->label10->Location = System::Drawing::Point(12, 170);
+			this->label10->Location = System::Drawing::Point(13, 199);
 			this->label10->Name = L"label10";
 			this->label10->Size = System::Drawing::Size(57, 13);
 			this->label10->TabIndex = 31;
@@ -403,7 +405,7 @@ namespace Datenbank {
 			// cB_Strassen
 			// 
 			this->cB_Strassen->FormattingEnabled = true;
-			this->cB_Strassen->Location = System::Drawing::Point(89, 166);
+			this->cB_Strassen->Location = System::Drawing::Point(90, 195);
 			this->cB_Strassen->Name = L"cB_Strassen";
 			this->cB_Strassen->Size = System::Drawing::Size(253, 21);
 			this->cB_Strassen->Sorted = true;
@@ -419,7 +421,7 @@ namespace Datenbank {
 			// 
 			// btn_del_ff
 			// 
-			this->btn_del_ff->Image = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"btn_del_ff.Image")));
+			this->btn_del_ff->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"btn_del_ff.Image")));
 			this->btn_del_ff->Location = System::Drawing::Point(344, 84);
 			this->btn_del_ff->Name = L"btn_del_ff";
 			this->btn_del_ff->Size = System::Drawing::Size(23, 23);
@@ -429,7 +431,7 @@ namespace Datenbank {
 			// 
 			// btn_add_ff
 			// 
-			this->btn_add_ff->Image = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"btn_add_ff.Image")));
+			this->btn_add_ff->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"btn_add_ff.Image")));
 			this->btn_add_ff->Location = System::Drawing::Point(344, 111);
 			this->btn_add_ff->Name = L"btn_add_ff";
 			this->btn_add_ff->Size = System::Drawing::Size(23, 23);
@@ -458,9 +460,9 @@ namespace Datenbank {
 			// 
 			// programm_nr
 			// 
-			this->programm_nr->Location = System::Drawing::Point(278, 139);
+			this->programm_nr->Location = System::Drawing::Point(160, 165);
 			this->programm_nr->Name = L"programm_nr";
-			this->programm_nr->Size = System::Drawing::Size(63, 20);
+			this->programm_nr->Size = System::Drawing::Size(183, 20);
 			this->programm_nr->TabIndex = 14;
 			// 
 			// tabControl1
@@ -479,8 +481,8 @@ namespace Datenbank {
 			// tabPage1
 			// 
 			this->tabPage1->BackColor = System::Drawing::SystemColors::Control;
-			this->tabPage1->Controls->Add(this->label5);
-			this->tabPage1->Controls->Add(this->tB_Strasse_Chiffre);
+			this->tabPage1->Controls->Add(this->label_Nummer);
+			this->tabPage1->Controls->Add(this->labelName);
 			this->tabPage1->Controls->Add(this->tB_gebiet);
 			this->tabPage1->Controls->Add(this->btn_rem_gebiet);
 			this->tabPage1->Controls->Add(this->btn_add_gebiet);
@@ -509,21 +511,24 @@ namespace Datenbank {
 			this->tabPage1->TabIndex = 0;
 			this->tabPage1->Text = L"Stadt";
 			// 
-			// label5
+			// label_Nummer
 			// 
-			this->label5->AutoSize = true;
-			this->label5->Location = System::Drawing::Point(87, 222);
-			this->label5->Name = L"label5";
-			this->label5->Size = System::Drawing::Size(43, 13);
-			this->label5->TabIndex = 38;
-			this->label5->Text = L"Chiffre :";
+			this->label_Nummer->AutoSize = true;
+			this->label_Nummer->Location = System::Drawing::Point(96, 167);
+			this->label_Nummer->Name = L"label_Nummer";
+			this->label_Nummer->Size = System::Drawing::Size(52, 13);
+			this->label_Nummer->TabIndex = 37;
+			this->label_Nummer->Text = L"Nummer :";
+			this->label_Nummer->Click += gcnew System::EventHandler(this, &admin::label_Nummer_Click);
 			// 
-			// tB_Strasse_Chiffre
+			// labelName
 			// 
-			this->tB_Strasse_Chiffre->Location = System::Drawing::Point(136, 219);
-			this->tB_Strasse_Chiffre->Name = L"tB_Strasse_Chiffre";
-			this->tB_Strasse_Chiffre->Size = System::Drawing::Size(206, 20);
-			this->tB_Strasse_Chiffre->TabIndex = 19;
+			this->labelName->AutoSize = true;
+			this->labelName->Location = System::Drawing::Point(96, 142);
+			this->labelName->Name = L"labelName";
+			this->labelName->Size = System::Drawing::Size(41, 13);
+			this->labelName->TabIndex = 37;
+			this->labelName->Text = L"Name :";
 			// 
 			// tB_gebiet
 			// 
@@ -534,7 +539,7 @@ namespace Datenbank {
 			// 
 			// btn_rem_gebiet
 			// 
-			this->btn_rem_gebiet->Image = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"btn_rem_gebiet.Image")));
+			this->btn_rem_gebiet->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"btn_rem_gebiet.Image")));
 			this->btn_rem_gebiet->Location = System::Drawing::Point(348, 58);
 			this->btn_rem_gebiet->Name = L"btn_rem_gebiet";
 			this->btn_rem_gebiet->Size = System::Drawing::Size(23, 23);
@@ -544,7 +549,7 @@ namespace Datenbank {
 			// 
 			// btn_add_gebiet
 			// 
-			this->btn_add_gebiet->Image = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"btn_add_gebiet.Image")));
+			this->btn_add_gebiet->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"btn_add_gebiet.Image")));
 			this->btn_add_gebiet->Location = System::Drawing::Point(348, 84);
 			this->btn_add_gebiet->Name = L"btn_add_gebiet";
 			this->btn_add_gebiet->Size = System::Drawing::Size(23, 23);
@@ -580,7 +585,7 @@ namespace Datenbank {
 			// 
 			// btn_del_stadt
 			// 
-			this->btn_del_stadt->Image = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"btn_del_stadt.Image")));
+			this->btn_del_stadt->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"btn_del_stadt.Image")));
 			this->btn_del_stadt->Location = System::Drawing::Point(348, 5);
 			this->btn_del_stadt->Name = L"btn_del_stadt";
 			this->btn_del_stadt->Size = System::Drawing::Size(23, 23);
@@ -590,7 +595,7 @@ namespace Datenbank {
 			// 
 			// btn_add_stadt
 			// 
-			this->btn_add_stadt->Image = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"btn_add_stadt.Image")));
+			this->btn_add_stadt->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"btn_add_stadt.Image")));
 			this->btn_add_stadt->Location = System::Drawing::Point(348, 31);
 			this->btn_add_stadt->Name = L"btn_add_stadt";
 			this->btn_add_stadt->Size = System::Drawing::Size(23, 23);
@@ -757,7 +762,7 @@ namespace Datenbank {
 			// 
 			// btn_del_user
 			// 
-			this->btn_del_user->Image = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"btn_del_user.Image")));
+			this->btn_del_user->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"btn_del_user.Image")));
 			this->btn_del_user->Location = System::Drawing::Point(48, 87);
 			this->btn_del_user->Name = L"btn_del_user";
 			this->btn_del_user->Size = System::Drawing::Size(23, 23);
@@ -789,7 +794,7 @@ namespace Datenbank {
 			// 
 			// btn_add_user
 			// 
-			this->btn_add_user->Image = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"btn_add_user.Image")));
+			this->btn_add_user->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"btn_add_user.Image")));
 			this->btn_add_user->Location = System::Drawing::Point(338, 9);
 			this->btn_add_user->Name = L"btn_add_user";
 			this->btn_add_user->Size = System::Drawing::Size(23, 23);
@@ -981,7 +986,7 @@ namespace Datenbank {
 			this->Controls->Add(this->groupBox1);
 			this->Controls->Add(this->tabControl1);
 			this->Controls->Add(this->btn_close);
-			this->Icon = (cli::safe_cast<System::Drawing::Icon^  >(resources->GetObject(L"$this.Icon")));
+			this->Icon = (cli::safe_cast<System::Drawing::Icon^>(resources->GetObject(L"$this.Icon")));
 			this->Name = L"admin";
 			this->Text = L"Administrationbereich";
 			this->tabControl1->ResumeLayout(false);
