@@ -39,7 +39,7 @@ void bewilligung_auswertung_form::bewilligung_auswertung_form_Load(System::Objec
 		load_gebiet();
 	}
 
-	MyRecordSet RC_Jahr("SELECT * FROM Jahreseintraege");
+	MyRecordSet RC_Jahr("SELECT * FROM Jahreseintraege order by ID");  //Annual entries
 	for(int i=0;i<RC_Jahr.get_row();++i)
 		jahre->Items->Add(RC_Jahr.get_val(i,1));
 	if(jahre->Items->Count==0)

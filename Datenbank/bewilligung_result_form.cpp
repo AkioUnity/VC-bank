@@ -172,6 +172,7 @@ void bewilligung_result_form::bewilligung_result_form_Load(System::Object^  send
 	{
 		ladebalken_->Close();
 		Windows::Forms::MessageBox::Show("Es wurden keine Einträge zu ihrer Anfrage gefunden.","Ungültige Suche");
+		//No entries were found for your request    Invalid search
 		Close();
 	}
 	else

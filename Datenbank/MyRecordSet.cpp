@@ -39,7 +39,7 @@ MyRecordSet::MyRecordSet(String^ input)
 	{
 		coloumns_ = myReader->FieldCount;
 
-		// Namen und Typen erkennen
+		// Namen und Typen erkennen  //Recognize names and types
 		for(int i=0;i<coloumns_;++i)
 		{
 			String^ data_name (myReader->GetName(i));
@@ -49,7 +49,7 @@ MyRecordSet::MyRecordSet(String^ input)
 			List<String^>^ new_list = gcnew List<String^>;
 			table_.Add(new_list);
 		}
-		// Werte konvertieren und Tabelle füllen
+		// Werte konvertieren und Tabelle füllen  //Convert values and fill the table
 		while (myReader->Read()) 
 		{
 			rows_++;

@@ -519,7 +519,6 @@ namespace Datenbank {
 			this->label_Nummer->Size = System::Drawing::Size(52, 13);
 			this->label_Nummer->TabIndex = 37;
 			this->label_Nummer->Text = L"Nummer :";
-			this->label_Nummer->Click += gcnew System::EventHandler(this, &admin::label_Nummer_Click);
 			// 
 			// labelName
 			// 
