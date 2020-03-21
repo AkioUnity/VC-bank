@@ -1,5 +1,6 @@
 #include "StdAfx.h"
 #include "Set_DB_path.h"
+#include "MyRecordSet.h"
 
 
 using namespace System;
@@ -30,6 +31,7 @@ System::Void Datenbank::Set_DB_path::btn_back_Click(System::Object^  sender, Sys
 		AddText(fs,tb_path->Text);
 		fs->Close();
 		Close();
+		MyRecordSet::SetPath();
 	}
 	else
 		Windows::Forms::MessageBox::Show("Bitte einen gültigen Pfad angeben.");

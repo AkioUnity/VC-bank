@@ -25,17 +25,21 @@ void MyRecordSet::SetPath()
 	connection_string += temp->GetString(b);
 	path = connection_string;
 	fs->Close();	
+	/*OleDbConnection^ myConnection;
+	myConnection = gcnew OleDbConnection(path);
+	myConnection->Open();*/
+	//myConnection->Close();
 }
 
 MyRecordSet::MyRecordSet(String^ input)
-{
-	
+{	
 	query_=input;	
-	// Verbindung herstellen
+	// Verbindung herstellen  Establish connection
 	String^ mySelectQuery = input;
-    OleDbConnection^ myConnection = gcnew OleDbConnection(path);
-    OleDbCommand^ myCommand = gcnew OleDbCommand(mySelectQuery,myConnection);
+	OleDbConnection^ myConnection;
+	myConnection = gcnew OleDbConnection(path);
 	myConnection->Open();
+    OleDbCommand^ myCommand = gcnew OleDbCommand(mySelectQuery,myConnection);	
 	OleDbDataReader^ myReader = myCommand->ExecuteReader();
 	rows_=0;
 	try
@@ -69,7 +73,7 @@ MyRecordSet::MyRecordSet(String^ input)
 	}
 	__finally 
 	{
-		myReader->Close();
+		myReader->Close();	
 		myConnection->Close();
 	}
 }

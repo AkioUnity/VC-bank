@@ -34,7 +34,7 @@ namespace Datenbank {
 			jahr_(jahr),
 			sbe_(sbe),
 			jahreshaushalt_(-1),
-			bewilligungen_werte_(gcnew List< List<String^>^ >),
+			approvals_values(gcnew List< List<String^>^ >),
 			s_kostenart(5),
 			s_zb_nr(50),
 			s_bezeichnung(115),
@@ -98,7 +98,7 @@ namespace Datenbank {
 			String^ jahr_;
 			String^ sbe_;
 			Decimal jahreshaushalt_;
-			List< List<String^>^ >^ bewilligungen_werte_;
+			List< List<String^>^ >^ approvals_values;
 
 			int s_kostenart;
 			int s_zb_nr;

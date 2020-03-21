@@ -24,7 +24,7 @@ int main(array<System::String ^> ^args)
 {
 	// Aktivieren visueller Effekte von Windows XP, bevor Steuerelemente erstellt werden
 	Application::EnableVisualStyles();
-	Application::SetCompatibleTextRenderingDefault(false); 
+	Application::SetCompatibleTextRenderingDefault(false);
 
 	// Hauptfenster erstellen und ausführen
 	Application::Run(gcnew Form1());
@@ -34,46 +34,48 @@ int main(array<System::String ^> ^args)
 System::Void Form1::check_for_DB_path()
 {
 	bool exists;
-	do  
+	do
 	{
-		exists=true;
-		try{MyRecordSet("SELECT * FROM staedte");}
-		catch(FileNotFoundException^)
+		exists = true;
+		try { 
+			MyRecordSet::SetPath();
+			MyRecordSet("SELECT * FROM staedte"); 
+		}
+		catch (FileNotFoundException^)
 		{
 			String^ message = "Es wurde noch keine Datenbank eingetragen.\nWollen Sie dies nun tun?";
 			String^ caption = "Öffnen der Datenbank nicht möglich.";
 			MessageBoxButtons buttons = MessageBoxButtons::YesNo;
 			System::Windows::Forms::DialogResult result;
 
-			result = MessageBox::Show( this, message, caption, buttons );
-			if ( result == ::DialogResult::No )
+			result = MessageBox::Show(this, message, caption, buttons);
+			if (result == ::DialogResult::No)
 				Close();
 
-			exists=false;
+			exists = false;
 		}
-		catch(Data::OleDb::OleDbException^)
+		catch (Data::OleDb::OleDbException^)
 		{
 			String^ message = "Die gespeicherte Datenbank befindet sich nicht mehr an dem eingetragen Ort.\nWollen Sie dies berichtigen?";
 			String^ caption = "Öffnen der Datenbank nicht möglich.";
 			MessageBoxButtons buttons = MessageBoxButtons::YesNo;
 			System::Windows::Forms::DialogResult result;
 
-			result = MessageBox::Show( this, message, caption, buttons );
-			if ( result == ::DialogResult::No )
+			result = MessageBox::Show(this, message, caption, buttons);
+			if (result == ::DialogResult::No)
 				Close();
 
-			exists=false;
+			exists = false;
 		}
 
-		if(!exists)
+		if (!exists)
 		{
 			Form^ Pfad_setzen = gcnew Set_DB_path;
 			Hide();
 			Pfad_setzen->ShowDialog();
 			Show();
 		}
-	}
-	while(!exists);
+	} while (!exists);
 }
 
 System::Void Form1::btn_new_proj_Click(System::Object^  sender, System::EventArgs^  e)
@@ -110,23 +112,23 @@ System::Void Form1::Form1_Load(System::Object^  sender, System::EventArgs^  e)
 	Hide();
 	check_for_DB_path();
 	System::Windows::Forms::Label^  cache = gcnew System::Windows::Forms::Label();
-	cache->Text="-1";
+	cache->Text = "-1";
 	cache->Text = "4";
 	Form^ user = gcnew login(cache);
 	user->ShowDialog();
-	if(cache->Text=="-1") {
+	if (cache->Text == "-1") {
 		Close();
 		return;
 	}
-	user_id_=Convert::ToInt32(cache->Text);
-	MyRecordSet RC("SELECT User_is_admin FROM Users WHERE User_ID="+Convert::ToString(user_id_));
-	if(RC.get_val(0,0)=="1")
+	user_id_ = Convert::ToInt32(cache->Text);
+	MyRecordSet RC("SELECT User_is_admin FROM Users WHERE User_ID=" + Convert::ToString(user_id_));
+	if (RC.get_val(0, 0) == "1")
 	{
-		btn_admin->Visible=true;
+		btn_admin->Visible = true;
 	}
 	else
 	{
-		btn_admin->Visible=false;
+		btn_admin->Visible = false;
 	}
 	Show();
 }

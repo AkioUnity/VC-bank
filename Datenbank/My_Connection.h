@@ -15,6 +15,7 @@ public:
 
 	void connect();
 	MyResult^ get_result(String^);
+	MyResult^ get_cities(String^);
 	void disconnect();
 
 private:

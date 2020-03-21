@@ -27,7 +27,7 @@ void bewilligung_result_form::bewilligung_result_form_Load(System::Object^  send
 	data.connect();
 
 	this->Controls->Clear();
-	bewilligungen_werte_->Clear();
+	approvals_values->Clear();
 
 	List<String^>^ Stadt_liste = gcnew List<String^>;
 	if(stadt_=="-1")  //city
@@ -46,7 +46,7 @@ void bewilligung_result_form::bewilligung_result_form_Load(System::Object^  send
 		List<String^>^ Gebiet_liste = gcnew List<String^>;
 		if(gebiet_=="-1")  //area
 		{
-			MyResult^ RC_Stadt=data.get_result("SELECT ID FROM Staedte WHERE Stadt='"+stadt+"'");
+			MyResult^ RC_Stadt=data.get_cities(stadt);
 			MyResult^ RC=data.get_result("SELECT Gebiet FROM Gebiete WHERE Stadt_ID="+RC_Stadt->get_val(0,0));
 			for(int i=0;i<RC->get_row();++i)
 				Gebiet_liste->Add(RC->get_val(i,0));
@@ -61,7 +61,7 @@ void bewilligung_result_form::bewilligung_result_form_Load(System::Object^  send
 			List<String^>^ Programm_liste=gcnew List<String^>;
 			if(programm_=="-1")
 			{
-				MyResult^ RC_Stadt=data.get_result("SELECT ID FROM Staedte WHERE Stadt='"+stadt+"'");
+				MyResult^ RC_Stadt= data.get_cities(stadt);
 				MyResult^ RC_Gebiet=data.get_result("SELECT ID FROM Gebiete WHERE Stadt_ID="+RC_Stadt->get_val(0,0)+" AND Gebiet='"+gebiet+"'");
 				MyResult^ RC=data.get_result("SELECT * FROM Programme WHERE Gebiet_ID="+RC_Gebiet->get_val(0,0));
 				for(int i=0;i<RC->get_row();++i)
@@ -100,15 +100,15 @@ void bewilligung_result_form::bewilligung_result_form_Load(System::Object^  send
 							bewilligung_query+=" AND san_bed_ein='1'";
 
 						MyResult^ RC_Bewilligung=data.get_result(bewilligung_query);  //Authorization
-						if (RC_Bewilligung->get_row() == 0) {
-							List<String^>^ bewilligung = gcnew List<String^>;
+						//if (RC_Bewilligung->get_row() == 0) {
+						//	List<String^>^ bewilligung = gcnew List<String^>;
 
-							bewilligung->Add(stadt);  //approval   city
-							bewilligung->Add(gebiet);   //area
-							bewilligung->Add(programm);							
-							//bewilligung->Add(RC_Bewilligung->get_val(bewilligung_param, 4));  //year
-							bewilligungen_werte_->Add(bewilligung);  //approvals_values
-						}
+						//	bewilligung->Add(stadt);  //approval   city
+						//	bewilligung->Add(gebiet);   //area
+						//	bewilligung->Add(programm);							
+						//	//bewilligung->Add(RC_Bewilligung->get_val(bewilligung_param, 4));  //year
+						//	bewilligungen_werte_->Add(bewilligung);  //approvals_values
+						//}
 						for(int bewilligung_param=0;bewilligung_param<RC_Bewilligung->get_row();++bewilligung_param)
 						{
 							String^ TB="-";
@@ -169,7 +169,7 @@ void bewilligung_result_form::bewilligung_result_form_Load(System::Object^  send
 								bewilligung->Add("-");
 							bewilligung->Add(id);
 
-							bewilligungen_werte_->Add(bewilligung);  //approvals_values
+							approvals_values->Add(bewilligung);  //approvals_values
 							ladebalken_->Controls->Find("progress",true)[0]->Text="a";
 							ladebalken_->Controls->Find("progress",true)[0]->Text=" ";
 						}
@@ -180,7 +180,7 @@ void bewilligung_result_form::bewilligung_result_form_Load(System::Object^  send
 	}
 	data.disconnect();
 
-	if(bewilligungen_werte_->Count==0)
+	if(approvals_values->Count==0)
 	{
 		ladebalken_->Close();
 		Windows::Forms::MessageBox::Show("Es wurden keine Einträge zu ihrer Anfrage gefunden.","Ungültige Suche");
@@ -193,7 +193,7 @@ void bewilligung_result_form::bewilligung_result_form_Load(System::Object^  send
 		ladebalken_->Controls->Find("texter",true)[0]->Text="Verarbeite Daten und erzeuge Einträge";
 
 		sort_bewilligung();
-		if(bewilligungen_werte_->Count!=0)
+		if(approvals_values->Count!=0)
 		{
 			String^ jahr="";
 			String^ programm="";
@@ -207,9 +207,9 @@ void bewilligung_result_form::bewilligung_result_form_Load(System::Object^  send
 			Decimal jahreshaushalt=-1;  //annual budget
 			start=0;
 
-			for(int i=0;i<bewilligungen_werte_->Count;++i)
+			for(int i=0;i<approvals_values->Count;++i)
 			{
-				if(bewilligungen_werte_[i][3]!=jahr || bewilligungen_werte_[i][2]!=programm || bewilligungen_werte_[i][1]!=gebiet || bewilligungen_werte_[i][0]!=stadt )
+				if(approvals_values[i][3]!=jahr || approvals_values[i][2]!=programm || approvals_values[i][1]!=gebiet || approvals_values[i][0]!=stadt )
 				{
 					if(start!=0)
 					{
@@ -220,10 +220,10 @@ void bewilligung_result_form::bewilligung_result_form_Load(System::Object^  send
 					summe_bund_land=0;
 					summe_mehr_minder=0;
 					eintrag=0;
-					stadt=bewilligungen_werte_[i][0]; //city
-					gebiet=bewilligungen_werte_[i][1];  //area
-					programm=bewilligungen_werte_[i][2]; //Programm name
-					jahr=bewilligungen_werte_[i][3];  //year
+					stadt=approvals_values[i][0]; //city
+					gebiet=approvals_values[i][1];  //area
+					programm=approvals_values[i][2]; //Programm name
+					jahr=approvals_values[i][3];  //year
 
 					generate_header(stadt,gebiet,programm,jahr);
 					
@@ -235,9 +235,9 @@ void bewilligung_result_form::bewilligung_result_form_Load(System::Object^  send
 				}
 
 
-				String^ bund_land=bewilligungen_werte_[i][10];
-				String^ mla=bewilligungen_werte_[i][11];
-				String^ mehr_minder=bewilligungen_werte_[i][15];
+				String^ bund_land=approvals_values[i][10];
+				String^ mla=approvals_values[i][11];
+				String^ mehr_minder=approvals_values[i][15];
 				bool neg=false;
 				if(mehr_minder[0]=='-')
 					neg=true;
@@ -252,7 +252,7 @@ void bewilligung_result_form::bewilligung_result_form_Load(System::Object^  send
 					summe_mehr_minder+=Decimal(Convert::ToDouble(mehr_minder));
 				else
 					summe_mehr_minder+=-1*Decimal(Convert::ToDouble(mehr_minder));
-				generate_bewilligung(bewilligungen_werte_[i]->GetRange(4,13),eintrag);		
+				generate_bewilligung(approvals_values[i]->GetRange(4,13),eintrag);		
 
 
 				/*for(int j=4;j<14;++j) {
@@ -273,7 +273,7 @@ void bewilligung_result_form::bewilligung_result_form_Load(System::Object^  send
 				ladebalken_->Controls->Find("progress",true)[0]->Text="a";
 				ladebalken_->Controls->Find("progress",true)[0]->Text=" ";
 
-				if(i==bewilligungen_werte_->Count-1)
+				if(i==approvals_values->Count-1)
 					generate_footer(jahreshaushalt,summe_bund_land,summe_mla,summe_mehr_minder);
 			}
 		}
@@ -309,16 +309,16 @@ void bewilligung_result_form::sort_bewilligung()
 	List<String^>^ programme = gcnew List<String^>;
 	List<String^>^ jahre = gcnew List<String^>;
 
-	for(int i=0;i<bewilligungen_werte_->Count;++i)
+	for(int i=0;i<approvals_values->Count;++i)
 	{
-		if(!is_existent_in(staedte,bewilligungen_werte_[i][0]))
-			staedte->Add(bewilligungen_werte_[i][0]);
-		if(!is_existent_in(gebiete,bewilligungen_werte_[i][1]))
-			gebiete->Add(bewilligungen_werte_[i][1]);
-		if(!is_existent_in(programme,bewilligungen_werte_[i][2]))
-			programme->Add(bewilligungen_werte_[i][2]);
-		if(!is_existent_in(jahre,bewilligungen_werte_[i][3]))
-			jahre->Add(bewilligungen_werte_[i][3]);
+		if(!is_existent_in(staedte,approvals_values[i][0]))
+			staedte->Add(approvals_values[i][0]);
+		if(!is_existent_in(gebiete,approvals_values[i][1]))
+			gebiete->Add(approvals_values[i][1]);
+		if(!is_existent_in(programme,approvals_values[i][2]))
+			programme->Add(approvals_values[i][2]);
+		if(!is_existent_in(jahre,approvals_values[i][3]))
+			jahre->Add(approvals_values[i][3]);
 	}
 
 	staedte->Sort();
@@ -338,16 +338,16 @@ void bewilligung_result_form::sort_bewilligung()
 					int i=0;
 					do
 					{
-						if(	bewilligungen_werte_[i][0]==staedte[stadt_param] &&
-							bewilligungen_werte_[i][1]==gebiete[gebiet_param] &&
-							bewilligungen_werte_[i][2]==programme[prog_param] &&
-							bewilligungen_werte_[i][3]==jahre[jahr_param])
+						if(	approvals_values[i][0]==staedte[stadt_param] &&
+							approvals_values[i][1]==gebiete[gebiet_param] &&
+							approvals_values[i][2]==programme[prog_param] &&
+							approvals_values[i][3]==jahre[jahr_param])
 						{
-							tmp->Add(bewilligungen_werte_[i]);
+							tmp->Add(approvals_values[i]);
 						}
 						++i;
 					}
-					while(i<bewilligungen_werte_->Count);
+					while(i<approvals_values->Count);
 					sort_for_ZB_NR(tmp);
 					for(int i=0;i<tmp->Count;++i)
 						zwichenspeicher->Add(tmp[i]);
@@ -355,7 +355,7 @@ void bewilligung_result_form::sort_bewilligung()
 			}
 		}
 	}
-	bewilligungen_werte_=zwichenspeicher;
+	approvals_values=zwichenspeicher;
 }
 
 void bewilligung_result_form::sort_for_year(List<String^>^ input)

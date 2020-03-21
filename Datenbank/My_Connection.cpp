@@ -1,5 +1,6 @@
 #include "StdAfx.h"
 #include "My_Connection.h"
+#include "MyRecordSet.h"
 
 using namespace System;
 using namespace System::IO;
@@ -14,23 +15,29 @@ My_Connection::My_Connection(void):
 	Connection_(gcnew OleDbConnection())
 {
 	// Datenbank Pfad auslesen
-	String^ pfad=Environment::GetFolderPath(Environment::SpecialFolder::LocalApplicationData);
+	/*String^ pfad=Environment::GetFolderPath(Environment::SpecialFolder::LocalApplicationData);
 	pfad+="\\db_pfad.txt";
 	FileStream^ fs = File::OpenRead(pfad);
 	array<Byte>^b = gcnew array<Byte>(1024);
     UTF8Encoding^ temp = gcnew UTF8Encoding( true );
     fs->Read( b, 0, b->Length );
     db_pfad_ = temp->GetString( b );
-	fs->Close();
+	fs->Close();*/
 }
 
 void My_Connection::connect()
 {	
 	// Verbindung herstellen
-	String^ connection_string="Provider=Microsoft.Jet.OLEDB.4.0;Data Source=";
-	connection_string+=db_pfad_;
+	//String^ connection_string="Provider=Microsoft.Jet.OLEDB.4.0;Data Source=";
+	//connection_string+=db_pfad_;
+	String^ connection_string = MyRecordSet::path;
     Connection_ = gcnew OleDbConnection(connection_string);
 	Connection_->Open();
+}
+
+MyResult^ My_Connection::get_cities(String^ city)
+{
+	return get_result("SELECT ID FROM Staedte WHERE Stadt='" + city + "'");
 }
 
 MyResult^ My_Connection::get_result(String^ query)

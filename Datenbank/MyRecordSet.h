@@ -12,6 +12,7 @@ public:
 
 	static void SetPath();
 	static	String^ path;
+	/*static OleDbConnection^ myConnection;*/
 
 	String^ get_Name(int);
 	String^ get_Type(int);
