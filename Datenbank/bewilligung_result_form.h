@@ -189,7 +189,7 @@ private: System::Windows::Forms::Button^  btn_exportExl;
 			this->btn_exportExl->Name = L"btn_exportExl";
 			this->btn_exportExl->Size = System::Drawing::Size(808, 23);
 			this->btn_exportExl->TabIndex = 4;
-			this->btn_exportExl->Text = L"nach Exel exportieren";
+			this->btn_exportExl->Text = L"nach Excel exportieren";
 			this->btn_exportExl->UseVisualStyleBackColor = true;
 			this->btn_exportExl->Click += gcnew System::EventHandler(this, &bewilligung_result_form::btn_exportExl_Click);
 			// 
@@ -205,7 +205,7 @@ private: System::Windows::Forms::Button^  btn_exportExl;
 			this->Controls->Add(this->btn_exportExl);
 			this->Controls->Add(this->btn_print);
 			this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::FixedSingle;
-			this->Icon = (cli::safe_cast<System::Drawing::Icon^  >(resources->GetObject(L"$this.Icon")));
+			this->Icon = (cli::safe_cast<System::Drawing::Icon^>(resources->GetObject(L"$this.Icon")));
 			this->MaximizeBox = false;
 			this->MaximumSize = System::Drawing::Size(1000, 600);
 			this->Name = L"bewilligung_result_form";

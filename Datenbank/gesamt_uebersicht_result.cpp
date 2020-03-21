@@ -49,7 +49,7 @@ void gesamt_uebersicht_result::load_from_DB()
 	this->Controls->Clear();
 
 	List<String^>^ Jahr_liste = gcnew List<String^>;
-	MyResult^ R_Jahr=data.get_result("SELECT * FROM Jahreseintraege");
+	MyResult^ R_Jahr=data.get_result("SELECT * FROM Jahreseintraege order by ID");
 	for(int i=0;i<R_Jahr->get_row();++i)
 		Jahr_liste->Add(R_Jahr->get_val(i,1));
 
@@ -275,7 +275,7 @@ List< List<String^>^ >^ gesamt_uebersicht_result::get_informations(	List< List<S
 	My_Connection data;
 	data.connect();
 	List<String^>^ jahre = gcnew List<String^>;
-	MyResult^ R_Jahr=data.get_result("SELECT * FROM Jahreseintraege");
+	MyResult^ R_Jahr=data.get_result("SELECT * FROM Jahreseintraege order by ID");
 	for(int i=0;i<R_Jahr->get_row();++i)
 		jahre->Add(R_Jahr->get_val(i,1));
 	jahre->Add("SBE");

@@ -272,7 +272,7 @@ List< List<String^>^ >^ kostengr_uebersicht_result::load_bewilligungen()
 	List<String^>^ jahre=gcnew List<String^>;
 	if(jahr_=="-1")
 	{
-		MyResult^ R_Jahr=data.get_result("SELECT * FROM Jahreseintraege");
+		MyResult^ R_Jahr=data.get_result("SELECT * FROM Jahreseintraege order by ID");
 		for(int i=0;i<R_Jahr->get_row();++i)
 			jahre->Add(R_Jahr->get_val(i,1));
 		jahre->Add("SBE");

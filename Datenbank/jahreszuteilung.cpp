@@ -131,7 +131,7 @@ void jahreszuteilung::load_programm()
 void jahreszuteilung::load_jahr()
 {
 	jh_jahr->Items->Clear();
-	MyRecordSet RC("SELECT * FROM Jahreseintraege");
+	MyRecordSet RC("SELECT * FROM Jahreseintraege order by ID");
 	for(int i=0;i<RC.get_row();++i)
 	{
 		if(RC.get_val(i,1)!="XX")
@@ -170,7 +170,7 @@ void jahreszuteilung::jh_jahr_TextChanged(System::Object^  sender, System::Event
 	load_jh();
 }
 
-void jahreszuteilung::load_jh()
+void jahreszuteilung::load_jh()  //
 {
 	haushalte->Items->Clear();
 	jh_id_->Clear();
@@ -178,6 +178,7 @@ void jahreszuteilung::load_jh()
 	MyRecordSet RC_Stadt("SELECT ID FROM Staedte WHERE Stadt='"+jh_stadt->Text+"'");
 	MyRecordSet RC_Gebiet("Select ID FROM Gebiete WHERE Stadt_ID="+RC_Stadt.get_val(0,0)+" AND Gebiet='"+jh_gebiet->Text+"'");
 	MyRecordSet RC_Programm("Select ID FROM Programme WHERE Gebiet_ID="+RC_Gebiet.get_val(0,0)+" AND Programm='"+jh_programm->Text+"'");
+	//annual budget
 	MyRecordSet RC("SELECT * FROM jahreshaushalt WHERE programm_ID="+RC_Programm.get_val(0,0)+" AND jahr='"+jh_jahr->Text+"'");
 	Decimal summe=0;
 	for(int i=0;i<RC.get_row();++i)

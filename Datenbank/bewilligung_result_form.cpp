@@ -20,7 +20,7 @@ void bewilligung_result_form::bewilligung_result_form_Load(System::Object^  send
 {
 	Hide();
 	ladebalken_->Show();
-	ladebalken_->Controls->Find("texter",true)[0]->Text="Lade Jahresübersicht";
+	ladebalken_->Controls->Find("texter",true)[0]->Text="Lade Jahresübersicht";  //Load annual overview
 	ladebalken_->Controls->Find("texter",true)[0]->Text="Lade Jahresübersicht";
 	//Windows::Forms::MessageBox::Show("t");
 	My_Connection data;
@@ -30,7 +30,7 @@ void bewilligung_result_form::bewilligung_result_form_Load(System::Object^  send
 	bewilligungen_werte_->Clear();
 
 	List<String^>^ Stadt_liste = gcnew List<String^>;
-	if(stadt_=="-1")
+	if(stadt_=="-1")  //city
 	{
 		MyResult^ RC=data.get_result("SELECT * FROM Staedte");
 		for(int i=0;i<RC->get_row();++i)
@@ -44,7 +44,7 @@ void bewilligung_result_form::bewilligung_result_form_Load(System::Object^  send
 		String^ stadt =Stadt_liste[stadt_param];
 		
 		List<String^>^ Gebiet_liste = gcnew List<String^>;
-		if(gebiet_=="-1")
+		if(gebiet_=="-1")  //area
 		{
 			MyResult^ RC_Stadt=data.get_result("SELECT ID FROM Staedte WHERE Stadt='"+stadt+"'");
 			MyResult^ RC=data.get_result("SELECT Gebiet FROM Gebiete WHERE Stadt_ID="+RC_Stadt->get_val(0,0));
@@ -52,11 +52,11 @@ void bewilligung_result_form::bewilligung_result_form_Load(System::Object^  send
 				Gebiet_liste->Add(RC->get_val(i,0));
 		}
 		else
-			Gebiet_liste->Add(gebiet_);
+			Gebiet_liste->Add(gebiet_);  //area
 
 		for(int gebiet_param=0;gebiet_param<Gebiet_liste->Count;++gebiet_param)
 		{
-			String^ gebiet=Gebiet_liste[gebiet_param];
+			String^ gebiet=Gebiet_liste[gebiet_param];  //area
 
 			List<String^>^ Programm_liste=gcnew List<String^>;
 			if(programm_=="-1")
@@ -74,30 +74,41 @@ void bewilligung_result_form::bewilligung_result_form_Load(System::Object^  send
 			{
 				bool first_run=true;
 				String^ programm=Programm_liste[programm_param];
-				MyResult^ RC_Projekt=data.get_result("SELECT * FROM db_projekte WHERE stadt='"+stadt+"' AND gebiet='"+gebiet+"'");
+				String^ db_projekte_query = "SELECT * FROM db_projekte WHERE stadt='" + stadt + "' AND gebiet='" + gebiet + "'";
+				MyResult^ RC_Projekt=data.get_result(db_projekte_query);
 
-				for(int projekt_param=0;projekt_param<RC_Projekt->get_row();++projekt_param)
+				for(int projekt_param=0;projekt_param<RC_Projekt->get_row();++projekt_param)  //projects
 				{
 					// Projekt
-					String^ id=RC_Projekt->get_val(projekt_param,0);
-					String^ kostengruppe=RC_Projekt->get_val(projekt_param,8);		// 1
-					String^ bezeichnung=RC_Projekt->get_val(projekt_param,5);	// 3
-					String^ bew_ztr=RC_Projekt->get_val(projekt_param,7);		// 9
-					String^ vn_einger=RC_Projekt->get_val(projekt_param,11);		// 10
-					String^ vn_gepr=RC_Projekt->get_val(projekt_param,12);		// 11
+					String^ id=RC_Projekt->get_val(projekt_param,0);  //id
+					String^ kostengruppe=RC_Projekt->get_val(projekt_param,8);		// 1  //cost group
+					String^ bezeichnung=RC_Projekt->get_val(projekt_param,5);	// 3  description
+					String^ bew_ztr=RC_Projekt->get_val(projekt_param,7);		// 9   date
+					String^ vn_einger=RC_Projekt->get_val(projekt_param,11);		// 10  //furnished date
+					String^ vn_gepr=RC_Projekt->get_val(projekt_param,12);		// 11   Checked date
 
-					MyResult^ RC_Programm=data.get_result("SELECT * FROM db_programme WHERE projekt_ID="+RC_Projekt->get_val(projekt_param,0)+" AND name='"+programm+"'");
+					String^ db_programme_query = "SELECT * FROM db_programme WHERE projekt_ID=" + id + " AND name='" + programm + "'";
+					MyResult^ RC_Programm=data.get_result(db_programme_query);
 
 					if(RC_Programm->get_row()!=0)
 					{
 						String^ bewilligung_query="SELECT * FROM db_programme_bewilligung WHERE programm_ID="+RC_Programm->get_val(0,0);
 
-						if(jahr_!="-1")
-							bewilligung_query+=" AND nr3='"+jahr_+"' AND san_bed_ein='0'";	
+						if(jahr_!="-1")  //year
+							bewilligung_query+=" AND nr3='"+jahr_+"' AND san_bed_ein='0'";	   //year
 						if(sbe_!="-1")
 							bewilligung_query+=" AND san_bed_ein='1'";
 
-						MyResult^ RC_Bewilligung=data.get_result(bewilligung_query);
+						MyResult^ RC_Bewilligung=data.get_result(bewilligung_query);  //Authorization
+						if (RC_Bewilligung->get_row() == 0) {
+							List<String^>^ bewilligung = gcnew List<String^>;
+
+							bewilligung->Add(stadt);  //approval   city
+							bewilligung->Add(gebiet);   //area
+							bewilligung->Add(programm);							
+							//bewilligung->Add(RC_Bewilligung->get_val(bewilligung_param, 4));  //year
+							bewilligungen_werte_->Add(bewilligung);  //approvals_values
+						}
 						for(int bewilligung_param=0;bewilligung_param<RC_Bewilligung->get_row();++bewilligung_param)
 						{
 							String^ TB="-";
@@ -118,14 +129,15 @@ void bewilligung_result_form::bewilligung_result_form_Load(System::Object^  send
 
 							List<String^>^ bewilligung=gcnew List<String^>;
 
-							bewilligung->Add(stadt);
-							bewilligung->Add(gebiet);
+							bewilligung->Add(stadt);  //approval   city
+							bewilligung->Add(gebiet);   //area
 							bewilligung->Add(programm);
 							if(RC_Bewilligung->get_val(bewilligung_param,10)=="1")
 								bewilligung->Add("SBE");
 							else
-								bewilligung->Add(RC_Bewilligung->get_val(bewilligung_param,4));
-							bewilligung->Add(kostengruppe);
+								bewilligung->Add(RC_Bewilligung->get_val(bewilligung_param,4));  //year
+							//------table fields---------------
+							bewilligung->Add(kostengruppe);  //cost group
 							bewilligung->Add(zb_nr);
 							bewilligung->Add(bezeichnung);
 							bewilligung->Add(TB);
@@ -157,7 +169,7 @@ void bewilligung_result_form::bewilligung_result_form_Load(System::Object^  send
 								bewilligung->Add("-");
 							bewilligung->Add(id);
 
-							bewilligungen_werte_->Add(bewilligung);
+							bewilligungen_werte_->Add(bewilligung);  //approvals_values
 							ladebalken_->Controls->Find("progress",true)[0]->Text="a";
 							ladebalken_->Controls->Find("progress",true)[0]->Text=" ";
 						}
@@ -177,7 +189,7 @@ void bewilligung_result_form::bewilligung_result_form_Load(System::Object^  send
 	}
 	else
 	{
-		ladebalken_->Controls->Find("texter",true)[0]->Text="Verarbeite Daten und erzeuge Einträge";
+		ladebalken_->Controls->Find("texter",true)[0]->Text="Verarbeite Daten und erzeuge Einträge";  //Process data and create entries
 		ladebalken_->Controls->Find("texter",true)[0]->Text="Verarbeite Daten und erzeuge Einträge";
 
 		sort_bewilligung();
@@ -192,7 +204,7 @@ void bewilligung_result_form::bewilligung_result_form_Load(System::Object^  send
 			Decimal summe_mla=0;
 			Decimal summe_bund_land=0;
 			Decimal summe_mehr_minder=0;
-			Decimal jahreshaushalt=-1;
+			Decimal jahreshaushalt=-1;  //annual budget
 			start=0;
 
 			for(int i=0;i<bewilligungen_werte_->Count;++i)
@@ -208,18 +220,20 @@ void bewilligung_result_form::bewilligung_result_form_Load(System::Object^  send
 					summe_bund_land=0;
 					summe_mehr_minder=0;
 					eintrag=0;
-					stadt=bewilligungen_werte_[i][0];
-					gebiet=bewilligungen_werte_[i][1];
-					programm=bewilligungen_werte_[i][2];
-					jahr=bewilligungen_werte_[i][3];
+					stadt=bewilligungen_werte_[i][0]; //city
+					gebiet=bewilligungen_werte_[i][1];  //area
+					programm=bewilligungen_werte_[i][2]; //Programm name
+					jahr=bewilligungen_werte_[i][3];  //year
 
 					generate_header(stadt,gebiet,programm,jahr);
-
-					jahreshaushalt=-1;
+					
+					jahreshaushalt=-1;  //annual budget
 					if(jahr!="XX")
-						jahreshaushalt=generate_haushalt(stadt,gebiet,programm,jahr);
-					generate_ueberschriften();
+						jahreshaushalt=generate_haushalt(stadt,gebiet,programm,jahr);  //annual budget
+					
+					generate_ueberschriften();  //generate_headings
 				}
+
 
 				String^ bund_land=bewilligungen_werte_[i][10];
 				String^ mla=bewilligungen_werte_[i][11];
@@ -241,7 +255,7 @@ void bewilligung_result_form::bewilligung_result_form_Load(System::Object^  send
 				generate_bewilligung(bewilligungen_werte_[i]->GetRange(4,13),eintrag);		
 
 
-				for(int j=4;j<14;++j) {
+				/*for(int j=4;j<14;++j) {
 					switch (j) {
 						case  4: 
 							exl_->setCellCurrency(row_,2+i,Convert::ToDecimal(bewilligungen_werte_[i][j]));
@@ -252,7 +266,7 @@ void bewilligung_result_form::bewilligung_result_form_Load(System::Object^  send
 					}
 				}
 				++row_;
-
+*/
 
 				++eintrag;
 			
@@ -609,13 +623,13 @@ Decimal bewilligung_result_form::generate_haushalt(String^ stadt, String^ gebiet
 	return jahreshaushalt;
 }
 
-void bewilligung_result_form::generate_ueberschriften()
+void bewilligung_result_form::generate_ueberschriften()  //generate_headings
 {
-	// kostenart
+	// kostenart    -cost type
 	System::Windows::Forms::Label^  kostenart = gcnew System::Windows::Forms::Label();	
 	kostenart->Location = System::Drawing::Point(s_kostenart,start);
 	kostenart->AutoSize = true;
-	kostenart->Text = "Kostengr.";
+	kostenart->Text = "Kostengr.";  //Cost Gr
 	kostenart->Name = "kostengr";
 	kostenart->BackColor = System::Drawing::Color::Silver;
 	kostenart->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 6.75F, System::Drawing::FontStyle::Underline, System::Drawing::GraphicsUnit::Point,static_cast<System::Byte>(0)));

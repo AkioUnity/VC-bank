@@ -10,6 +10,9 @@ public:
 	MyRecordSet(void);
 	MyRecordSet(String^);
 
+	static void SetPath();
+	static	String^ path;
+
 	String^ get_Name(int);
 	String^ get_Type(int);
 	String^ get_val(int,int);

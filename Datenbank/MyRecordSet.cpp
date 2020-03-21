@@ -12,25 +12,28 @@ MyRecordSet::MyRecordSet(void)
 {
 }
 
-MyRecordSet::MyRecordSet(String^ input)
+void MyRecordSet::SetPath()
 {
-	String^ connection_string="Provider=Microsoft.Jet.OLEDB.4.0;Data Source=";
-	query_=input;
-
+	String^ connection_string = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=";
 	// Datenbank Pfad auslesen
-	String^ pfad=Environment::GetFolderPath(Environment::SpecialFolder::LocalApplicationData);
-	pfad+="\\db_pfad.txt";
+	String^ pfad = Environment::GetFolderPath(Environment::SpecialFolder::LocalApplicationData);
+	pfad += "\\db_pfad.txt";
 	FileStream^ fs = File::OpenRead(pfad);
 	array<Byte>^b = gcnew array<Byte>(1024);
-    UTF8Encoding^ temp = gcnew UTF8Encoding( true );
-    fs->Read( b, 0, b->Length );
-    path_ = temp->GetString( b );
-	fs->Close();
-	connection_string += path_;
+	UTF8Encoding^ temp = gcnew UTF8Encoding(true);
+	fs->Read(b, 0, b->Length);
+	connection_string += temp->GetString(b);
+	path = connection_string;
+	fs->Close();	
+}
 
+MyRecordSet::MyRecordSet(String^ input)
+{
+	
+	query_=input;	
 	// Verbindung herstellen
 	String^ mySelectQuery = input;
-    OleDbConnection^ myConnection = gcnew OleDbConnection(connection_string);
+    OleDbConnection^ myConnection = gcnew OleDbConnection(path);
     OleDbCommand^ myCommand = gcnew OleDbCommand(mySelectQuery,myConnection);
 	myConnection->Open();
 	OleDbDataReader^ myReader = myCommand->ExecuteReader();

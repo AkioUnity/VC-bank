@@ -46,7 +46,7 @@ void kostengr_uebersicht_search::kostengr_uebersicht_search_Load(System::Object^
 	}
 
 	// Load Jahr
-	MyResult^ R_Jahr=data.get_result("SELECT * FROM Jahreseintraege");
+	MyResult^ R_Jahr=data.get_result("SELECT * FROM Jahreseintraege order by ID");
 	for(int i=0;i<R_Jahr->get_row();++i)
 		jahre->Items->Add(R_Jahr->get_val(i,1));
 	if(jahre->Items->Count==0)
