@@ -174,12 +174,10 @@ void jahreszuteilung::load_jh()  //
 {
 	haushalte->Items->Clear();
 	jh_id_->Clear();
-	List<String^>^ haushalt_list=gcnew List<String^>;
-	MyRecordSet RC_Stadt("SELECT ID FROM Staedte WHERE Stadt='"+jh_stadt->Text+"'");
-	MyRecordSet RC_Gebiet("Select ID FROM Gebiete WHERE Stadt_ID="+RC_Stadt.get_val(0,0)+" AND Gebiet='"+jh_gebiet->Text+"'");
-	MyRecordSet RC_Programm("Select ID FROM Programme WHERE Gebiet_ID="+RC_Gebiet.get_val(0,0)+" AND Programm='"+jh_programm->Text+"'");
+	List<String^>^ haushalt_list=gcnew List<String^>;	
 	//annual budget
-	MyRecordSet RC("SELECT * FROM jahreshaushalt WHERE programm_ID="+RC_Programm.get_val(0,0)+" AND jahr='"+jh_jahr->Text+"'");
+	String^ query = MyRecordSet::QueryOneAnnualBudget(jh_stadt->Text, jh_gebiet->Text, jh_programm->Text, jh_jahr->Text);
+	MyRecordSet RC(query);
 	Decimal summe=0;
 	for(int i=0;i<RC.get_row();++i)
 	{

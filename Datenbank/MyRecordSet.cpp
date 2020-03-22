@@ -112,3 +112,13 @@ int MyRecordSet::get_new_id()
 			return i;
 	return -1;
 }
+
+String^ MyRecordSet::QueryAllAnnualBudget(String^ city, String^ area, String^ program) 
+{
+	return "SELECT jahreshaushalt.* FROM jahreshaushalt inner join (Programme inner join (Gebiete inner join Staedte on Gebiete.Stadt_ID=Staedte.ID ) on Programme.Gebiet_ID=Gebiete.ID) on jahreshaushalt.programm_ID=Programme.ID WHERE Staedte.Stadt='" + city + "' and Gebiete.Gebiet='" + area + "' and Programme.Programm='" + program+"'";
+}
+
+String^ MyRecordSet::QueryOneAnnualBudget(String^ city, String^ area, String^ program, String^ year)
+{
+	return QueryAllAnnualBudget(city, area, program) + "' and jahreshaushalt.jahr='" + year + "'";
+}

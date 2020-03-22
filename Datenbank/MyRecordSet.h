@@ -12,6 +12,9 @@ public:
 
 	static void SetPath();
 	static	String^ path;
+
+	static String^ QueryAllAnnualBudget(String^ city, String^ area, String^ program);
+	static String^ QueryOneAnnualBudget(String^, String^, String^, String^);
 	/*static OleDbConnection^ myConnection;*/
 
 	String^ get_Name(int);
