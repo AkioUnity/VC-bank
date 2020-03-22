@@ -14,6 +14,10 @@ using namespace System::Windows::Forms;
 // Loader
 void bewilligung_auswertung_form::bewilligung_auswertung_form_Load(System::Object^  sender, System::EventArgs^  e)
 {
+	Hide();
+	loadingForm->Show();
+	loadingForm->Controls->Find("texter", true)[0]->Text = "Lade";  //Load annual overview
+
 	MyRecordSet RC_Stadt("SELECT * FROM Staedte");
 	for(int i=0;i<RC_Stadt.get_row();++i)
 	{
@@ -24,6 +28,7 @@ void bewilligung_auswertung_form::bewilligung_auswertung_form_Load(System::Objec
 			MyRecordSet RC_Programm("SELECT * FROM Programme WHERE Gebiet_ID="+RC_Gebiet.get_val(j,0));
 			if(RC_Programm.get_row()!=0)
 				insert=true;
+			loadingForm->SetProgress();
 		}
 		if(insert)
 			staedte->Items->Add(RC_Stadt.get_val(i,1));
@@ -49,6 +54,9 @@ void bewilligung_auswertung_form::bewilligung_auswertung_form_Load(System::Objec
 	}
 	else
 		jahre->SelectedIndex=0;
+
+	loadingForm->Hide();
+	Show();
 }
 
 void bewilligung_auswertung_form::load_gebiet()
@@ -72,8 +80,11 @@ void bewilligung_auswertung_form::load_programm()
 	MyRecordSet RC_Stadt("SELECT ID FROM Staedte WHERE Stadt='"+staedte->Text+"'");
 	MyRecordSet RC_Gebiet("SELECT ID FROM Gebiete WHERE Stadt_ID="+RC_Stadt.get_val(0,0)+" AND Gebiet='"+gebiete->Text+"'");
 	MyRecordSet RC_Programm("SELECT * FROM Programme WHERE Gebiet_ID="+RC_Gebiet.get_val(0,0));
-	for(int i=0;i<RC_Programm.get_row();++i)
-		programme->Items->Add(RC_Programm.get_val(i,3)+" - "+RC_Programm.get_val(i,2));
+	for (int i = 0;i < RC_Programm.get_row();++i) {
+		programme->Items->Add(RC_Programm.get_val(i, 3) + " - " + RC_Programm.get_val(i, 2));
+		loadingForm->SetProgress();		
+	}
+		
 	programme->SelectedIndex=0;
 }
 
@@ -130,7 +141,8 @@ void bewilligung_auswertung_form::button1_Click(System::Object^  sender, System:
 	Form^ result =gcnew bewilligung_result_form(stadt,gebiet,programm,jahr,sbe,user_id_);
 	Hide();
 	result->ShowDialog();
-	Close();
+	Show();
+	//Close();
 }
 
 void bewilligung_auswertung_form::button2_Click(System::Object^  sender, System::EventArgs^  e) // Close

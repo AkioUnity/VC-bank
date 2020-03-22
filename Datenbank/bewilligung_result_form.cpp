@@ -454,7 +454,7 @@ bool bewilligung_result_form::is_existent_in(List<String^>^ liste, String^ value
 	return false;
 }
 
-// Auswertungselemente
+// Auswertungselemente       Evaluation elements
 void bewilligung_result_form::generate_header(String^ stadt, String^ gebiet, String^ programm, String^ jahr)
 {
 	page_content_->Add(gcnew List< List<String^>^ >);
@@ -672,14 +672,14 @@ void bewilligung_result_form::generate_ueberschriften()  //generate_headings
 	zb_nr->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 6.75F, System::Drawing::FontStyle::Underline, System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
 	this->Controls->Add(zb_nr);
 
-	// bezeichnung
+	// bezeichnung       description
 	System::Windows::Forms::Label^  bezeichnung = gcnew System::Windows::Forms::Label();
 	bezeichnung->Location = System::Drawing::Point(s_bezeichnung, start);
 	bezeichnung->AutoSize = false;
 	bezeichnung->Size = System::Drawing::Size(110, 15);
 	bezeichnung->TextAlign = System::Drawing::ContentAlignment::TopCenter;
-	bezeichnung->Text = "Vorhaben";
-	bezeichnung->Name = "bezeichnung";
+	bezeichnung->Text = "Vorhaben";  //project
+	bezeichnung->Name = "bezeichnung";  //description
 	bezeichnung->BackColor = System::Drawing::Color::Silver;
 	bezeichnung->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 6.75F, System::Drawing::FontStyle::Underline, System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
 	this->Controls->Add(bezeichnung);
@@ -807,13 +807,13 @@ void bewilligung_result_form::generate_ueberschriften()  //generate_headings
 
 	start += 20;
 }
-
+//generate_approval
 void bewilligung_result_form::generate_bewilligung(List<String^>^ werte, int eintrag)
 {
 	MyRecordSet RC("SELECT Wert,Abkuerzung FROM Kostengruppe WHERE Wert='" + werte[0] + "'");
 	String^ kostengruppe_s = RC.get_val(0, 1);
 	String^ zb_nr_s = werte[1];
-	String^ bezeichnung_s = werte[2];
+	String^ bezeichnung_s = werte[2];  //designation_s
 	String^ tb_s = werte[3];
 	String^ vom_s = werte[4];
 	String^ foerderbetrag_s = werte[5];
@@ -874,15 +874,16 @@ void bewilligung_result_form::generate_bewilligung(List<String^>^ werte, int ein
 	zb_nr->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 6.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
 	this->Controls->Add(zb_nr);
 
-	// bezeichnung
+	// bezeichnung  description
 	System::Windows::Forms::Label^  bezeichnung = gcnew System::Windows::Forms::Label();
 	bezeichnung->Click += gcnew System::EventHandler(this, &bewilligung_result_form::Click);
 	bezeichnung->Location = System::Drawing::Point(s_bezeichnung, start);
 	bezeichnung->AutoSize = false;
+	
 	bezeichnung->Text = werte[2];
 	bezeichnung->Name = id;
 	bezeichnung->BackColor = color;
-	bezeichnung->Size = System::Drawing::Size(110, 15);
+	bezeichnung->Size = System::Drawing::Size(110, 35);
 	bezeichnung->TextAlign = System::Drawing::ContentAlignment::TopRight;
 	bezeichnung->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 6.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
 	this->Controls->Add(bezeichnung);
@@ -1003,6 +1004,7 @@ void bewilligung_result_form::generate_bewilligung(List<String^>^ werte, int ein
 	line_back->Click += gcnew System::EventHandler(this, &bewilligung_result_form::Click);
 	this->Controls->Add(line_back);
 
+	start += 20;
 	start += 20;
 }
 

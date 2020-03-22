@@ -89,7 +89,7 @@ namespace Datenbank {
 			}
 		}
 
-			Form^ ladebalken_;
+			Form^ ladebalken_;  //loading bar_
 
 			int user_id_;
 			String^ stadt_;

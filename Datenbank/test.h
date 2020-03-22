@@ -31,6 +31,12 @@ namespace Datenbank {
 			//TODO: Konstruktorcode hier hinzufügen.
 			//
 		}
+
+		void SetProgress() {
+			Controls->Find("progress", true)[0]->Text = "a";
+			Controls->Find("progress", true)[0]->Text = " ";
+		}
+
 	protected:
 		/// <summary>
 		/// Verwendete Ressourcen bereinigen.
