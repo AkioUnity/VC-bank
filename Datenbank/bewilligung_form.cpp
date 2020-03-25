@@ -12,7 +12,7 @@ using namespace System::Windows::Forms;
 
 void bewilligung_form::bewilligung_form_Load(System::Object^  sender, System::EventArgs^  e)
 {
-	MyRecordSet RC("SELECT Value FROM Jahreseintraege");
+	MyRecordSet RC("SELECT Value FROM Jahreseintraege  order by ID");
 	nr_part3->Items->Clear();
 	for(int i=0;i<RC.get_row();++i)
 		nr_part3->Items->Add(RC.get_val(i,0));

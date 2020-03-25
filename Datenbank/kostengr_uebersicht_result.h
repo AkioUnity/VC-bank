@@ -28,7 +28,7 @@ namespace Datenbank {
 			stadt_(stadt),
 			gebiet_(gebiet),
 			programm_(programm),
-			jahr_(jahr),
+			year_(jahr),
 			start_(0),
 			s_jahr(10),
 			s_zb_nr(50),
@@ -91,7 +91,7 @@ namespace Datenbank {
 		String^	stadt_;
 		String^	gebiet_;
 		String^	programm_;
-		String^	jahr_;
+		String^	year_;
 
 		int start_;
 		int s_jahr;

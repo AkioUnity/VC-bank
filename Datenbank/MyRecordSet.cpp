@@ -22,8 +22,8 @@ void MyRecordSet::SetPath()
 	array<Byte>^b = gcnew array<Byte>(1024);
 	UTF8Encoding^ temp = gcnew UTF8Encoding(true);
 	fs->Read(b, 0, b->Length);
-	connection_string += temp->GetString(b);
-	path = connection_string;
+	mdbPath= temp->GetString(b);	
+	path = connection_string+mdbPath;
 	fs->Close();	
 	/*OleDbConnection^ myConnection;
 	myConnection = gcnew OleDbConnection(path);
@@ -118,7 +118,21 @@ String^ MyRecordSet::QueryAllAnnualBudget(String^ city, String^ area, String^ pr
 	return "SELECT jahreshaushalt.* FROM jahreshaushalt inner join (Programme inner join (Gebiete inner join Staedte on Gebiete.Stadt_ID=Staedte.ID ) on Programme.Gebiet_ID=Gebiete.ID) on jahreshaushalt.programm_ID=Programme.ID WHERE Staedte.Stadt='" + city + "' and Gebiete.Gebiet='" + area + "' and Programme.Programm='" + program+"'";
 }
 
+String^ MyRecordSet::GetProgramNr(String^ programName)
+{
+	String^ query = "SELECT Programm_Nr FROM Programme WHERE Programm='" + programName + "'";
+	MyRecordSet RC(query);
+	return RC.get_val(0, 0);
+}
+
+String^ MyRecordSet::GetAreaId(String^ city, String^ area)
+{
+	String^ query = "SELECT Gebiete.ID FROM Gebiete inner join Staedte on Gebiete.Stadt_ID=Staedte.ID WHERE Staedte.Stadt='" + city + "' AND Gebiet='"+area+"'";	
+	MyRecordSet RC(query);
+	return RC.get_val(0, 0);
+}
+
 String^ MyRecordSet::QueryOneAnnualBudget(String^ city, String^ area, String^ program, String^ year)
 {
-	return QueryAllAnnualBudget(city, area, program) + "' and jahreshaushalt.jahr='" + year + "'";
+	return QueryAllAnnualBudget(city, area, program) + " and jahreshaushalt.jahr='" + year + "'";
 }

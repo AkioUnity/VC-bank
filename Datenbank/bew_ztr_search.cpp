@@ -114,7 +114,8 @@ void bew_ztr_search::search_Click(System::Object^  sender, System::EventArgs^  e
 		Form^ result =gcnew bew_ztr_result(stadt,gebiet,programm,bis_s,rB_n_einger->Checked,user_id_);
 		Hide();
 		result->ShowDialog();
-		Close();
+		Show();
+		//Close();
 	}
 	else
 		Windows::Forms::MessageBox::Show("Bitte geben Sie gültige Daten ein.","Unvollständige Eingabe");

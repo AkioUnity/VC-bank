@@ -30,7 +30,8 @@ void kostengr_uebersicht_result::kostengr_uebersicht_result_Load(System::Object^
 	if(bewilligungen->Count==0)
 	{
 		ladebalken_->Close();
-		Windows::Forms::MessageBox::Show("Es wurden keine Einträge zu ihrer Anfrage gefunden.","Ungültige Suche");
+		//No entries were found for your request
+		Windows::Forms::MessageBox::Show("Es wurden keine Einträge zu ihrer Anfrage gefunden.","Ungültige Suche");		
 		Close();
 	}
 	//Windows::Forms::MessageBox::Show(Convert::ToString(bewilligungen->Count));
@@ -269,16 +270,16 @@ List< List<String^>^ >^ kostengr_uebersicht_result::load_bewilligungen()
 	My_Connection data;
 	data.connect();
 
-	List<String^>^ jahre=gcnew List<String^>;
-	if(jahr_=="-1")
+	List<String^>^ years=gcnew List<String^>;
+	if(year_=="-1")
 	{
-		MyResult^ R_Jahr=data.get_result("SELECT * FROM Jahreseintraege order by ID");
-		for(int i=0;i<R_Jahr->get_row();++i)
-			jahre->Add(R_Jahr->get_val(i,1));
-		jahre->Add("SBE");
+		MyResult^ R_year=data.get_result("SELECT * FROM Jahreseintraege order by ID");  //Annual entries
+		for(int i=0;i<R_year->get_row();++i)
+			years->Add(R_year->get_val(i,1));
+		years->Add("SBE");
 	}
 	else
-		jahre->Add(jahr_);
+		years->Add(year_);
 	
 	List<String^>^ staedte=gcnew List<String^>;
 	if(stadt_=="-1")
@@ -365,7 +366,7 @@ List< List<String^>^ >^ kostengr_uebersicht_result::load_bewilligungen()
 									tb=Convert::ToString(bew_param+1)+". TB";			// TB ( Programm )
 								if(R_Bewilligungen->get_val(bew_param,10)=="1")
 									jahr="SBE";
-								if(is_existent_in(jahre,jahr))
+								if(is_existent_in(years,jahr))
 								{
 									String^ ZB_NR=	R_Bewilligungen->get_val(bew_param,2)+"-"+	// ZB_Nr ( BEW )
 													R_Bewilligungen->get_val(bew_param,3)+"/"+

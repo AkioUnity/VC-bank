@@ -14,6 +14,10 @@ using namespace System::Windows::Forms;
 // Loader
 void gesamt_uebersicht_search::gesamt_uebersicht_search_Load(System::Object^  sender, System::EventArgs^  e)
 {
+	Hide();
+	loadingForm->Show();
+	loadingForm->Controls->Find("texter", true)[0]->Text = "Lade";
+
 	MyRecordSet RC_Stadt("SELECT * FROM Staedte");
 	for(int i=0;i<RC_Stadt.get_row();++i)
 	{
@@ -27,6 +31,7 @@ void gesamt_uebersicht_search::gesamt_uebersicht_search_Load(System::Object^  se
 		}
 		if(insert)
 			staedte->Items->Add(RC_Stadt.get_val(i,1));
+		loadingForm->SetProgress();
 	}
 	if(staedte->Items->Count==0)
 	{
@@ -38,6 +43,9 @@ void gesamt_uebersicht_search::gesamt_uebersicht_search_Load(System::Object^  se
 		staedte->SelectedIndex=0;
 		load_gebiet();
 	}
+
+	loadingForm->Hide();
+	Show();
 }
 
 void gesamt_uebersicht_search::load_gebiet()
@@ -50,6 +58,7 @@ void gesamt_uebersicht_search::load_gebiet()
 		MyRecordSet RC_Programm("SELECT * FROM Programme WHERE Gebiet_ID="+RC_Gebiet.get_val(i,0));
 		if(RC_Programm.get_row()!=0)
 			gebiete->Items->Add(RC_Gebiet.get_val(i,2));
+		loadingForm->SetProgress();
 	}
 	gebiete->SelectedIndex=0;
 	load_programm();
@@ -151,7 +160,8 @@ void gesamt_uebersicht_search::btn_create_result_Click(System::Object^  sender, 
 																			user_id_);
 		Hide();
 		result->ShowDialog();
-		Close();
+		Show();
+		//Close();
 	}
 	else
 		Windows::Forms::MessageBox::Show("Bitte wählen Sie mindestens ein Auswertungselement.","Unvollständige Eingabe");

@@ -12,6 +12,10 @@ using namespace System::Text;
 
 void open_project_form::open_project_form_Load(System::Object^  sender, System::EventArgs^  e)
 {
+	Hide();
+	loadingForm->Show();
+	loadingForm->Controls->Find("texter", true)[0]->Text = "Lade";  
+
 	staedte->Items->Clear();
 	MyRecordSet RC("SELECT * FROM Staedte");
 	for(int i=0;i<RC.get_row();++i)
@@ -20,6 +24,7 @@ void open_project_form::open_project_form_Load(System::Object^  sender, System::
 		MyRecordSet RC_Gebiet("SELECT gebiet FROM Gebiete WHERE stadt_id="+RC_Stadt.get_val(0,0));
 		if(RC_Gebiet.get_row()!=0)
 			staedte->Items->Add(RC.get_val(i,1));
+		loadingForm->SetProgress();
 	}
 	if(staedte->Items->Count>0)
 	{
@@ -32,6 +37,9 @@ void open_project_form::open_project_form_Load(System::Object^  sender, System::
 		Windows::Forms::MessageBox::Show("Keine Stadt gefunden.","Bitte kontaktieren Sie den Administrator");
 		Close();
 	}
+
+	loadingForm->Hide();
+	Show();
 }
 
 void open_project_form::load_gebiete()
@@ -42,6 +50,7 @@ void open_project_form::load_gebiete()
 	for(int i=0;i<RC.get_row();++i)
 	{
 		gebiete->Items->Add(RC.get_val(i,2));
+		loadingForm->SetProgress();
 	}
 	gebiete->SelectedIndex=0;
 }
@@ -77,6 +86,7 @@ void open_project_form::btn_search_Click(System::Object^  sender, System::EventA
 			projekte->Items->Add(RC.get_val(i,1)+" in "+RC.get_val(i,2)+" ("+RC.get_val(i,3)+")");
 			id_->Add(RC.get_val(i,0));
 		}
+		loadingForm->SetProgress();
 	}
 }
 

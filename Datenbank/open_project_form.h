@@ -1,4 +1,5 @@
 #pragma once
+#include "test.h"
 
 namespace Datenbank {
 
@@ -25,13 +26,15 @@ namespace Datenbank {
 		}
 		open_project_form(int user_id):
 			id_(gcnew List<String^>),
-			user_id_(user_id)
+			user_id_(user_id), loadingForm(gcnew test())
 		{
 			InitializeComponent();
 			//
 			//TODO: Konstruktorcode hier hinzufügen.
 			//
 		}
+
+		test^ loadingForm;  //loading bar_
 
 	protected:
 		/// <summary>

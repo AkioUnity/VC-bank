@@ -878,12 +878,13 @@ void bewilligung_result_form::generate_bewilligung(List<String^>^ werte, int ein
 	System::Windows::Forms::Label^  bezeichnung = gcnew System::Windows::Forms::Label();
 	bezeichnung->Click += gcnew System::EventHandler(this, &bewilligung_result_form::Click);
 	bezeichnung->Location = System::Drawing::Point(s_bezeichnung, start);
-	bezeichnung->AutoSize = false;
+	bezeichnung->AutoSize = true;
+	bezeichnung->MaximumSize= System::Drawing::Size(100, 0);
 	
 	bezeichnung->Text = werte[2];
 	bezeichnung->Name = id;
 	bezeichnung->BackColor = color;
-	bezeichnung->Size = System::Drawing::Size(110, 35);
+	//bezeichnung->Size = System::Drawing::Size(110, 35);
 	bezeichnung->TextAlign = System::Drawing::ContentAlignment::TopRight;
 	bezeichnung->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 6.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
 	this->Controls->Add(bezeichnung);
@@ -1004,8 +1005,7 @@ void bewilligung_result_form::generate_bewilligung(List<String^>^ werte, int ein
 	line_back->Click += gcnew System::EventHandler(this, &bewilligung_result_form::Click);
 	this->Controls->Add(line_back);
 
-	start += 20;
-	start += 20;
+	start += bezeichnung->Size.Height+8;
 }
 
 void bewilligung_result_form::generate_footer(Decimal jahreshaushalt, Decimal bund_land, Decimal mla, Decimal mehr_minder)

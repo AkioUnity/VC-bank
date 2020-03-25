@@ -18,20 +18,28 @@ using namespace System::Text;
 // ComboBox Einträge laden
 void project_form::project_form_Load(System::Object^  sender, System::EventArgs^  e)
 {
+	Hide();
+	loadingForm->Show();
+	loadingForm->Controls->Find("texter", true)[0]->Text = "Lade"; 
 	// Fill List for User Rights
 	stadt_ids_->Clear();
 	MyRecordSet RC_user("SELECT User_is_admin FROM Users WHERE User_ID="+Convert::ToString(user_id_));
 	if(RC_user.get_val(0,0)=="1")
 	{
 		MyRecordSet RC_user_access("SELECT * FROM Staedte");
-		for(int i=0;i<RC_user_access.get_row();++i)
-			stadt_ids_->Add(RC_user_access.get_val(i,0));
+		for (int i = 0;i < RC_user_access.get_row();++i) {
+			stadt_ids_->Add(RC_user_access.get_val(i, 0));
+			loadingForm->SetProgress();
+		}
+			
 	}
 	else
 	{
 		MyRecordSet RC_user_access("SELECT * FROM User_Access WHERE User_ID="+Convert::ToString(user_id_));
-		for(int i=0;i<RC_user_access.get_row();++i)
-			stadt_ids_->Add(RC_user_access.get_val(i,2));
+		for (int i = 0;i < RC_user_access.get_row();++i) {
+			stadt_ids_->Add(RC_user_access.get_val(i, 2));
+			loadingForm->SetProgress();
+		}			
 	}
 
 	// Check if User has Rights to Change Things if project is loaded
@@ -98,6 +106,9 @@ void project_form::project_form_Load(System::Object^  sender, System::EventArgs^
 		btn_print->Enabled=true;
 		button5->Enabled=true;
 	}
+
+	loadingForm->Hide();
+	Show();
 }
 
 bool project_form::load_kostengruppe()
@@ -184,6 +195,7 @@ bool project_form::load_stadt()
 				MyRecordSet RC_Prog("SELECT ID FROM Programme WHERE Gebiet_ID="+RC_Gebiet.get_val(j,0));
 				if(RC_Adr.get_row()>0 && RC_Prog.get_row()>0)
 					insert=true;
+				loadingForm->SetProgress();
 			}
 			if(insert)
 				stadt->Items->Add(RC.get_val(i,1));

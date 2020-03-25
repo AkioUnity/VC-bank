@@ -25,6 +25,8 @@ namespace Datenbank {
 			load_ff_entries();
 		}
 
+		String^ cur_prog;
+
 	protected:
 		/// <summary>
 		/// Verwendete Ressourcen bereinigen.
@@ -37,6 +39,7 @@ namespace Datenbank {
 			}
 		}
 	private: List<String^>^ jh_id_;
+	private: System::Windows::Forms::OpenFileDialog^  openFileDialog1;
 
 	private: System::Windows::Forms::ComboBox^  cB_programme;
 	private: System::Windows::Forms::Label^  label2;
@@ -115,6 +118,13 @@ namespace Datenbank {
 	private: System::Windows::Forms::Button^  btn_reset_pwd;
 	private: System::Windows::Forms::Label^  label_Nummer;
 	private: System::Windows::Forms::Label^  labelName;
+private: System::Windows::Forms::TabPage^  db_tab;
+private: System::Windows::Forms::Button^  btn_back;
+private: System::Windows::Forms::Button^  btn_search_path;
+private: System::Windows::Forms::TextBox^  tb_path;
+private: System::Windows::Forms::Label^  label5;
+private: System::Windows::Forms::Button^  button_save_prog;
+private: System::Windows::Forms::Label^  edit_mode_lbl;
 
 	protected: 
 
@@ -132,6 +142,7 @@ namespace Datenbank {
 		void InitializeComponent(void)
 		{
 			System::ComponentModel::ComponentResourceManager^  resources = (gcnew System::ComponentModel::ComponentResourceManager(admin::typeid));
+			this->openFileDialog1 = (gcnew System::Windows::Forms::OpenFileDialog());
 			this->cB_programme = (gcnew System::Windows::Forms::ComboBox());
 			this->label2 = (gcnew System::Windows::Forms::Label());
 			this->label3 = (gcnew System::Windows::Forms::Label());
@@ -161,6 +172,7 @@ namespace Datenbank {
 			this->programm_nr = (gcnew System::Windows::Forms::TextBox());
 			this->tabControl1 = (gcnew System::Windows::Forms::TabControl());
 			this->tabPage1 = (gcnew System::Windows::Forms::TabPage());
+			this->button_save_prog = (gcnew System::Windows::Forms::Button());
 			this->label_Nummer = (gcnew System::Windows::Forms::Label());
 			this->labelName = (gcnew System::Windows::Forms::Label());
 			this->tB_gebiet = (gcnew System::Windows::Forms::TextBox());
@@ -204,10 +216,16 @@ namespace Datenbank {
 			this->label25 = (gcnew System::Windows::Forms::Label());
 			this->label24 = (gcnew System::Windows::Forms::Label());
 			this->label23 = (gcnew System::Windows::Forms::Label());
+			this->db_tab = (gcnew System::Windows::Forms::TabPage());
+			this->btn_back = (gcnew System::Windows::Forms::Button());
+			this->btn_search_path = (gcnew System::Windows::Forms::Button());
+			this->tb_path = (gcnew System::Windows::Forms::TextBox());
+			this->label5 = (gcnew System::Windows::Forms::Label());
 			this->groupBox1 = (gcnew System::Windows::Forms::GroupBox());
 			this->label8 = (gcnew System::Windows::Forms::Label());
 			this->label6 = (gcnew System::Windows::Forms::Label());
 			this->label19 = (gcnew System::Windows::Forms::Label());
+			this->edit_mode_lbl = (gcnew System::Windows::Forms::Label());
 			this->tabControl1->SuspendLayout();
 			this->tabPage1->SuspendLayout();
 			this->tabPage2->SuspendLayout();
@@ -215,8 +233,13 @@ namespace Datenbank {
 			this->tabPage5->SuspendLayout();
 			this->gB_user->SuspendLayout();
 			this->Adresse->SuspendLayout();
+			this->db_tab->SuspendLayout();
 			this->groupBox1->SuspendLayout();
 			this->SuspendLayout();
+			// 
+			// openFileDialog1
+			// 
+			this->openFileDialog1->FileName = L"openFileDialog1";
 			// 
 			// cB_programme
 			// 
@@ -462,7 +485,7 @@ namespace Datenbank {
 			// 
 			this->programm_nr->Location = System::Drawing::Point(160, 165);
 			this->programm_nr->Name = L"programm_nr";
-			this->programm_nr->Size = System::Drawing::Size(183, 20);
+			this->programm_nr->Size = System::Drawing::Size(155, 20);
 			this->programm_nr->TabIndex = 14;
 			// 
 			// tabControl1
@@ -472,6 +495,7 @@ namespace Datenbank {
 			this->tabControl1->Controls->Add(this->tabPage4);
 			this->tabControl1->Controls->Add(this->tabPage5);
 			this->tabControl1->Controls->Add(this->Adresse);
+			this->tabControl1->Controls->Add(this->db_tab);
 			this->tabControl1->Location = System::Drawing::Point(12, 12);
 			this->tabControl1->Name = L"tabControl1";
 			this->tabControl1->SelectedIndex = 0;
@@ -481,7 +505,9 @@ namespace Datenbank {
 			// tabPage1
 			// 
 			this->tabPage1->BackColor = System::Drawing::SystemColors::Control;
+			this->tabPage1->Controls->Add(this->button_save_prog);
 			this->tabPage1->Controls->Add(this->label_Nummer);
+			this->tabPage1->Controls->Add(this->edit_mode_lbl);
 			this->tabPage1->Controls->Add(this->labelName);
 			this->tabPage1->Controls->Add(this->tB_gebiet);
 			this->tabPage1->Controls->Add(this->btn_rem_gebiet);
@@ -510,6 +536,16 @@ namespace Datenbank {
 			this->tabPage1->Size = System::Drawing::Size(376, 256);
 			this->tabPage1->TabIndex = 0;
 			this->tabPage1->Text = L"Stadt";
+			// 
+			// button_save_prog
+			// 
+			this->button_save_prog->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"button_save_prog.Image")));
+			this->button_save_prog->Location = System::Drawing::Point(320, 162);
+			this->button_save_prog->Name = L"button_save_prog";
+			this->button_save_prog->Size = System::Drawing::Size(23, 23);
+			this->button_save_prog->TabIndex = 38;
+			this->button_save_prog->UseVisualStyleBackColor = true;
+			this->button_save_prog->Click += gcnew System::EventHandler(this, &admin::button_save_prog_Click);
 			// 
 			// label_Nummer
 			// 
@@ -938,6 +974,55 @@ namespace Datenbank {
 			this->label23->TabIndex = 0;
 			this->label23->Text = L"Name :";
 			// 
+			// db_tab
+			// 
+			this->db_tab->BackColor = System::Drawing::SystemColors::Control;
+			this->db_tab->Controls->Add(this->btn_back);
+			this->db_tab->Controls->Add(this->btn_search_path);
+			this->db_tab->Controls->Add(this->tb_path);
+			this->db_tab->Controls->Add(this->label5);
+			this->db_tab->Location = System::Drawing::Point(4, 22);
+			this->db_tab->Name = L"db_tab";
+			this->db_tab->Size = System::Drawing::Size(376, 256);
+			this->db_tab->TabIndex = 7;
+			this->db_tab->Text = L"Datenbank";
+			// 
+			// btn_back
+			// 
+			this->btn_back->Location = System::Drawing::Point(11, 132);
+			this->btn_back->Name = L"btn_back";
+			this->btn_back->Size = System::Drawing::Size(304, 23);
+			this->btn_back->TabIndex = 7;
+			this->btn_back->Text = L"Speichern";
+			this->btn_back->UseVisualStyleBackColor = true;
+			this->btn_back->Click += gcnew System::EventHandler(this, &admin::btn_back_Click);
+			// 
+			// btn_search_path
+			// 
+			this->btn_search_path->Location = System::Drawing::Point(346, 97);
+			this->btn_search_path->Name = L"btn_search_path";
+			this->btn_search_path->Size = System::Drawing::Size(25, 20);
+			this->btn_search_path->TabIndex = 6;
+			this->btn_search_path->Text = L"...";
+			this->btn_search_path->UseVisualStyleBackColor = true;
+			this->btn_search_path->Click += gcnew System::EventHandler(this, &admin::btn_search_path_Click);
+			// 
+			// tb_path
+			// 
+			this->tb_path->Location = System::Drawing::Point(12, 97);
+			this->tb_path->Name = L"tb_path";
+			this->tb_path->Size = System::Drawing::Size(328, 20);
+			this->tb_path->TabIndex = 5;
+			// 
+			// label5
+			// 
+			this->label5->AutoSize = true;
+			this->label5->Location = System::Drawing::Point(9, 70);
+			this->label5->Name = L"label5";
+			this->label5->Size = System::Drawing::Size(233, 13);
+			this->label5->TabIndex = 4;
+			this->label5->Text = L"Bitte geben Sie den Pfad zu der Datenbank ein.";
+			// 
 			// groupBox1
 			// 
 			this->groupBox1->Controls->Add(this->label8);
@@ -976,6 +1061,15 @@ namespace Datenbank {
 			this->label19->TabIndex = 45;
 			this->label19->Text = L"© 2012 by MKS";
 			// 
+			// edit_mode_lbl
+			// 
+			this->edit_mode_lbl->AutoSize = true;
+			this->edit_mode_lbl->Location = System::Drawing::Point(59, 142);
+			this->edit_mode_lbl->Name = L"edit_mode_lbl";
+			this->edit_mode_lbl->Size = System::Drawing::Size(31, 13);
+			this->edit_mode_lbl->TabIndex = 37;
+			this->edit_mode_lbl->Text = L"Edit :";
+			// 
 			// admin
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
@@ -1001,6 +1095,8 @@ namespace Datenbank {
 			this->gB_user->PerformLayout();
 			this->Adresse->ResumeLayout(false);
 			this->Adresse->PerformLayout();
+			this->db_tab->ResumeLayout(false);
+			this->db_tab->PerformLayout();
 			this->groupBox1->ResumeLayout(false);
 			this->groupBox1->PerformLayout();
 			this->ResumeLayout(false);
@@ -1063,5 +1159,8 @@ namespace Datenbank {
 		void cB_user_is_admin_CheckedChanged(System::Object^  sender, System::EventArgs^  e);
 		void lB_user_access_Click(System::Object^  sender, System::EventArgs^  e);
 		void btn_reset_pwd_Click(System::Object^  sender, System::EventArgs^  e);
-};
+		private: System::Void btn_back_Click(System::Object^  sender, System::EventArgs^  e);
+		private: System::Void btn_search_path_Click(System::Object^  sender, System::EventArgs^  e);
+		private: System::Void button_save_prog_Click(System::Object^  sender, System::EventArgs^  e);
+ };
 }

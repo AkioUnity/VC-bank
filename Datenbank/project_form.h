@@ -2,6 +2,7 @@
 
 #include "project_class.h"
 #include "bewilligung_form.h"
+#include "test.h"
 
 namespace Datenbank {
 
@@ -25,7 +26,7 @@ namespace Datenbank {
 			loaded_(false),
 			user_id_(user_id),
 			stadt_ids_(gcnew List<String^>),
-			load_std_(true)
+			load_std_(true), loadingForm(gcnew test())
 		{
 			InitializeComponent();
 		}
@@ -42,6 +43,8 @@ namespace Datenbank {
 			InitializeComponent();
 
 		}
+
+		test^ loadingForm;  //loading bar_
 
 	protected:
 		/// <summary>

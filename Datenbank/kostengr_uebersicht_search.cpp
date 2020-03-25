@@ -186,7 +186,8 @@ void kostengr_uebersicht_search::btn_create_Click(System::Object^  sender, Syste
 	Form^ result =gcnew kostengr_uebersicht_result(kostengruppe,stadt,gebiet,programm,jahr,user_id_);
 	Hide();
 	result->ShowDialog();
-	Close();
+	Show();
+	//Close();
 }
 
 void kostengr_uebersicht_search::btn_close_Click(System::Object^  sender, System::EventArgs^  e)

@@ -139,7 +139,8 @@ void adress_uebersicht_search::btn_create_result_Click(System::Object^  sender, 
 	Form^ result =gcnew adress_uebersicht_result(stadt,gebiet,adresse,user_id_);
 	Hide();
 	result->ShowDialog();
-	Close();
+	Show();
+	//Close();
 }
 
 void adress_uebersicht_search::btn_close_Click(System::Object^  sender, System::EventArgs^  e)
