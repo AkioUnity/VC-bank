@@ -1,7 +1,7 @@
 #pragma once
 
 #include "test.h"
-#include "ExcelExport.h"
+#include "ResultForm.h"
 
 namespace Datenbank {
 
@@ -16,7 +16,7 @@ namespace Datenbank {
 	/// <summary>
 	/// Zusammenfassung für bewilligung_result_form
 	/// </summary>
-	public ref class bewilligung_result_form : public System::Windows::Forms::Form
+	public ref class bewilligung_result_form : public ResultForm
 	{
 	public:
 		bewilligung_result_form(void)
@@ -26,7 +26,8 @@ namespace Datenbank {
 			//TODO: Konstruktorcode hier hinzufügen.
 			//
 		}
-		bewilligung_result_form(String^ stadt,String^ gebiet, String^ programm, String^ jahr, String^ sbe,int user_id):
+		bewilligung_result_form(String^ stadt, String^ gebiet, String^ programm, String^ jahr, String^ sbe, int user_id) :
+			ResultForm(),
 			user_id_(user_id),
 			stadt_(stadt),
 			gebiet_(gebiet),
@@ -66,10 +67,7 @@ namespace Datenbank {
 			p_s_mehr_minder(0),
 			done_page_content_(0),
 
-			ladebalken_(gcnew test()),
-
-			exl_(gcnew ExcelExport()),
-			row_(1)
+			ladebalken_(gcnew test())
 		{
 			InitializeComponent();
 			//
@@ -89,30 +87,30 @@ namespace Datenbank {
 			}
 		}
 
-			Form^ ladebalken_;  //loading bar_
+		Form^ ladebalken_;  //loading bar_
 
-			int user_id_;
-			String^ stadt_;
-			String^ gebiet_;
-			String^ programm_;
-			String^ jahr_;
-			String^ sbe_;
-			Decimal jahreshaushalt_;
-			List< List<String^>^ >^ approvals_values;
+		int user_id_;
+		String^ stadt_;
+		String^ gebiet_;
+		String^ programm_;
+		String^ jahr_;
+		String^ sbe_;
+		Decimal jahreshaushalt_;
+		List< List<String^>^ >^ approvals_values;
 
-			int s_kostenart;
-			int s_zb_nr;
-			int s_bezeichnung;
-			int s_tb;
-			int s_vom;
-			int s_foerder;
-			int s_bund_land;
-			int s_mla;
-			int s_bew_ztr;
-			int s_einger;
-			int s_gepr;
-			int s_mehr_minder;
-			int start;
+		int s_kostenart;
+		int s_zb_nr;
+		int s_bezeichnung;
+		int s_tb;
+		int s_vom;
+		int s_foerder;
+		int s_bund_land;
+		int s_mla;
+		int s_bew_ztr;
+		int s_einger;
+		int s_gepr;
+		int s_mehr_minder;
+		int start;
 
 
 		// Print Stuff
@@ -135,19 +133,16 @@ namespace Datenbank {
 		int p_s_foerderbetrag;
 		int p_s_mehr_minder;
 
-		ExcelExport ^ exl_;
-		int row_;
-
 	private: System::Windows::Forms::Button^  btn_print;
 	private: System::Drawing::Printing::PrintDocument^  printDocument1;
-	private: System::Windows::Forms::Button^  btn_exportExl;
 
-	protected: 
+
+	protected:
 
 
 	private: System::ComponentModel::IContainer^  components;
 
-	protected: 
+	protected:
 
 	private:
 		/// <summary>
@@ -165,8 +160,11 @@ namespace Datenbank {
 			System::ComponentModel::ComponentResourceManager^  resources = (gcnew System::ComponentModel::ComponentResourceManager(bewilligung_result_form::typeid));
 			this->btn_print = (gcnew System::Windows::Forms::Button());
 			this->printDocument1 = (gcnew System::Drawing::Printing::PrintDocument());
-			this->btn_exportExl = (gcnew System::Windows::Forms::Button());
 			this->SuspendLayout();
+			// 
+			// btn_exportExl
+			// 
+			this->btn_exportExl->Location = System::Drawing::Point(35, 88);
 			// 
 			// btn_print
 			// 
@@ -176,22 +174,11 @@ namespace Datenbank {
 			this->btn_print->TabIndex = 0;
 			this->btn_print->Text = L"Drucken";
 			this->btn_print->UseVisualStyleBackColor = true;
-			this->btn_print->Click += gcnew System::EventHandler(this, &bewilligung_result_form::button1_Click);
+			this->btn_print->Click += gcnew System::EventHandler(this, &bewilligung_result_form::btn_print_Click);
 			// 
 			// printDocument1
 			// 
 			this->printDocument1->PrintPage += gcnew System::Drawing::Printing::PrintPageEventHandler(this, &bewilligung_result_form::printDocument1_PrintPage);
-			// 
-			// btn_exportExl
-			// 
-			this->btn_exportExl->ImageAlign = System::Drawing::ContentAlignment::BottomCenter;
-			this->btn_exportExl->Location = System::Drawing::Point(35, 85);
-			this->btn_exportExl->Name = L"btn_exportExl";
-			this->btn_exportExl->Size = System::Drawing::Size(808, 23);
-			this->btn_exportExl->TabIndex = 4;
-			this->btn_exportExl->Text = L"nach Excel exportieren";
-			this->btn_exportExl->UseVisualStyleBackColor = true;
-			this->btn_exportExl->Click += gcnew System::EventHandler(this, &bewilligung_result_form::btn_exportExl_Click);
 			// 
 			// bewilligung_result_form
 			// 
@@ -202,7 +189,6 @@ namespace Datenbank {
 			this->AutoSizeMode = System::Windows::Forms::AutoSizeMode::GrowAndShrink;
 			this->BackColor = System::Drawing::Color::White;
 			this->ClientSize = System::Drawing::Size(984, 561);
-			this->Controls->Add(this->btn_exportExl);
 			this->Controls->Add(this->btn_print);
 			this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::FixedSingle;
 			this->Icon = (cli::safe_cast<System::Drawing::Icon^>(resources->GetObject(L"$this.Icon")));
@@ -212,6 +198,8 @@ namespace Datenbank {
 			this->Padding = System::Windows::Forms::Padding(0, 0, 14, 0);
 			this->Text = L"Bewilligung Auswertung";
 			this->Load += gcnew System::EventHandler(this, &bewilligung_result_form::bewilligung_result_form_Load);
+			this->Controls->SetChildIndex(this->btn_print, 0);
+			this->Controls->SetChildIndex(this->btn_exportExl, 0);
 			this->ResumeLayout(false);
 
 		}
@@ -221,33 +209,32 @@ namespace Datenbank {
 		// Loader
 		void bewilligung_result_form_Load(System::Object^  sender, System::EventArgs^  e);
 		void sort_bewilligung();
-		bool is_existent_in(List<String^>^,String^);
+		bool is_existent_in(List<String^>^, String^);
 		void sort_for_year(List<String^>^);
-		void sort_for_ZB_NR(List< List<String^>^ >^ );
+		void sort_for_ZB_NR(List< List<String^>^ >^);
 		int get_tb(String^ prog_id, String^ bew_id);
 
 		// Auswertungselemente
-		void generate_header(String^,String^,String^,String^);
-		Decimal generate_haushalt(String^,String^,String^,String^);
+		void generate_header(String^, String^, String^, String^);
+		Decimal generate_haushalt(String^, String^, String^, String^);
 		void GenerateHeadings();
-		void GenerateApproval(List<String^>^,int);
-		void generate_footer(Decimal,Decimal,Decimal,Decimal);		
+		void GenerateApproval(List<String^>^, int);
+		void generate_footer(Decimal, Decimal, Decimal, Decimal);
 		void place_button();
 
 		// Events
-		void button1_Click(System::Object^  sender, System::EventArgs^  e);
+
 		void Click(System::Object^  sender, System::EventArgs^  e);
-		void btn_exportExl_Click(System::Object^  sender, System::EventArgs^  e);
+		void btn_print_Click(System::Object^  sender, System::EventArgs^  e);
 
 		// Printer Stuff
 		void printDocument1_PrintPage(System::Object^  sender, System::Drawing::Printing::PrintPageEventArgs^  e);
-		void create_page_header(System::Drawing::Printing::PrintPageEventArgs^,String^,String^,String^,String^);
-		void create_page_jh_label(System::Drawing::Printing::PrintPageEventArgs^,String^,String^,int);
-		void create_page_jh_eintrag(System::Drawing::Printing::PrintPageEventArgs^,String^,String^,String^,int);
-		void create_page_uberschriften(System::Drawing::Printing::PrintPageEventArgs^,int);
-		void create_page_entry(System::Drawing::Printing::PrintPageEventArgs^,String^,String^,String^,String^,String^,String^,String^,String^,String^,String^,String^,String^,int,int);
-		void create_page_footer(System::Drawing::Printing::PrintPageEventArgs^,String^,String^,String^,String^,int);
+		void create_page_header(System::Drawing::Printing::PrintPageEventArgs^, String^, String^, String^, String^);
+		void create_page_jh_label(System::Drawing::Printing::PrintPageEventArgs^, String^, String^, int);
+		void create_page_jh_eintrag(System::Drawing::Printing::PrintPageEventArgs^, String^, String^, String^, int);
+		void create_page_uberschriften(System::Drawing::Printing::PrintPageEventArgs^, int);
+		void create_page_entry(System::Drawing::Printing::PrintPageEventArgs^, String^, String^, String^, String^, String^, String^, String^, String^, String^, String^, String^, String^, int, int);
+		void create_page_footer(System::Drawing::Printing::PrintPageEventArgs^, String^, String^, String^, String^, int);
 		void create_page_sign(System::Drawing::Printing::PrintPageEventArgs^);
-
-};
+	};
 }

@@ -1110,7 +1110,7 @@ void bewilligung_result_form::place_button()
 }
 
 // Events
-void bewilligung_result_form::button1_Click(System::Object^  sender, System::EventArgs^  e)
+void bewilligung_result_form::btn_print_Click(System::Object^  sender, System::EventArgs^  e)
 {
 	System::Windows::Forms::Label^  cache = gcnew System::Windows::Forms::Label();
 	cache->Text = "-1";
@@ -1156,11 +1156,6 @@ void bewilligung_result_form::Click(System::Object^  sender, System::EventArgs^ 
 		Projekt->ShowDialog();
 		bewilligung_result_form_Load(sender, e);
 	}
-}
-
-void bewilligung_result_form::btn_exportExl_Click(System::Object^  sender, System::EventArgs^  e) {
-	exl_->saveDialoge();
-	btn_exportExl->Enabled = false;
 }
 
 // Printer Stuff

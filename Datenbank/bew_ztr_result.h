@@ -1,6 +1,7 @@
 #pragma once
 
 #include "test.h"
+#include "ResultForm.h"
 
 namespace Datenbank {
 
@@ -12,9 +13,9 @@ namespace Datenbank {
 	using namespace System::Drawing;
 
 	/// <summary>
-	/// Zusammenfassung für bew_ztr_result
+	/// Zusammenfassung für bew_ztr_result     3.2
 	/// </summary>
-	public ref class bew_ztr_result : public System::Windows::Forms::Form
+	public ref class bew_ztr_result : public ResultForm
 	{
 	public:
 		bew_ztr_result(void)
@@ -22,7 +23,8 @@ namespace Datenbank {
 			InitializeComponent();
 		}
 
-		bew_ztr_result(String^ stadt, String^ gebiet, String^ programm, String^ bis,bool nicht_einger, int user_id):
+		bew_ztr_result(String^ stadt, String^ gebiet, String^ programm, String^ bis, bool nicht_einger, int user_id) :
+			ResultForm(),
 			user_id_(user_id),
 			// Suchanfragen
 			stadt_(stadt),
@@ -49,7 +51,6 @@ namespace Datenbank {
 			s_einger(680),
 			s_gepr(755),
 			s_mehr_minder(830),
-			start(0),
 
 			// Printer Stuff
 			pages_(0),
@@ -111,8 +112,6 @@ namespace Datenbank {
 		int s_einger;
 		int s_gepr;
 		int s_mehr_minder;
-		int start;
-
 
 		// Print Stuff
 		int pages_;
@@ -133,8 +132,7 @@ namespace Datenbank {
 		int p_s_bund_land;
 		int p_s_foerderbetrag;
 		int p_s_mehr_minder;
-private: System::Drawing::Printing::PrintDocument^  printDocument1;
-private: System::Windows::Forms::Button^  btn_exportExl;
+		private: System::Drawing::Printing::PrintDocument^  printDocument1;
 
 	protected: 
 
@@ -153,8 +151,7 @@ private: System::Windows::Forms::Button^  btn_exportExl;
 		{
 			System::ComponentModel::ComponentResourceManager^  resources = (gcnew System::ComponentModel::ComponentResourceManager(bew_ztr_result::typeid));
 			this->btn_print = (gcnew System::Windows::Forms::Button());
-			this->printDocument1 = (gcnew System::Drawing::Printing::PrintDocument());
-			this->btn_exportExl = (gcnew System::Windows::Forms::Button());
+			this->printDocument1 = (gcnew System::Drawing::Printing::PrintDocument());			
 			this->SuspendLayout();
 			// 
 			// btn_print
@@ -171,17 +168,6 @@ private: System::Windows::Forms::Button^  btn_exportExl;
 			// 
 			this->printDocument1->PrintPage += gcnew System::Drawing::Printing::PrintPageEventHandler(this, &bew_ztr_result::printDocument1_PrintPage);
 			// 
-			// btn_exportExl
-			// 
-			this->btn_exportExl->ImageAlign = System::Drawing::ContentAlignment::BottomCenter;
-			this->btn_exportExl->Location = System::Drawing::Point(3, 150);
-			this->btn_exportExl->Name = L"btn_exportExl";
-			this->btn_exportExl->Size = System::Drawing::Size(808, 23);
-			this->btn_exportExl->TabIndex = 5;
-			this->btn_exportExl->Text = L"nach Excel exportieren";
-			this->btn_exportExl->UseVisualStyleBackColor = true;
-			this->btn_exportExl->Click += gcnew System::EventHandler(this, &bew_ztr_result::btn_exportExl_Click);
-			// 
 			// bew_ztr_result
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
@@ -190,8 +176,7 @@ private: System::Windows::Forms::Button^  btn_exportExl;
 			this->AutoSize = true;
 			this->AutoSizeMode = System::Windows::Forms::AutoSizeMode::GrowAndShrink;
 			this->BackColor = System::Drawing::Color::White;
-			this->ClientSize = System::Drawing::Size(984, 561);
-			this->Controls->Add(this->btn_exportExl);
+			this->ClientSize = System::Drawing::Size(984, 561);			
 			this->Controls->Add(this->btn_print);
 			this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::FixedSingle;
 			this->Icon = (cli::safe_cast<System::Drawing::Icon^>(resources->GetObject(L"$this.Icon")));
@@ -218,7 +203,6 @@ private: System::Windows::Forms::Button^  btn_exportExl;
 	// Events
 		void btn_print_Click(System::Object^  sender, System::EventArgs^  e);
 		void Click(System::Object^  sender, System::EventArgs^  e);
-		void btn_exportExl_Click(System::Object^  sender, System::EventArgs^  e);
 
 	// Auswertungselemente
 		void generate_header(String^,String^,String^);

@@ -141,6 +141,9 @@
     <ClCompile Include="ExcelExport.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="ResultForm.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -255,6 +258,9 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="ExcelExport.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="ResultForm.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>

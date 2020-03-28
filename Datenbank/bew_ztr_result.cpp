@@ -948,17 +948,7 @@ void bew_ztr_result::place_button()
 	btn_print->Size = System::Drawing::Size(926, 20);
 	this->Controls->Add(btn_print);
 
-	start = start + 30;
-
-	btn_exportExl->Location = System::Drawing::Point(5, start);
-	btn_exportExl->Size = System::Drawing::Size(926, 20);
-	this->Controls->Add(btn_exportExl);
-
-	System::Windows::Forms::Label^  label_freespace = gcnew System::Windows::Forms::Label();
-	label_freespace->Location = System::Drawing::Point(0,start+20);
-	label_freespace->AutoSize = false;
-	label_freespace->Size = System::Drawing::Size(5, 10);
-	this->Controls->Add(label_freespace);
+	ResultForm::place_button();
 }
 
 // Events
@@ -1277,9 +1267,3 @@ void bew_ztr_result::create_page_sign(System::Drawing::Printing::PrintPageEventA
 	e->Graphics->DrawString("erstellt mit Hilfe von FÖRDI © MKS",small_format,Brushes::Black,970,810);
 
 }
-
-void bew_ztr_result::btn_exportExl_Click(System::Object^  sender, System::EventArgs^  e) {
-	exl_->saveDialoge();
-	btn_exportExl->Enabled = false;
-}
-
