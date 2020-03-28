@@ -85,3 +85,17 @@ void My_Connection::disconnect()
 {
 	Connection_->Close();
 }
+
+List<String^>^ My_Connection::GetCityList(String^ city) 
+{
+	List<String^>^ cityList = gcnew List<String^>;
+	if (city == "-1")
+	{
+		MyResult^ Result = get_result("SELECT * FROM Staedte");
+		for (int i = 0;i < Result->get_row();++i)
+			cityList->Add(Result->get_val(i, 1));
+	}
+	else
+		cityList->Add(city);
+	return cityList;
+}

@@ -22,7 +22,7 @@ void bew_ztr_result::bew_ztr_result_Load(System::Object^  sender, System::EventA
 {
 	// Reset
 	this->Controls->Clear();
-	bewilligungen_werte_->Clear();
+	approvals_valueList->Clear();
 
 	// Load
 	Hide();
@@ -188,7 +188,7 @@ void bew_ztr_result::bew_ztr_result_Load(System::Object^  sender, System::EventA
 									bewilligung->Add("-");
 								bewilligung->Add(id);
 
-								bewilligungen_werte_->Add(bewilligung);
+								approvals_valueList->Add(bewilligung);
 								ladebalken_->Controls->Find("progress",true)[0]->Text="a";
 								ladebalken_->Controls->Find("progress",true)[0]->Text=" ";
 							}
@@ -200,7 +200,7 @@ void bew_ztr_result::bew_ztr_result_Load(System::Object^  sender, System::EventA
 	}
 	data.disconnect();
 
-	if(bewilligungen_werte_->Count==0)
+	if(approvals_valueList->Count==0)
 	{
 		ladebalken_->Close();
 		Windows::Forms::MessageBox::Show("Es wurden keine Einträge zu ihrer Anfrage gefunden.","Ungültige Suche");
@@ -212,7 +212,7 @@ void bew_ztr_result::bew_ztr_result_Load(System::Object^  sender, System::EventA
 		ladebalken_->Controls->Find("texter",true)[0]->Text="Verarbeite Daten und erzeuge Einträge";
 
 		sort_bewilligung();
-		if(bewilligungen_werte_->Count!=0)
+		if(approvals_valueList->Count!=0)
 		{
 			//String^ jahr="";
 			String^ programm="";
@@ -225,9 +225,9 @@ void bew_ztr_result::bew_ztr_result_Load(System::Object^  sender, System::EventA
 			Decimal summe_mehr_minder=0;
 			start=0;
 
-			for(int i=0;i<bewilligungen_werte_->Count;++i)
+			for(int i=0;i<approvals_valueList->Count;++i)
 			{
-				if(bewilligungen_werte_[i][2]!=programm || bewilligungen_werte_[i][1]!=gebiet || bewilligungen_werte_[i][0]!=stadt )
+				if(approvals_valueList[i][2]!=programm || approvals_valueList[i][1]!=gebiet || approvals_valueList[i][0]!=stadt )
 				{
 					if(start!=0)
 					{
@@ -238,18 +238,18 @@ void bew_ztr_result::bew_ztr_result_Load(System::Object^  sender, System::EventA
 					summe_bund_land=0;
 					summe_mehr_minder=0;
 					eintrag=0;
-					stadt=bewilligungen_werte_[i][0];
-					gebiet=bewilligungen_werte_[i][1];
-					programm=bewilligungen_werte_[i][2];
+					stadt=approvals_valueList[i][0];
+					gebiet=approvals_valueList[i][1];
+					programm=approvals_valueList[i][2];
 
 					generate_header(stadt,gebiet,programm);
 
 					generate_ueberschriften();
 				}
 
-				String^ bund_land=bewilligungen_werte_[i][10];
-				String^ mla=bewilligungen_werte_[i][11];
-				String^ mehr_minder=bewilligungen_werte_[i][15];
+				String^ bund_land=approvals_valueList[i][10];
+				String^ mla=approvals_valueList[i][11];
+				String^ mehr_minder=approvals_valueList[i][15];
 				bool neg=false;
 				if(mehr_minder[0]=='-')
 					neg=true;
@@ -264,14 +264,14 @@ void bew_ztr_result::bew_ztr_result_Load(System::Object^  sender, System::EventA
 					summe_mehr_minder+=Decimal(Convert::ToDouble(mehr_minder));
 				else
 					summe_mehr_minder+=-1*Decimal(Convert::ToDouble(mehr_minder));
-				generate_bewilligung(bewilligungen_werte_[i]->GetRange(4,13),eintrag);
+				generate_bewilligung(approvals_valueList[i]->GetRange(4,13),eintrag);
 
 				++eintrag;
 			
 				ladebalken_->Controls->Find("progress",true)[0]->Text="a";
 				ladebalken_->Controls->Find("progress",true)[0]->Text=" ";
 
-				if(i==bewilligungen_werte_->Count-1)
+				if(i==approvals_valueList->Count-1)
 					generate_footer(summe_bund_land,summe_mla,summe_mehr_minder);
 			}
 		}
@@ -306,14 +306,14 @@ void bew_ztr_result::sort_bewilligung()
 	List<String^>^ gebiete = gcnew List<String^>;
 	List<String^>^ programme = gcnew List<String^>;
 
-	for(int i=0;i<bewilligungen_werte_->Count;++i)
+	for(int i=0;i<approvals_valueList->Count;++i)
 	{
-		if(!is_existent_in(staedte,bewilligungen_werte_[i][0]))
-			staedte->Add(bewilligungen_werte_[i][0]);
-		if(!is_existent_in(gebiete,bewilligungen_werte_[i][1]))
-			gebiete->Add(bewilligungen_werte_[i][1]);
-		if(!is_existent_in(programme,bewilligungen_werte_[i][2]))
-			programme->Add(bewilligungen_werte_[i][2]);
+		if(!is_existent_in(staedte,approvals_valueList[i][0]))
+			staedte->Add(approvals_valueList[i][0]);
+		if(!is_existent_in(gebiete,approvals_valueList[i][1]))
+			gebiete->Add(approvals_valueList[i][1]);
+		if(!is_existent_in(programme,approvals_valueList[i][2]))
+			programme->Add(approvals_valueList[i][2]);
 	}
 
 	staedte->Sort();
@@ -330,15 +330,15 @@ void bew_ztr_result::sort_bewilligung()
 				int i=0;
 				do
 				{
-					if(	bewilligungen_werte_[i][0]==staedte[stadt_param] &&
-						bewilligungen_werte_[i][1]==gebiete[gebiet_param] &&
-						bewilligungen_werte_[i][2]==programme[prog_param])
+					if(	approvals_valueList[i][0]==staedte[stadt_param] &&
+						approvals_valueList[i][1]==gebiete[gebiet_param] &&
+						approvals_valueList[i][2]==programme[prog_param])
 					{
-						tmp->Add(bewilligungen_werte_[i]);
+						tmp->Add(approvals_valueList[i]);
 					}
 					++i;
 				}
-				while(i<bewilligungen_werte_->Count);
+				while(i<approvals_valueList->Count);
 
 				tmp=sort_programm(tmp);
 				for(int i=0;i<tmp->Count;++i)
@@ -346,7 +346,7 @@ void bew_ztr_result::sort_bewilligung()
 			}
 		}
 	}
-	bewilligungen_werte_=zwichenspeicher;
+	approvals_valueList=zwichenspeicher;
 }
 
 List< List<String^>^ >^ bew_ztr_result::sort_programm(List< List<String^>^ >^ input)
@@ -948,6 +948,12 @@ void bew_ztr_result::place_button()
 	btn_print->Size = System::Drawing::Size(926, 20);
 	this->Controls->Add(btn_print);
 
+	start = start + 30;
+
+	btn_exportExl->Location = System::Drawing::Point(5, start);
+	btn_exportExl->Size = System::Drawing::Size(926, 20);
+	this->Controls->Add(btn_exportExl);
+
 	System::Windows::Forms::Label^  label_freespace = gcnew System::Windows::Forms::Label();
 	label_freespace->Location = System::Drawing::Point(0,start+20);
 	label_freespace->AutoSize = false;
@@ -1271,3 +1277,9 @@ void bew_ztr_result::create_page_sign(System::Drawing::Printing::PrintPageEventA
 	e->Graphics->DrawString("erstellt mit Hilfe von FÖRDI © MKS",small_format,Brushes::Black,970,810);
 
 }
+
+void bew_ztr_result::btn_exportExl_Click(System::Object^  sender, System::EventArgs^  e) {
+	exl_->saveDialoge();
+	btn_exportExl->Enabled = false;
+}
+

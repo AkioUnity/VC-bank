@@ -86,7 +86,9 @@ void ExcelExport::setCellSum(int x, int y,int start,int end) {
 	String ^ index;
 	switch(y) {
 		case 7 : index = "G";
+			break;
 		case 8 : index = "H";
+			break;
 	}
 	cells->Formula="=SUM("+index+start.ToString()+":"+index+end.ToString()+")";
 	cells->NumberFormat = "#,##0.00 €";

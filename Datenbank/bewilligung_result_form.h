@@ -140,7 +140,7 @@ namespace Datenbank {
 
 	private: System::Windows::Forms::Button^  btn_print;
 	private: System::Drawing::Printing::PrintDocument^  printDocument1;
-private: System::Windows::Forms::Button^  btn_exportExl;
+	private: System::Windows::Forms::Button^  btn_exportExl;
 
 	protected: 
 
@@ -229,8 +229,8 @@ private: System::Windows::Forms::Button^  btn_exportExl;
 		// Auswertungselemente
 		void generate_header(String^,String^,String^,String^);
 		Decimal generate_haushalt(String^,String^,String^,String^);
-		void generate_ueberschriften();
-		void generate_bewilligung(List<String^>^,int);
+		void GenerateHeadings();
+		void GenerateApproval(List<String^>^,int);
 		void generate_footer(Decimal,Decimal,Decimal,Decimal);		
 		void place_button();
 

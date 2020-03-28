@@ -38,7 +38,7 @@ namespace Datenbank {
 			loaded_(false),
 			user_id_(user_id),
 			stadt_ids_(gcnew List<String^>),
-			load_std_(true)
+			load_std_(true), loadingForm(gcnew test())
 		{
 			InitializeComponent();
 

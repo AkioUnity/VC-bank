@@ -57,6 +57,19 @@ namespace Datenbank {
 	private: System::Windows::Forms::ComboBox^  kostengruppen;
 	private: System::Windows::Forms::CheckBox^  search_kostengruppen;
 	private: System::Windows::Forms::Label^  label19;
+	private: System::Windows::Forms::CheckBox^  show_gk_real;
+	private: System::Windows::Forms::CheckBox^  show_gk_kom;
+	private: System::Windows::Forms::CheckBox^  show_gk_priv;
+	private: System::Windows::Forms::GroupBox^  groupBox6;
+
+
+
+
+
+
+
+
+
 
 
 
@@ -92,11 +105,16 @@ namespace Datenbank {
 			this->kostengruppen = (gcnew System::Windows::Forms::ComboBox());
 			this->search_kostengruppen = (gcnew System::Windows::Forms::CheckBox());
 			this->label19 = (gcnew System::Windows::Forms::Label());
+			this->show_gk_real = (gcnew System::Windows::Forms::CheckBox());
+			this->show_gk_kom = (gcnew System::Windows::Forms::CheckBox());
+			this->show_gk_priv = (gcnew System::Windows::Forms::CheckBox());
+			this->groupBox6 = (gcnew System::Windows::Forms::GroupBox());
 			this->groupBox4->SuspendLayout();
 			this->groupBox3->SuspendLayout();
 			this->groupBox2->SuspendLayout();
 			this->groupBox1->SuspendLayout();
 			this->groupBox5->SuspendLayout();
+			this->groupBox6->SuspendLayout();
 			this->SuspendLayout();
 			// 
 			// search_programm
@@ -227,7 +245,7 @@ namespace Datenbank {
 			// 
 			// btn_close
 			// 
-			this->btn_close->Location = System::Drawing::Point(12, 317);
+			this->btn_close->Location = System::Drawing::Point(12, 426);
 			this->btn_close->Name = L"btn_close";
 			this->btn_close->Size = System::Drawing::Size(180, 24);
 			this->btn_close->TabIndex = 7;
@@ -237,7 +255,7 @@ namespace Datenbank {
 			// 
 			// btn_create
 			// 
-			this->btn_create->Location = System::Drawing::Point(12, 287);
+			this->btn_create->Location = System::Drawing::Point(12, 396);
 			this->btn_create->Name = L"btn_create";
 			this->btn_create->Size = System::Drawing::Size(267, 24);
 			this->btn_create->TabIndex = 6;
@@ -279,17 +297,60 @@ namespace Datenbank {
 			// label19
 			// 
 			this->label19->AutoSize = true;
-			this->label19->Location = System::Drawing::Point(198, 323);
+			this->label19->Location = System::Drawing::Point(198, 432);
 			this->label19->Name = L"label19";
 			this->label19->Size = System::Drawing::Size(83, 13);
 			this->label19->TabIndex = 46;
 			this->label19->Text = L"© 2012 by MKS";
 			// 
+			// show_gk_real
+			// 
+			this->show_gk_real->AutoSize = true;
+			this->show_gk_real->Location = System::Drawing::Point(16, 25);
+			this->show_gk_real->Name = L"show_gk_real";
+			this->show_gk_real->Size = System::Drawing::Size(120, 17);
+			this->show_gk_real->TabIndex = 6;
+			this->show_gk_real->Text = L"reale Gesamtkosten";
+			this->show_gk_real->UseVisualStyleBackColor = true;
+			// 
+			// show_gk_kom
+			// 
+			this->show_gk_kom->AutoSize = true;
+			this->show_gk_kom->Location = System::Drawing::Point(16, 48);
+			this->show_gk_kom->Name = L"show_gk_kom";
+			this->show_gk_kom->Size = System::Drawing::Size(151, 17);
+			this->show_gk_kom->TabIndex = 7;
+			this->show_gk_kom->Text = L"kommunale Gesamtkosten";
+			this->show_gk_kom->UseVisualStyleBackColor = true;
+			// 
+			// show_gk_priv
+			// 
+			this->show_gk_priv->AutoSize = true;
+			this->show_gk_priv->Location = System::Drawing::Point(16, 71);
+			this->show_gk_priv->Name = L"show_gk_priv";
+			this->show_gk_priv->Size = System::Drawing::Size(129, 17);
+			this->show_gk_priv->TabIndex = 8;
+			this->show_gk_priv->Text = L"private Gesamtkosten";
+			this->show_gk_priv->UseVisualStyleBackColor = true;
+			// 
+			// groupBox6
+			// 
+			this->groupBox6->Controls->Add(this->show_gk_priv);
+			this->groupBox6->Controls->Add(this->show_gk_kom);
+			this->groupBox6->Controls->Add(this->show_gk_real);
+			this->groupBox6->Location = System::Drawing::Point(12, 287);
+			this->groupBox6->Name = L"groupBox6";
+			this->groupBox6->Size = System::Drawing::Size(264, 100);
+			this->groupBox6->TabIndex = 47;
+			this->groupBox6->TabStop = false;
+			this->groupBox6->Text = L"Suche";
+			// 
 			// kostengr_uebersicht_search
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(293, 350);
+			this->ClientSize = System::Drawing::Size(293, 458);
+			this->Controls->Add(this->groupBox6);
 			this->Controls->Add(this->label19);
 			this->Controls->Add(this->groupBox5);
 			this->Controls->Add(this->groupBox4);
@@ -298,7 +359,7 @@ namespace Datenbank {
 			this->Controls->Add(this->groupBox1);
 			this->Controls->Add(this->btn_close);
 			this->Controls->Add(this->btn_create);
-			this->Icon = (cli::safe_cast<System::Drawing::Icon^  >(resources->GetObject(L"$this.Icon")));
+			this->Icon = (cli::safe_cast<System::Drawing::Icon^>(resources->GetObject(L"$this.Icon")));
 			this->Name = L"kostengr_uebersicht_search";
 			this->Text = L"Übersicht Kostengruppen";
 			this->Load += gcnew System::EventHandler(this, &kostengr_uebersicht_search::kostengr_uebersicht_search_Load);
@@ -312,6 +373,8 @@ namespace Datenbank {
 			this->groupBox1->PerformLayout();
 			this->groupBox5->ResumeLayout(false);
 			this->groupBox5->PerformLayout();
+			this->groupBox6->ResumeLayout(false);
+			this->groupBox6->PerformLayout();
 			this->ResumeLayout(false);
 			this->PerformLayout();
 

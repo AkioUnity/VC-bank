@@ -136,7 +136,7 @@ void adress_uebersicht_search::btn_create_result_Click(System::Object^  sender, 
 	if(search_adresse->Checked)
 		adresse=adressen->Text;
 
-	Form^ result =gcnew adress_uebersicht_result(stadt,gebiet,adresse,user_id_);
+	Form^ result =gcnew adress_uebersicht_result(stadt,gebiet,adresse, user_id_);
 	Hide();
 	result->ShowDialog();
 	Show();

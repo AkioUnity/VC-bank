@@ -15,8 +15,9 @@ public:
 
 	void connect();
 	MyResult^ get_result(String^);
-	MyResult^ get_cities(String^);
+	MyResult^ get_cities(String^ city);
 	void disconnect();
+	List<String^>^ GetCityList(String^ city);
 
 private:
 	String^ db_pfad_;

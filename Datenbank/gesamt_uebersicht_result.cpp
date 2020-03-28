@@ -14,7 +14,7 @@ using namespace System;
 using namespace System::IO;
 using namespace System::Text;
 
-// Loader
+// Loader       total_overview_result
 void gesamt_uebersicht_result::gesamt_uebersicht_result_Load(System::Object^  sender, System::EventArgs^  e)
 {
 	//Windows::Forms::MessageBox::Show("t1");
@@ -34,6 +34,7 @@ void gesamt_uebersicht_result::gesamt_uebersicht_result_Load(System::Object^  se
 	sort_lists();
 	ladebalken_->Controls->Find("texter",true)[0]->Text="Erzeuge Formular";
 	create();
+
 	place_print_button();
 	ladebalken_->Hide();
 	Show();
@@ -48,39 +49,31 @@ void gesamt_uebersicht_result::load_from_DB()
 	
 	this->Controls->Clear();
 
-	List<String^>^ Jahr_liste = gcnew List<String^>;
+	List<String^>^ yearList = gcnew List<String^>;
 	MyResult^ R_Jahr=data.get_result("SELECT * FROM Jahreseintraege order by ID");
 	for(int i=0;i<R_Jahr->get_row();++i)
-		Jahr_liste->Add(R_Jahr->get_val(i,1));
+		yearList->Add(R_Jahr->get_val(i,1));
 
-	List<String^>^ Stadt_liste = gcnew List<String^>;
-	if(stadt_=="-1")
+	List<String^>^ cityList = data.GetCityList(stadt_);	
+
+	for(int stadt_param=0;stadt_param<cityList->Count;++stadt_param)
 	{
-		MyResult^ Result=data.get_result("SELECT * FROM Staedte");
-		for(int i=0;i<Result->get_row();++i)
-			Stadt_liste->Add(Result->get_val(i,1));
-	}
-	else
-		Stadt_liste->Add(stadt_);
+		String^ stadt =cityList[stadt_param];
 
-	for(int stadt_param=0;stadt_param<Stadt_liste->Count;++stadt_param)
-	{
-		String^ stadt =Stadt_liste[stadt_param];
-
-		List<String^>^ Gebiet_liste = gcnew List<String^>;
+		List<String^>^ areaList = gcnew List<String^>;
 		if(gebiet_=="-1")
 		{
 			MyResult^ Result_Stadt=data.get_result("SELECT ID FROM Staedte WHERE Stadt='"+stadt+"'");
 			MyResult^ Result=data.get_result("SELECT Gebiet FROM Gebiete WHERE Stadt_ID="+Result_Stadt->get_val(0,0));
 			for(int i=0;i<Result->get_row();++i)
-				Gebiet_liste->Add(Result->get_val(i,0));
+				areaList->Add(Result->get_val(i,0));
 		}
 		else
-			Gebiet_liste->Add(gebiet_);
+			areaList->Add(gebiet_);
 
-		for(int gebiet_param=0;gebiet_param<Gebiet_liste->Count;++gebiet_param)
+		for(int gebiet_param=0;gebiet_param<areaList->Count;++gebiet_param)
 		{
-			String^ gebiet=Gebiet_liste[gebiet_param];
+			String^ gebiet=areaList[gebiet_param];
 
 			List<String^>^ Programm_liste=gcnew List<String^>;
 			if(programm_=="-1")
@@ -95,18 +88,18 @@ void gesamt_uebersicht_result::load_from_DB()
 				Programm_liste->Add(programm_);
 			
 			List<String^>^ Projekt_liste=gcnew List<String^>;
-			List<bool>^ Projekt_mehrminder_liste=gcnew List<bool>;
+			List<bool>^ db_project_list=gcnew List<bool>;
 
 			MyResult^ Result_Projekt=data.get_result("SELECT ID,vn_einger,vn_gepr FROM db_projekte WHERE stadt='"+stadt+"' AND gebiet='"+gebiet+"'");
 			for(int projekt_param=0;projekt_param<Result_Projekt->get_row();++projekt_param)
 			{
 				Projekt_liste->Add(Result_Projekt->get_val(projekt_param,0));
-				Projekt_mehrminder_liste->Add(Result_Projekt->get_val(projekt_param,1)!="" && Result_Projekt->get_val(projekt_param,2)=="");
+				db_project_list->Add(Result_Projekt->get_val(projekt_param,1)!="" && Result_Projekt->get_val(projekt_param,2)=="");
 			}
 
 			for(int programm_param=0;programm_param<Programm_liste->Count;++programm_param)
 			{	
-				for(int jahres_param=0;jahres_param<Jahr_liste->Count;++jahres_param)
+				for(int jahres_param=0;jahres_param<yearList->Count;++jahres_param)
 				{
 					for(int projekt_id_param=0;projekt_id_param<Projekt_liste->Count;++projekt_id_param)
 					{
@@ -116,7 +109,7 @@ void gesamt_uebersicht_result::load_from_DB()
 						{
 							MyResult^ Result_Bewilligung=data.get_result("SELECT * FROM db_programme_bewilligung WHERE "+
 														"programm_ID="+Result_Programm->get_val(projekt_programm_param,0)+" AND "+
-														"nr3='"+Jahr_liste[jahres_param]+"'");
+														"nr3='"+yearList[jahres_param]+"'");
 
 							for(int bew_param=0;bew_param<Result_Bewilligung->get_row();++bew_param)
 							{
@@ -133,7 +126,7 @@ void gesamt_uebersicht_result::load_from_DB()
 
 								String^ mehr_minder="";
 
-								if(!Projekt_mehrminder_liste[projekt_id_param]) // kein mehr/minder
+								if(!db_project_list[projekt_id_param]) // kein mehr/minder
 									mehr_minder="0";
 								else
 									mehr_minder="1";
@@ -327,9 +320,9 @@ List< List<String^>^ >^ gesamt_uebersicht_result::get_informations(	List< List<S
 		cache->Add(Convert::ToString(mla));
 		cache->Add(Convert::ToString(restmittel));
 		cache->Add(Convert::ToString(mehr_minder));
-		cache->Add(Convert::ToString(reale_gk));
-		cache->Add(Convert::ToString(gk_kom));
-		cache->Add(Convert::ToString(gk_priv));
+		cache->Add(Convert::ToString(reale_gk));  //9
+		cache->Add(Convert::ToString(gk_kom));  //10
+		cache->Add(Convert::ToString(gk_priv));  //11
 
 		/*
 		cache :
@@ -462,7 +455,7 @@ List<Decimal>^ gesamt_uebersicht_result::get_gk_kom(String^ stadt,String^ gebiet
 {
 	My_Connection data;
 	data.connect();
-	MyResult^ R_Proj=data.get_result("SELECT * FROM db_projekte WHERE stadt='"+stadt+"' AND gebiet='"+gebiet+"' AND sk_bha='Gemeinde'");
+	MyResult^ R_Proj=data.get_result("SELECT * FROM db_projekte WHERE stadt='"+stadt+"' AND gebiet='"+gebiet+"' AND sk_bha='Gemeinde'");    //local community
 
 	List<Decimal>^ summen=gcnew List<Decimal>;
 	for(int i=0;i<jahre->Count;++i)

@@ -217,6 +217,7 @@ void kostengr_uebersicht_result::kostengr_uebersicht_result_Load(System::Object^
 			}
 		}
 	}
+
 	place_print_button();	
 	ladebalken_->Hide();
 	Show();
@@ -263,9 +264,9 @@ bool kostengr_uebersicht_result::year_is_bigger(String^ j1, String^ j2)
 	return jahr1>jahr2;
 }
 
-List< List<String^>^ >^ kostengr_uebersicht_result::load_bewilligungen()
+List< List<String^>^ >^ kostengr_uebersicht_result::load_bewilligungen()  //load approvals
 {
-	List< List<String^>^ >^ bewilligungen = gcnew List< List<String^>^ >;
+	List< List<String^>^ >^ permits = gcnew List< List<String^>^ >;
 
 	My_Connection data;
 	data.connect();
@@ -281,50 +282,42 @@ List< List<String^>^ >^ kostengr_uebersicht_result::load_bewilligungen()
 	else
 		years->Add(year_);
 	
-	List<String^>^ staedte=gcnew List<String^>;
-	if(stadt_=="-1")
-	{
-		MyResult^ Result=data.get_result("SELECT * FROM Staedte");
-		for(int i=0;i<Result->get_row();++i)
-			staedte->Add(Result->get_val(i,1));
-	}
-	else
-		staedte->Add(stadt_);
+	List<String^>^ cityList = data.GetCityList(stadt_);	
 
-	for(int stadt_param=0;stadt_param<staedte->Count;++stadt_param)
+	for(int stadt_param=0;stadt_param<cityList->Count;++stadt_param)
 	{
-		String^ stadt =staedte[stadt_param];
+		String^ stadt =cityList[stadt_param];
 		
-		List<String^>^ gebiete=gcnew List<String^>;
+		List<String^>^ areaList=gcnew List<String^>;
 		if(gebiet_=="-1")
 		{
 			MyResult^ Result_Stadt=data.get_result("SELECT ID FROM Staedte WHERE Stadt='"+stadt+"'");
 			MyResult^ Result=data.get_result("SELECT Gebiet FROM Gebiete WHERE Stadt_ID="+Result_Stadt->get_val(0,0));
 			for(int i=0;i<Result->get_row();++i)
-				gebiete->Add(Result->get_val(i,0));
+				areaList->Add(Result->get_val(i,0));
 		}
 		else
-			gebiete->Add(gebiet_);
+			areaList->Add(gebiet_);
 
-		for(int gebiet_param=0;gebiet_param<gebiete->Count;++gebiet_param)
+		for(int gebiet_param=0;gebiet_param<areaList->Count;++gebiet_param)
 		{
-			String^ gebiet=gebiete[gebiet_param];
+			String^ gebiet=areaList[gebiet_param];
 
-			List<String^>^ kostengruppen=gcnew List<String^>;
+			List<String^>^ costGroupList=gcnew List<String^>;
 			if(kostengruppe_=="-1")
 			{
-				MyResult^ R_Kostengruppe=data.get_result("SELECT * FROM Kostengruppe");
+				MyResult^ R_Kostengruppe=data.get_result("SELECT * FROM Kostengruppe");  //Cost group
 				for(int i=0;i<R_Kostengruppe->get_row();++i)
-					kostengruppen->Add(R_Kostengruppe->get_val(i,1));
+					costGroupList->Add(R_Kostengruppe->get_val(i,1));
 			}
 			else
-				kostengruppen->Add(kostengruppe_);
+				costGroupList->Add(kostengruppe_);
 
-			for(int kostengr_param=0;kostengr_param<kostengruppen->Count;++kostengr_param)
+			for(int kostengr_param=0;kostengr_param<costGroupList->Count;++kostengr_param)
 			{
-				String^ kostengruppe=kostengruppen[kostengr_param];
+				String^ costGroup=costGroupList[kostengr_param];
 
-				MyResult^ R_Projekte=data.get_result("SELECT * FROM db_projekte WHERE stadt='"+stadt+"' AND gebiet='"+gebiet+"' AND kostengruppe='"+kostengruppe+"'");
+				MyResult^ R_Projekte=data.get_result("SELECT * FROM db_projekte WHERE stadt='"+stadt+"' AND gebiet='"+gebiet+"' AND kostengruppe='"+costGroup+"'");
 				for( int projekt_param=0;projekt_param<R_Projekte->get_row();++projekt_param)
 				{
 					// Stadt ( PROJ )
@@ -393,7 +386,7 @@ List< List<String^>^ >^ kostengr_uebersicht_result::load_bewilligungen()
 									String^ foerderbetrag=	Convert::ToString					// Förderbetrag ( BEW )
 															(Convert::ToDouble(bund_land)+Convert::ToDouble(mla));
 									List<String^>^ cache = gcnew List<String^>;
-									cache->Add(kostengruppe);
+									cache->Add(costGroup);
 									cache->Add(stadt);
 									cache->Add(gebiet);
 									cache->Add(programm);
@@ -411,7 +404,7 @@ List< List<String^>^ >^ kostengr_uebersicht_result::load_bewilligungen()
 									cache->Add(foerderbetrag);
 									cache->Add(mehrminder);
 
-									bewilligungen->Add(cache);
+									permits->Add(cache);
 									
 									ladebalken_->Controls->Find("progress",true)[0]->Text="a";
 									ladebalken_->Controls->Find("progress",true)[0]->Text=" ";
@@ -426,7 +419,7 @@ List< List<String^>^ >^ kostengr_uebersicht_result::load_bewilligungen()
 
 	data.disconnect();
 
-	return bewilligungen;
+	return permits;
 }
 
 void kostengr_uebersicht_result::sort_for_year(List<String^>^ input)

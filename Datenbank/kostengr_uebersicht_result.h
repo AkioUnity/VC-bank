@@ -22,13 +22,19 @@ namespace Datenbank {
 			InitializeComponent();
 		}
 
-		kostengr_uebersicht_result(String^ kostengruppe ,String^ stadt ,String^ gebiet, String^ programm , String^ jahr, int user_id):
+		kostengr_uebersicht_result(String^ kostengruppe ,String^ stadt ,String^ gebiet, String^ programm , String^ jahr, 
+			bool show_gk_real,
+			bool show_gk_kom,
+			bool show_gk_priv, int user_id):
 			user_id_(user_id),
 			kostengruppe_(kostengruppe),
 			stadt_(stadt),
 			gebiet_(gebiet),
 			programm_(programm),
 			year_(jahr),
+			show_gk_real_(show_gk_real),
+			show_gk_kom_(show_gk_kom),
+			show_gk_priv_(show_gk_priv),
 			start_(0),
 			s_jahr(10),
 			s_zb_nr(50),
@@ -92,6 +98,10 @@ namespace Datenbank {
 		String^	gebiet_;
 		String^	programm_;
 		String^	year_;
+
+		bool show_gk_real_;
+		bool show_gk_kom_;
+		bool show_gk_priv_;
 
 		int start_;
 		int s_jahr;

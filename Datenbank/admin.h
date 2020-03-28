@@ -24,6 +24,10 @@ namespace Datenbank {
 			load_kostenart_entries();
 			load_ff_entries();
 		}
+	private: System::Windows::Forms::Button^  btn_copy;
+	public:
+
+
 
 		String^ cur_prog;
 
@@ -40,6 +44,7 @@ namespace Datenbank {
 		}
 	private: List<String^>^ jh_id_;
 	private: System::Windows::Forms::OpenFileDialog^  openFileDialog1;
+	private: System::Windows::Forms::SaveFileDialog^  saveFileDialog;
 
 	private: System::Windows::Forms::ComboBox^  cB_programme;
 	private: System::Windows::Forms::Label^  label2;
@@ -143,6 +148,7 @@ private: System::Windows::Forms::Label^  edit_mode_lbl;
 		{
 			System::ComponentModel::ComponentResourceManager^  resources = (gcnew System::ComponentModel::ComponentResourceManager(admin::typeid));
 			this->openFileDialog1 = (gcnew System::Windows::Forms::OpenFileDialog());
+			this->saveFileDialog = (gcnew System::Windows::Forms::SaveFileDialog());
 			this->cB_programme = (gcnew System::Windows::Forms::ComboBox());
 			this->label2 = (gcnew System::Windows::Forms::Label());
 			this->label3 = (gcnew System::Windows::Forms::Label());
@@ -174,6 +180,7 @@ private: System::Windows::Forms::Label^  edit_mode_lbl;
 			this->tabPage1 = (gcnew System::Windows::Forms::TabPage());
 			this->button_save_prog = (gcnew System::Windows::Forms::Button());
 			this->label_Nummer = (gcnew System::Windows::Forms::Label());
+			this->edit_mode_lbl = (gcnew System::Windows::Forms::Label());
 			this->labelName = (gcnew System::Windows::Forms::Label());
 			this->tB_gebiet = (gcnew System::Windows::Forms::TextBox());
 			this->btn_rem_gebiet = (gcnew System::Windows::Forms::Button());
@@ -225,7 +232,7 @@ private: System::Windows::Forms::Label^  edit_mode_lbl;
 			this->label8 = (gcnew System::Windows::Forms::Label());
 			this->label6 = (gcnew System::Windows::Forms::Label());
 			this->label19 = (gcnew System::Windows::Forms::Label());
-			this->edit_mode_lbl = (gcnew System::Windows::Forms::Label());
+			this->btn_copy = (gcnew System::Windows::Forms::Button());
 			this->tabControl1->SuspendLayout();
 			this->tabPage1->SuspendLayout();
 			this->tabPage2->SuspendLayout();
@@ -555,6 +562,15 @@ private: System::Windows::Forms::Label^  edit_mode_lbl;
 			this->label_Nummer->Size = System::Drawing::Size(52, 13);
 			this->label_Nummer->TabIndex = 37;
 			this->label_Nummer->Text = L"Nummer :";
+			// 
+			// edit_mode_lbl
+			// 
+			this->edit_mode_lbl->AutoSize = true;
+			this->edit_mode_lbl->Location = System::Drawing::Point(59, 142);
+			this->edit_mode_lbl->Name = L"edit_mode_lbl";
+			this->edit_mode_lbl->Size = System::Drawing::Size(31, 13);
+			this->edit_mode_lbl->TabIndex = 37;
+			this->edit_mode_lbl->Text = L"Edit :";
 			// 
 			// labelName
 			// 
@@ -977,6 +993,7 @@ private: System::Windows::Forms::Label^  edit_mode_lbl;
 			// db_tab
 			// 
 			this->db_tab->BackColor = System::Drawing::SystemColors::Control;
+			this->db_tab->Controls->Add(this->btn_copy);
 			this->db_tab->Controls->Add(this->btn_back);
 			this->db_tab->Controls->Add(this->btn_search_path);
 			this->db_tab->Controls->Add(this->tb_path);
@@ -1061,14 +1078,15 @@ private: System::Windows::Forms::Label^  edit_mode_lbl;
 			this->label19->TabIndex = 45;
 			this->label19->Text = L"© 2012 by MKS";
 			// 
-			// edit_mode_lbl
+			// btn_copy
 			// 
-			this->edit_mode_lbl->AutoSize = true;
-			this->edit_mode_lbl->Location = System::Drawing::Point(59, 142);
-			this->edit_mode_lbl->Name = L"edit_mode_lbl";
-			this->edit_mode_lbl->Size = System::Drawing::Size(31, 13);
-			this->edit_mode_lbl->TabIndex = 37;
-			this->edit_mode_lbl->Text = L"Edit :";
+			this->btn_copy->Location = System::Drawing::Point(12, 174);
+			this->btn_copy->Name = L"btn_copy";
+			this->btn_copy->Size = System::Drawing::Size(304, 23);
+			this->btn_copy->TabIndex = 10;
+			this->btn_copy->Text = L"Save copy to";
+			this->btn_copy->UseVisualStyleBackColor = true;
+			this->btn_copy->Click += gcnew System::EventHandler(this, &admin::btn_copy_Click);
 			// 
 			// admin
 			// 
@@ -1162,5 +1180,6 @@ private: System::Windows::Forms::Label^  edit_mode_lbl;
 		private: System::Void btn_back_Click(System::Object^  sender, System::EventArgs^  e);
 		private: System::Void btn_search_path_Click(System::Object^  sender, System::EventArgs^  e);
 		private: System::Void button_save_prog_Click(System::Object^  sender, System::EventArgs^  e);
- };
+		private: System::Void btn_copy_Click(System::Object^  sender, System::EventArgs^  e);
+};
 }

@@ -301,7 +301,7 @@ void adress_uebersicht_result::create_main_entries(String^ stadt, String^ gebiet
 				exl_->setCell(row_,4,bew_anzahl);
 				exl_->setCell(row_,5,vn_einger);
 				exl_->setCell(row_,6,vn_gepr);
-				exl_->setCellCurrency(row_,7,kosten);
+				exl_->setCellCurrency(row_,7,kosten);  //costs
 				exl_->setCellCurrency(row_,8,foerderung);
 				++row_;
 			}

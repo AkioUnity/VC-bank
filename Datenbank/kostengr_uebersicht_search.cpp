@@ -183,7 +183,7 @@ void kostengr_uebersicht_search::btn_create_Click(System::Object^  sender, Syste
 	if(search_jahr->Checked)
 		jahr=jahre->Text;
 	
-	Form^ result =gcnew kostengr_uebersicht_result(kostengruppe,stadt,gebiet,programm,jahr,user_id_);
+	Form^ result =gcnew kostengr_uebersicht_result(kostengruppe,stadt,gebiet,programm,jahr, show_gk_real->Checked, show_gk_kom->Checked,	show_gk_priv->Checked, user_id_);
 	Hide();
 	result->ShowDialog();
 	Show();

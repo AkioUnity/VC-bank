@@ -57,13 +57,14 @@ void open_project_form::load_gebiete()
 
 void open_project_form::btn_search_Click(System::Object^  sender, System::EventArgs^  e)
 {
-	String^ query="SELECT ID,bezeichnung,stadt,gebiet FROM db_projekte";
+	String^ query="SELECT ID,bezeichnung,stadt,gebiet FROM db_projekte";  
 	if(search_stadt->Checked && !search_gebiet->Checked)
 		query+=" WHERE stadt='"+staedte->Text+"'";
 	if(search_stadt->Checked && search_gebiet->Checked)
 		query+=" WHERE stadt='"+staedte->Text+"' AND gebiet='"+gebiete->Text+"'";
 	if(!search_stadt->Checked && search_gebiet->Checked)
 		query+=" WHERE gebiet='"+gebiete->Text+"'";
+	query += " order by bezeichnung";
 	MyRecordSet RC(query);
 	id_->Clear();
 	projekte->Items->Clear();

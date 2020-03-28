@@ -257,7 +257,7 @@ void bewilligung_result_form::bewilligung_result_form_Load(System::Object^  send
 						jahreshaushalt = generate_haushalt(stadt, gebiet, programm, year);  //annual budget
 					//if (approvals_values[i][4] == "0" && approvals_values[i][5] == "0" && approvals_values[i][6] == "0")
 					//	continue;
-					generate_ueberschriften();  //generate_headings
+					GenerateHeadings();  //generate_headings
 				}
 
 				if (approvals_values[i][4] == "0" && approvals_values[i][5] == "0" && approvals_values[i][6] == "0")
@@ -280,22 +280,21 @@ void bewilligung_result_form::bewilligung_result_form_Load(System::Object^  send
 					summe_mehr_minder += Decimal(Convert::ToDouble(mehr_minder));
 				else
 					summe_mehr_minder += -1 * Decimal(Convert::ToDouble(mehr_minder));
-				generate_bewilligung(approvals_values[i]->GetRange(4, 13), eintrag);
+				GenerateApproval(approvals_values[i]->GetRange(4, 13), eintrag);
 
-
-				/*for(int j=4;j<14;++j) {
+				//excel
+				for(int j=4;j<14;++j) {
 					switch (j) {
-						case  4:
-							exl_->setCellCurrency(row_,2+i,Convert::ToDecimal(bewilligungen_werte_[i][j]));
-							break;
+						/*case  4:
+							exl_->setCellCurrency(row_,2+i,Convert::ToDecimal(approvals_values[i][j]));							
+							break;*/
 
 						default :
-							exl_->setCell(row_,2+i,bewilligungen_werte_[i][j]);
+							exl_->setCell(row_,j-3, approvals_values[i][j]);
 					}
 				}
 				++row_;
-*/
-
+				//excel-end
 				++eintrag;
 
 				ladebalken_->Controls->Find("progress", true)[0]->Text = "a";
@@ -650,13 +649,27 @@ Decimal bewilligung_result_form::generate_haushalt(String^ stadt, String^ gebiet
 	return jahreshaushalt;
 }
 
-void bewilligung_result_form::generate_ueberschriften()  //generate_headings
+void bewilligung_result_form::GenerateHeadings()  //generate_headings
 {
+	List<String^>^ headStrList = gcnew List<String^>;
+	headStrList->Add("Kostengr.");
+	headStrList->Add("ZB-Nr.");
+	headStrList->Add("Vorhaben");
+	headStrList->Add("TB");
+	headStrList->Add("vom");
+	headStrList->Add("Förderbetrag");
+	headStrList->Add("Bund-/Landanteil");
+	headStrList->Add("MLA Gemeinde");
+	headStrList->Add("BWZ");
+	headStrList->Add("VN eingereicht");
+	headStrList->Add("VN geprüft");
+	headStrList->Add("Mehr-Minderkosten");
+
 	// kostenart    -cost type
 	System::Windows::Forms::Label^  kostenart = gcnew System::Windows::Forms::Label();
 	kostenart->Location = System::Drawing::Point(s_kostenart, start);
 	kostenart->AutoSize = true;
-	kostenart->Text = "Kostengr.";  //Cost Gr
+	kostenart->Text = headStrList[0];// "Kostengr.";  //Cost Gr
 	kostenart->Name = "kostengr";
 	kostenart->BackColor = System::Drawing::Color::Silver;
 	kostenart->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 6.75F, System::Drawing::FontStyle::Underline, System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
@@ -666,7 +679,7 @@ void bewilligung_result_form::generate_ueberschriften()  //generate_headings
 	System::Windows::Forms::Label^  zb_nr = gcnew System::Windows::Forms::Label();
 	zb_nr->Location = System::Drawing::Point(s_zb_nr, start);
 	zb_nr->AutoSize = true;
-	zb_nr->Text = "ZB-Nr.";
+	zb_nr->Text = headStrList[1];//  "ZB-Nr.";
 	zb_nr->Name = "zb_nr";
 	zb_nr->BackColor = System::Drawing::Color::Silver;
 	zb_nr->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 6.75F, System::Drawing::FontStyle::Underline, System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
@@ -786,20 +799,9 @@ void bewilligung_result_form::generate_ueberschriften()  //generate_headings
 	ueberschrift_back->Size = System::Drawing::Size(936, 20);
 	ueberschrift_back->BackColor = System::Drawing::Color::Silver;
 	this->Controls->Add(ueberschrift_back);
-
-	exl_->setCell(row_, 2, "Kostengr.");
-	exl_->setCell(row_, 3, "ZB-Nr.");
-	exl_->setCell(row_, 4, "Vorhaben");
-	exl_->setCell(row_, 5, "TB");
-	exl_->setCell(row_, 6, "vom");
-	exl_->setCell(row_, 7, "Förderbetrag");
-	exl_->setCell(row_, 8, "Bund-/Landanteil");
-	exl_->setCell(row_, 9, "MLA Gemeinde");
-	exl_->setCell(row_, 10, "BWZ");
-	exl_->setCell(row_, 11, "VN eingereicht");
-	exl_->setCell(row_, 12, "VN geprüft");
-	exl_->setCell(row_, 13, "Mehr-Minderkosten");
-	for (int j = 2;j < 14;++j) {
+	//excel
+	for (int j = 1;j < 13;++j) {
+		exl_->setCell(row_, j, headStrList[j-1]);
 		exl_->setCellBold(row_, j);
 		exl_->setCellAutofit(row_, j);
 	}
@@ -808,21 +810,21 @@ void bewilligung_result_form::generate_ueberschriften()  //generate_headings
 	start += 20;
 }
 //generate_approval
-void bewilligung_result_form::generate_bewilligung(List<String^>^ werte, int eintrag)
+void bewilligung_result_form::GenerateApproval(List<String^>^ valueList, int eintrag)
 {
-	MyRecordSet RC("SELECT Wert,Abkuerzung FROM Kostengruppe WHERE Wert='" + werte[0] + "'");
+	MyRecordSet RC("SELECT Wert,Abkuerzung FROM Kostengruppe WHERE Wert='" + valueList[0] + "'");
 	String^ kostengruppe_s = RC.get_val(0, 1);
-	String^ zb_nr_s = werte[1];
-	String^ bezeichnung_s = werte[2];  //designation_s
-	String^ tb_s = werte[3];
-	String^ vom_s = werte[4];
-	String^ foerderbetrag_s = werte[5];
-	String^ bund_land_s = werte[6];
-	String^ mla_s = werte[7];
-	String^ bew_ztr_s = werte[8];
-	String^ vn_einger_s = werte[9];
-	String^ vn_gepr_s = werte[10];
-	String^ mehr_minder_s = werte[11];
+	String^ zb_nr_s = valueList[1];
+	String^ bezeichnung_s = valueList[2];  //designation_s
+	String^ tb_s = valueList[3];
+	String^ vom_s = valueList[4];
+	String^ foerderbetrag_s = valueList[5];
+	String^ bund_land_s = valueList[6];
+	String^ mla_s = valueList[7];
+	String^ bew_ztr_s = valueList[8];
+	String^ vn_einger_s = valueList[9];
+	String^ vn_gepr_s = valueList[10];
+	String^ mehr_minder_s = valueList[11];
 
 	List<String^>^ entry = gcnew List<String^>;
 	entry->Add("eintrag");
@@ -840,7 +842,7 @@ void bewilligung_result_form::generate_bewilligung(List<String^>^ werte, int ein
 	entry->Add(mehr_minder_s);
 	page_content_[page_content_->Count - 1]->Add(entry);
 
-	String^ id = werte[12];
+	String^ id = valueList[12];
 
 	System::Drawing::Color color;
 	if (eintrag % 2 != 0)
@@ -857,7 +859,7 @@ void bewilligung_result_form::generate_bewilligung(List<String^>^ werte, int ein
 	kostenart->Click += gcnew System::EventHandler(this, &bewilligung_result_form::Click);
 	kostenart->Location = System::Drawing::Point(s_kostenart, start);
 	kostenart->AutoSize = true;
-	kostenart->Text = RC.get_val(0, 1);
+	kostenart->Text = kostengruppe_s;  //cost group_s
 	kostenart->Name = id;
 	kostenart->BackColor = color;
 	kostenart->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 6.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
@@ -868,7 +870,7 @@ void bewilligung_result_form::generate_bewilligung(List<String^>^ werte, int ein
 	zb_nr->Click += gcnew System::EventHandler(this, &bewilligung_result_form::Click);
 	zb_nr->Location = System::Drawing::Point(s_zb_nr, start);
 	zb_nr->AutoSize = true;
-	zb_nr->Text = werte[1];
+	zb_nr->Text = valueList[1];
 	zb_nr->Name = id;
 	zb_nr->BackColor = color;
 	zb_nr->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 6.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
@@ -881,7 +883,7 @@ void bewilligung_result_form::generate_bewilligung(List<String^>^ werte, int ein
 	bezeichnung->AutoSize = true;
 	bezeichnung->MaximumSize= System::Drawing::Size(100, 0);
 	
-	bezeichnung->Text = werte[2];
+	bezeichnung->Text = valueList[2];
 	bezeichnung->Name = id;
 	bezeichnung->BackColor = color;
 	//bezeichnung->Size = System::Drawing::Size(110, 35);
@@ -894,7 +896,7 @@ void bewilligung_result_form::generate_bewilligung(List<String^>^ werte, int ein
 	tb->Click += gcnew System::EventHandler(this, &bewilligung_result_form::Click);
 	tb->Location = System::Drawing::Point(s_tb, start);
 	tb->AutoSize = true;
-	tb->Text = werte[3];
+	tb->Text = valueList[3];
 	tb->Name = id;
 	tb->BackColor = color;
 	tb->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 6.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
@@ -905,7 +907,7 @@ void bewilligung_result_form::generate_bewilligung(List<String^>^ werte, int ein
 	vom->Click += gcnew System::EventHandler(this, &bewilligung_result_form::Click);
 	vom->Location = System::Drawing::Point(s_vom, start);
 	vom->AutoSize = true;
-	vom->Text = werte[4];
+	vom->Text = valueList[4];
 	vom->Name = id;
 	vom->BackColor = color;
 	vom->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 6.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
@@ -918,7 +920,7 @@ void bewilligung_result_form::generate_bewilligung(List<String^>^ werte, int ein
 	foerderbetrag->AutoSize = false;
 	foerderbetrag->Size = System::Drawing::Size(85, 15);
 	foerderbetrag->TextAlign = System::Drawing::ContentAlignment::TopRight;
-	foerderbetrag->Text = werte[5];
+	foerderbetrag->Text = valueList[5];
 	foerderbetrag->Name = id;
 	foerderbetrag->BackColor = color;
 	foerderbetrag->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 6.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
@@ -931,7 +933,7 @@ void bewilligung_result_form::generate_bewilligung(List<String^>^ werte, int ein
 	bund_land->AutoSize = false;
 	bund_land->Size = System::Drawing::Size(85, 15);
 	bund_land->TextAlign = System::Drawing::ContentAlignment::TopRight;
-	bund_land->Text = werte[6];
+	bund_land->Text = valueList[6];
 	bund_land->Name = id;
 	bund_land->BackColor = color;
 	bund_land->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 6.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
@@ -944,7 +946,7 @@ void bewilligung_result_form::generate_bewilligung(List<String^>^ werte, int ein
 	mla->AutoSize = false;
 	mla->Size = System::Drawing::Size(85, 15);
 	mla->TextAlign = System::Drawing::ContentAlignment::TopRight;
-	mla->Text = werte[7];
+	mla->Text = valueList[7];
 	mla->Name = id;
 	mla->BackColor = color;
 	mla->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 6.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
@@ -955,7 +957,7 @@ void bewilligung_result_form::generate_bewilligung(List<String^>^ werte, int ein
 	bew_ztr->Click += gcnew System::EventHandler(this, &bewilligung_result_form::Click);
 	bew_ztr->Location = System::Drawing::Point(s_bew_ztr, start);
 	bew_ztr->AutoSize = true;
-	bew_ztr->Text = werte[8];
+	bew_ztr->Text = valueList[8];
 	bew_ztr->Name = id;
 	bew_ztr->BackColor = color;
 	bew_ztr->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 6.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
@@ -966,7 +968,7 @@ void bewilligung_result_form::generate_bewilligung(List<String^>^ werte, int ein
 	vn_einger->Click += gcnew System::EventHandler(this, &bewilligung_result_form::Click);
 	vn_einger->Location = System::Drawing::Point(s_einger, start);
 	vn_einger->AutoSize = true;
-	vn_einger->Text = werte[9];
+	vn_einger->Text = valueList[9];
 	vn_einger->Name = id;
 	vn_einger->BackColor = color;
 	vn_einger->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 6.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
@@ -977,7 +979,7 @@ void bewilligung_result_form::generate_bewilligung(List<String^>^ werte, int ein
 	vn_gepr->Click += gcnew System::EventHandler(this, &bewilligung_result_form::Click);
 	vn_gepr->Location = System::Drawing::Point(s_gepr, start);
 	vn_gepr->AutoSize = true;
-	vn_gepr->Text = werte[10];
+	vn_gepr->Text = valueList[10];
 	vn_gepr->Name = id;
 	vn_gepr->BackColor = color;
 	vn_gepr->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 6.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
@@ -989,7 +991,7 @@ void bewilligung_result_form::generate_bewilligung(List<String^>^ werte, int ein
 	mehr_minder->Location = System::Drawing::Point(s_mehr_minder, start);
 	mehr_minder->AutoSize = false;
 	mehr_minder->Size = System::Drawing::Size(85, 15);
-	mehr_minder->Text = werte[11];
+	mehr_minder->Text = valueList[11];
 	mehr_minder->Name = id;
 	mehr_minder->BackColor = color;
 	mehr_minder->TextAlign = System::Drawing::ContentAlignment::TopRight;
@@ -1229,7 +1231,7 @@ void bewilligung_result_form::printDocument1_PrintPage(System::Object^  sender, 
 		if (page_content_[print_page_][i][0] == "ueberschrift")
 		{
 			begin_at += 10;
-			create_page_uberschriften(e, begin_at);
+			create_page_uberschriften(e, begin_at);  //headlines
 			begin_at += 30;
 		}
 

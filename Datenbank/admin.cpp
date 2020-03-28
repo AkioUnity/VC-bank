@@ -4,11 +4,14 @@
 #include "helper.h"
 #include "admin.h"
 
+#include <msclr\marshal.h>
+
 using namespace System;
 using namespace System::IO;
 using namespace System::Text;
 using namespace Datenbank;
 using namespace System::Collections::Generic;
+using namespace msclr::interop;
 
 //Windows::Forms::MessageBox::Show();
 
@@ -798,4 +801,22 @@ System::Void Datenbank::admin::btn_back_Click(System::Object^  sender, System::E
 	}
 	else
 		Windows::Forms::MessageBox::Show("Bitte einen gültigen Pfad angeben.");
+}
+
+System::Void Datenbank::admin::btn_copy_Click(System::Object^  sender, System::EventArgs^  e)
+{	
+	saveFileDialog->Filter = "Access Datenbank|*.mdb";
+	saveFileDialog->Title = "Save the Access File";
+	saveFileDialog->FileName = "";
+	saveFileDialog->ShowDialog();
+	// If the file name is not an empty string, open it for saving.
+	if (saveFileDialog->FileName != "")
+	{
+		marshal_context context;
+		LPCTSTR sourceFile = context.marshal_as<const TCHAR*>(tb_path->Text);
+		LPCTSTR targetFile = context.marshal_as<const TCHAR*>(saveFileDialog->FileName);
+		if (CopyFile(sourceFile, targetFile, FALSE)) {
+			Windows::Forms::MessageBox::Show("Datei speichern war erfolgreich!");
+		}
+	}
 }
