@@ -206,8 +206,8 @@ namespace Datenbank {
 
 	// Auswertungselemente
 		void generate_header(String^,String^,String^);
-		void generate_ueberschriften();
-		void generate_bewilligung(List<String^>^,int);
+		void Generate_TableHeadings();
+		void GenerateApproval(List<String^>^,int);
 		void generate_footer(Decimal,Decimal,Decimal);		
 		void place_button();
 
@@ -219,5 +219,7 @@ namespace Datenbank {
 		void create_page_footer(System::Drawing::Printing::PrintPageEventArgs^,String^,String^,String^,int);
 		void create_page_sign(System::Drawing::Printing::PrintPageEventArgs^);
 
+public:
+	void AddCellC(String^ text, int xPos, int row,String^ name);
 };
 }

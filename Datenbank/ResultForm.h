@@ -15,9 +15,10 @@ using namespace System::Drawing::Printing;
 public ref class ResultForm : public System::Windows::Forms::Form
 {
 public:
-	ResultForm():
+	ResultForm() :
 		exl_(gcnew ExcelExport()),
 		row_(1),
+		col_(1),
 		start(0)
 	{
 		InitializeComponent();
@@ -43,7 +44,9 @@ public:
 	}
 
 	ExcelExport ^ exl_;
+	System::Windows::Forms::Label^  label;
 	int row_;
+	int col_;
 
 	int start;
 
@@ -51,5 +54,12 @@ public:
 
 	// Events	
 	void btn_exportExl_Click(System::Object^  sender, System::EventArgs^  e);
+
 	void place_button();
+	void AddCell(String^ text, int xPos, int row);
+	void AddHeaderCell(String^ text, int xPos, int yPos);
+	void AddTableHeaderCell(String^ text, int xPos);
+	void AddTableHeaderCell(String^ text, int xPos, int width, int height);
+	void SetLabelSize(int width, int height);
+	void AddHeaderDivider(int width, int height);
 };
