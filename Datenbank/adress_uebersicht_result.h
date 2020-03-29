@@ -202,7 +202,7 @@ namespace Datenbank {
 
 		// Auswertungselemente
 		void generate_header(String^,String^,String^);
-		void generate_ueberschriften();
+		void GenerateTableHeader();
 		void generate_entry(String^,String^,String^,String^,String^,String^,String^,String^,int);
 		void generate_footer(String^,String^);
 		void place_print_button();

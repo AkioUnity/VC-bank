@@ -1,6 +1,7 @@
 #pragma once
 
 #include "test.h"
+#include "ResultForm.h"
 
 namespace Datenbank {
 
@@ -15,7 +16,7 @@ namespace Datenbank {
 	/// <summary>
 	/// Zusammenfassung für gesamt_uebersicht_result
 	/// </summary>
-	public ref class gesamt_uebersicht_result : public System::Windows::Forms::Form
+	public ref class gesamt_uebersicht_result : public ResultForm
 	{
 	public:
 		gesamt_uebersicht_result(void)
@@ -35,6 +36,7 @@ namespace Datenbank {
 									bool show_gk_kom,
 									bool show_gk_priv,
 									int user_id):
+			ResultForm(),
 			user_id_(user_id),
 			stadt_(stadt),
 			gebiet_(gebiet),
@@ -228,7 +230,7 @@ namespace Datenbank {
 		// Auswertungselemente
 		void calc_coloumns();
 		void generate_header(String^ stadt, String^ gebiet, String^ programm);
-		void generate_ueberschriften();
+		void GenerateTableHeader();
 		void generate_entry(	int entry_param,
 								String^ stadt,
 								String^ gebiet,
@@ -287,6 +289,8 @@ namespace Datenbank {
 									String^ gk_priv,
 									int begin_at);
 		void create_page_sign(System::Drawing::Printing::PrintPageEventArgs^);
+	public:
+		void AddCellC(String^ text, int xPos, int row, String^ name);
 
 };
 }

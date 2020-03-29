@@ -269,7 +269,7 @@ void adress_uebersicht_result::create_main_entries(String^ stadt, String^ gebiet
 		{
 			generate_header(stadt,gebiet,adresse);
 			++row_;
-			generate_ueberschriften();
+			GenerateTableHeader();
 			++row_;
 			Decimal ges_kosten=0;
 			Decimal ges_foerderung=0;
@@ -360,7 +360,7 @@ void adress_uebersicht_result::generate_header(String^ stadt, String^ gebiet, St
 	start_+=15;
 }
 
-void adress_uebersicht_result::generate_ueberschriften()
+void adress_uebersicht_result::GenerateTableHeader()
 {
 	start_+=10;
 

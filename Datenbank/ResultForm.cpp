@@ -58,6 +58,23 @@ void ResultForm::AddTableHeaderCell(String^ text, int xPos)
 	col_++;
 }
 
+void ResultForm::AddTableFooter(String^ text, int xPos, int width, int height)
+{
+	label = gcnew System::Windows::Forms::Label();
+	label->Location = System::Drawing::Point(xPos, start);
+	label->AutoSize = false;
+	label->Text = text;	
+	label->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 6.75F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
+	label->Size = System::Drawing::Size(width, height);
+	label->TextAlign = System::Drawing::ContentAlignment::TopRight;
+	this->Controls->Add(label);
+
+	exl_->setCell(row_, col_, text);
+	exl_->setCellAutofit(row_, col_);
+	exl_->setCellBold(row_, col_);
+	col_++;
+}
+
 void ResultForm::AddTableHeaderCell(String^ text, int xPos, int width, int height)
 {
 	AddTableHeaderCell(text, xPos);

@@ -19,7 +19,8 @@ public:
 		exl_(gcnew ExcelExport()),
 		row_(1),
 		col_(1),
-		start(0)
+		start(0),
+		start_(0)
 	{
 		InitializeComponent();
 	}
@@ -49,6 +50,7 @@ public:
 	int col_;
 
 	int start;
+	int start_;
 
 	System::Windows::Forms::Button^  btn_exportExl;	
 
@@ -59,6 +61,7 @@ public:
 	void AddCell(String^ text, int xPos, int row);
 	void AddHeaderCell(String^ text, int xPos, int yPos);
 	void AddTableHeaderCell(String^ text, int xPos);
+	void AddTableFooter(String^ text, int xPos, int width, int height);
 	void AddTableHeaderCell(String^ text, int xPos, int width, int height);
 	void SetLabelSize(int width, int height);
 	void AddHeaderDivider(int width, int height);

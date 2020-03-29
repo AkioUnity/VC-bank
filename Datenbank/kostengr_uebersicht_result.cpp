@@ -116,7 +116,7 @@ void kostengr_uebersicht_result::kostengr_uebersicht_result_Load(System::Object^
 					int entry_count=0;
 					//Windows::Forms::MessageBox::Show("reset");
 					generate_header(kostengruppe,stadt,gebiet,programm);
-					generate_ueberschriften();
+					GenerateTableHeader();
 
 					List< List<String^>^ >^ tmp=gcnew List< List<String^>^ >;
 
@@ -525,126 +525,27 @@ void kostengr_uebersicht_result::generate_header(	String^ kostengruppe,
 	start_+=4*13+10;
 }
 
-void kostengr_uebersicht_result::generate_ueberschriften()
+void kostengr_uebersicht_result::GenerateTableHeader()
 {
 	// zb_nr
-	System::Windows::Forms::Label^  zb_nr = gcnew System::Windows::Forms::Label();	
-	zb_nr->Location = System::Drawing::Point(s_zb_nr,start_);
-	zb_nr->AutoSize = true;
-	zb_nr->Text = "ZB-Nr.";
-	zb_nr->Name = "zb_nr";
-	zb_nr->BackColor = System::Drawing::Color::Silver;
-	zb_nr->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 6.75F, System::Drawing::FontStyle::Underline, System::Drawing::GraphicsUnit::Point,static_cast<System::Byte>(0)));
-	this->Controls->Add(zb_nr);
-
-	// bezeichnung
-	System::Windows::Forms::Label^  bezeichnung = gcnew System::Windows::Forms::Label();	
-	bezeichnung->Location = System::Drawing::Point(s_bezeichnung,start_);
-	bezeichnung->AutoSize = false;
-	bezeichnung->Size = System::Drawing::Size(110, 15);
-	bezeichnung->TextAlign = System::Drawing::ContentAlignment::TopCenter;
-	bezeichnung->Text = "Vorhaben";
-	bezeichnung->Name = "bezeichnung";
-	bezeichnung->BackColor = System::Drawing::Color::Silver;
-	bezeichnung->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 6.75F, System::Drawing::FontStyle::Underline, System::Drawing::GraphicsUnit::Point,static_cast<System::Byte>(0)));
-	this->Controls->Add(bezeichnung);
-
-	// TB
-	System::Windows::Forms::Label^  tb = gcnew System::Windows::Forms::Label();	
-	tb->Location = System::Drawing::Point(s_tb,start_);
-	tb->AutoSize = true;
-	tb->Text = "TB";
-	tb->Name = "tb";
-	tb->BackColor = System::Drawing::Color::Silver;
-	tb->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 6.75F, System::Drawing::FontStyle::Underline, System::Drawing::GraphicsUnit::Point,static_cast<System::Byte>(0)));
-	this->Controls->Add(tb);
-
-	// vom
-	System::Windows::Forms::Label^  vom = gcnew System::Windows::Forms::Label();	
-	vom->Location = System::Drawing::Point(s_vom,start_);
-	vom->AutoSize = true;
-	vom->Text = "vom";
-	vom->Name = "vom";
-	vom->BackColor = System::Drawing::Color::Silver;
-	vom->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 6.75F, System::Drawing::FontStyle::Underline, System::Drawing::GraphicsUnit::Point,static_cast<System::Byte>(0)));
-	this->Controls->Add(vom);
-
-	// foerderbetrag
-	System::Windows::Forms::Label^  foerderbetrag = gcnew System::Windows::Forms::Label();	
-	foerderbetrag->Location = System::Drawing::Point(s_foerder,start_);
-	foerderbetrag->AutoSize = false;
-	foerderbetrag->Size = System::Drawing::Size(85, 15);
-	foerderbetrag->TextAlign = System::Drawing::ContentAlignment::TopRight;
-	foerderbetrag->Text = "Förderbetrag";
-	foerderbetrag->Name = "foerderbetrag";
-	foerderbetrag->BackColor = System::Drawing::Color::Silver;
-	foerderbetrag->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 6.75F, System::Drawing::FontStyle::Underline, System::Drawing::GraphicsUnit::Point,static_cast<System::Byte>(0)));
-	this->Controls->Add(foerderbetrag);
-
-	// bund_land
-	System::Windows::Forms::Label^  bund_land = gcnew System::Windows::Forms::Label();	
-	bund_land->Location = System::Drawing::Point(s_bund_land,start_);
-	bund_land->AutoSize = false;
-	bund_land->Size = System::Drawing::Size(85, 15);
-	bund_land->TextAlign = System::Drawing::ContentAlignment::TopRight;
-	bund_land->Text = "Bund-/Landanteil";
-	bund_land->Name = "bund_land";
-	bund_land->BackColor = System::Drawing::Color::Silver;
-	bund_land->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 6.75F, System::Drawing::FontStyle::Underline, System::Drawing::GraphicsUnit::Point,static_cast<System::Byte>(0)));
-	this->Controls->Add(bund_land);
-
-	// mla
-	System::Windows::Forms::Label^  mla = gcnew System::Windows::Forms::Label();	
-	mla->Location = System::Drawing::Point(s_mla,start_);
-	mla->AutoSize = false;
-	mla->Size = System::Drawing::Size(85, 15);
-	mla->TextAlign = System::Drawing::ContentAlignment::TopRight;
-	mla->Text = "MLA Gemeinde";
-	mla->Name = "mla";
-	mla->BackColor = System::Drawing::Color::Silver;
-	mla->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 6.75F, System::Drawing::FontStyle::Underline, System::Drawing::GraphicsUnit::Point,static_cast<System::Byte>(0)));
-	this->Controls->Add(mla);
-
-	// bew_ztr
-	System::Windows::Forms::Label^  bew_ztr = gcnew System::Windows::Forms::Label();	
-	bew_ztr->Location = System::Drawing::Point(s_bew_ztr,start_);
-	bew_ztr->AutoSize = true;
-	bew_ztr->Text = "BWZ";
-	bew_ztr->Name = "bew_ztr";
-	bew_ztr->BackColor = System::Drawing::Color::Silver;
-	bew_ztr->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 6.75F, System::Drawing::FontStyle::Underline, System::Drawing::GraphicsUnit::Point,static_cast<System::Byte>(0)));
-	this->Controls->Add(bew_ztr);
-
-	// vn_einger
-	System::Windows::Forms::Label^  vn_einger = gcnew System::Windows::Forms::Label();	
-	vn_einger->Location = System::Drawing::Point(s_einger,start_);
-	vn_einger->AutoSize = true;
-	vn_einger->Text = "VN eingereicht";
-	vn_einger->Name = "vn_einger";
-	vn_einger->BackColor = System::Drawing::Color::Silver;
-	vn_einger->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 6.75F, System::Drawing::FontStyle::Underline, System::Drawing::GraphicsUnit::Point,static_cast<System::Byte>(0)));
-	this->Controls->Add(vn_einger);
-
-	// vn_gepr
-	System::Windows::Forms::Label^  vn_gepr = gcnew System::Windows::Forms::Label();	
-	vn_gepr->Location = System::Drawing::Point(s_gepr,start_);
-	vn_gepr->AutoSize = true;
-	vn_gepr->Text = "VN geprüft";
-	vn_gepr->Name = "vn_gepr";
-	vn_gepr->BackColor = System::Drawing::Color::Silver;
-	vn_gepr->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 6.75F, System::Drawing::FontStyle::Underline, System::Drawing::GraphicsUnit::Point,static_cast<System::Byte>(0)));
-	this->Controls->Add(vn_gepr);
-
-	// mehr_minder
-	System::Windows::Forms::Label^  mehr_minder = gcnew System::Windows::Forms::Label();	
-	mehr_minder->Location = System::Drawing::Point(s_mehr_minder,start_);
-	mehr_minder->AutoSize = true;
-	mehr_minder->Text = "Mehr-/Minderkosten";
-	mehr_minder->Name = "mehr_minder";
-	mehr_minder->BackColor = System::Drawing::Color::Silver;
-	mehr_minder->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 6.75F, System::Drawing::FontStyle::Underline, System::Drawing::GraphicsUnit::Point,static_cast<System::Byte>(0)));
-	this->Controls->Add(mehr_minder);
-
+	row_++;
+	start = start_;
+	AddTableHeaderCell("ZB-Nr.", s_zb_nr);	
+	AddTableHeaderCell("Vorhaben", s_bezeichnung);
+	SetLabelSize(110, 15);
+	AddTableHeaderCell("TB", s_tb);
+	AddTableHeaderCell("vom", s_vom);
+	AddTableHeaderCell("Förderbetrag", s_foerder);
+	SetLabelSize(85, 15);
+	AddTableHeaderCell("Bund-/Landanteil", s_bund_land);
+	SetLabelSize(85, 15);
+	AddTableHeaderCell("MLA Gemeinde", s_mla);
+	SetLabelSize(85, 15);
+	AddTableHeaderCell("BWZ", s_bew_ztr);
+	AddTableHeaderCell("VN eingereicht", s_einger);
+	AddTableHeaderCell("VN geprüft", s_gepr);
+	AddTableHeaderCell("Mehr-/Minderkosten", s_mehr_minder);
+	
 	System::Windows::Forms::Label^  ueberschrift_back = gcnew System::Windows::Forms::Label();
 	ueberschrift_back->Location = System::Drawing::Point(0,start_);
 	ueberschrift_back->AutoSize = false;
@@ -696,147 +597,27 @@ void kostengr_uebersicht_result::generate_entry(	String^ id,
 		color=System::Drawing::Color::White;
 	}
 
-	// zb_nr
-	System::Windows::Forms::Label^  jahr = gcnew System::Windows::Forms::Label();
-	jahr->Click += gcnew System::EventHandler(this, &kostengr_uebersicht_result::Click);	
-	jahr->Location = System::Drawing::Point(s_jahr, start_);
-	jahr->AutoSize = true;
-	jahr->Text = jahr_t;
-	jahr->Name = id;
-	jahr->BackColor = color;
-	jahr->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 6.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,static_cast<System::Byte>(0)));
-	this->Controls->Add(jahr);
+	start = start_;
+	int rowNum = eintrag;
+	row_++;
+	col_ = 1;
 
-	// zb_nr
-	System::Windows::Forms::Label^  zb_nr = gcnew System::Windows::Forms::Label();
-	zb_nr->Click += gcnew System::EventHandler(this, &kostengr_uebersicht_result::Click);	
-	zb_nr->Location = System::Drawing::Point(s_zb_nr, start_);
-	zb_nr->AutoSize = true;
-	zb_nr->Text = ZB_NR_t;
-	zb_nr->Name = id;
-	zb_nr->BackColor = color;
-	zb_nr->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 6.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,static_cast<System::Byte>(0)));
-	this->Controls->Add(zb_nr);
-
-	// bezeichnung
-	System::Windows::Forms::Label^  bezeichnung = gcnew System::Windows::Forms::Label();
-	bezeichnung->Click += gcnew System::EventHandler(this, &kostengr_uebersicht_result::Click);	
-	bezeichnung->Location = System::Drawing::Point(s_bezeichnung, start_);
-	bezeichnung->AutoSize = false;
-	bezeichnung->Text = bezeichnung_t;
-	bezeichnung->Name = id;
-	bezeichnung->BackColor = color;
-	bezeichnung->Size = System::Drawing::Size(110, 15);
-	bezeichnung->TextAlign = System::Drawing::ContentAlignment::TopRight;
-	bezeichnung->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 6.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,static_cast<System::Byte>(0)));
-	this->Controls->Add(bezeichnung);
-
-	// TB
-	System::Windows::Forms::Label^  tb = gcnew System::Windows::Forms::Label();
-	tb->Click += gcnew System::EventHandler(this, &kostengr_uebersicht_result::Click);	
-	tb->Location = System::Drawing::Point(s_tb, start_);
-	tb->AutoSize = true;
-	tb->Text = tb_t;
-	tb->Name = id;
-	tb->BackColor = color;
-	tb->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 6.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,static_cast<System::Byte>(0)));
-	this->Controls->Add(tb);
-
-	// vom
-	System::Windows::Forms::Label^  vom = gcnew System::Windows::Forms::Label();
-	vom->Click += gcnew System::EventHandler(this, &kostengr_uebersicht_result::Click);	
-	vom->Location = System::Drawing::Point(s_vom, start_);
-	vom->AutoSize = true;
-	vom->Text = vom_t;
-	vom->Name = id;
-	vom->BackColor = color;
-	vom->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 6.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,static_cast<System::Byte>(0)));
-	this->Controls->Add(vom);
-
-	// foerderbetrag
-	System::Windows::Forms::Label^  foerderbetrag = gcnew System::Windows::Forms::Label();
-	foerderbetrag->Click += gcnew System::EventHandler(this, &kostengr_uebersicht_result::Click);	
-	foerderbetrag->Location = System::Drawing::Point(s_foerder, start_);
-	foerderbetrag->AutoSize = false;
-	foerderbetrag->Size = System::Drawing::Size(85, 15);
-	foerderbetrag->TextAlign = System::Drawing::ContentAlignment::TopRight;
-	foerderbetrag->Text = foerderbetrag_t;
-	foerderbetrag->Name = id;
-	foerderbetrag->BackColor = color;
-	foerderbetrag->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 6.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,static_cast<System::Byte>(0)));
-	this->Controls->Add(foerderbetrag);
-
-	// bund_land
-	System::Windows::Forms::Label^  bund_land = gcnew System::Windows::Forms::Label();
-	bund_land->Click += gcnew System::EventHandler(this, &kostengr_uebersicht_result::Click);	
-	bund_land->Location = System::Drawing::Point(s_bund_land, start_);
-	bund_land->AutoSize = false;
-	bund_land->Size = System::Drawing::Size(85, 15);
-	bund_land->TextAlign = System::Drawing::ContentAlignment::TopRight;
-	bund_land->Text = bund_land_t;
-	bund_land->Name = id;
-	bund_land->BackColor = color;
-	bund_land->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 6.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,static_cast<System::Byte>(0)));
-	this->Controls->Add(bund_land);
-
-	// mla
-	System::Windows::Forms::Label^  mla = gcnew System::Windows::Forms::Label();
-	mla->Click += gcnew System::EventHandler(this, &kostengr_uebersicht_result::Click);	
-	mla->Location = System::Drawing::Point(s_mla, start_);
-	mla->AutoSize = false;
-	mla->Size = System::Drawing::Size(85, 15);
-	mla->TextAlign = System::Drawing::ContentAlignment::TopRight;
-	mla->Text = mla_t;
-	mla->Name = id;
-	mla->BackColor = color;
-	mla->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 6.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,static_cast<System::Byte>(0)));
-	this->Controls->Add(mla);
-
-	// bew_ztr
-	System::Windows::Forms::Label^  bew_ztr = gcnew System::Windows::Forms::Label();
-	bew_ztr->Click += gcnew System::EventHandler(this, &kostengr_uebersicht_result::Click);	
-	bew_ztr->Location = System::Drawing::Point(s_bew_ztr, start_);
-	bew_ztr->AutoSize = true;
-	bew_ztr->Text = bew_ztr_t;
-	bew_ztr->Name = id;
-	bew_ztr->BackColor = color;
-	bew_ztr->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 6.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,static_cast<System::Byte>(0)));
-	this->Controls->Add(bew_ztr);
-
-	// vn_einger
-	System::Windows::Forms::Label^  vn_einger = gcnew System::Windows::Forms::Label();
-	vn_einger->Click += gcnew System::EventHandler(this, &kostengr_uebersicht_result::Click);	
-	vn_einger->Location = System::Drawing::Point(s_einger, start_);
-	vn_einger->AutoSize = true;
-	vn_einger->Text = vn_einger_t;
-	vn_einger->Name = id;
-	vn_einger->BackColor = color;
-	vn_einger->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 6.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,static_cast<System::Byte>(0)));
-	this->Controls->Add(vn_einger);
-
-	// vn_gepr
-	System::Windows::Forms::Label^  vn_gepr = gcnew System::Windows::Forms::Label();	
-	vn_gepr->Click += gcnew System::EventHandler(this, &kostengr_uebersicht_result::Click);
-	vn_gepr->Location = System::Drawing::Point(s_gepr, start_);
-	vn_gepr->AutoSize = true;
-	vn_gepr->Text = vn_gepr_t;
-	vn_gepr->Name = id;
-	vn_gepr->BackColor = color;
-	vn_gepr->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 6.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,static_cast<System::Byte>(0)));
-	this->Controls->Add(vn_gepr);
-
-	// mehr_minder
-	System::Windows::Forms::Label^  mehr_minder = gcnew System::Windows::Forms::Label();	
-	mehr_minder->Click += gcnew System::EventHandler(this, &kostengr_uebersicht_result::Click);
-	mehr_minder->Location = System::Drawing::Point(s_mehr_minder,start_);
-	mehr_minder->AutoSize = false;
-	mehr_minder->Size = System::Drawing::Size(85, 15);
-	mehr_minder->Text = mehr_minder_t;
-	mehr_minder->Name = id;
-	mehr_minder->BackColor = color;
-	mehr_minder->TextAlign = System::Drawing::ContentAlignment::TopRight;
-	mehr_minder->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 6.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,static_cast<System::Byte>(0)));
-	this->Controls->Add(mehr_minder);
+	AddCellC(jahr_t, s_jahr, rowNum, id);
+	AddCellC(ZB_NR_t, s_zb_nr, rowNum, id);
+	AddCellC(bezeichnung_t, s_bezeichnung, rowNum, id);
+	SetLabelSize(110, 15);
+	AddCellC(tb_t, s_tb, rowNum, id);
+	AddCellC(vom_t, s_vom, rowNum, id);
+	AddCellC(foerderbetrag_t, s_foerder, rowNum, id);
+	SetLabelSize(85, 15);
+	AddCellC(bund_land_t, s_bund_land, rowNum, id);
+	SetLabelSize(85, 15);
+	AddCellC(mla_t, s_mla, rowNum, id);
+	SetLabelSize(85, 15);
+	AddCellC(vn_einger_t, s_einger, rowNum, id);
+	AddCellC(vn_gepr_t, s_gepr, rowNum, id);
+	AddCellC(mehr_minder_t, s_mehr_minder, rowNum, id);
+	SetLabelSize(85, 15);	
 
 	System::Windows::Forms::Label^  line_back = gcnew System::Windows::Forms::Label();
 	line_back->Location = System::Drawing::Point(0,start_-3);
@@ -863,49 +644,13 @@ void kostengr_uebersicht_result::generate_footer(	String^ foerderbetrag_s,
 	footer->Add(mehr_minder_s);
 	page_content_[page_content_->Count-1]->Add(footer);
 
-	// foerderbetrag
-	System::Windows::Forms::Label^  foerderbetrag_ges = gcnew System::Windows::Forms::Label();	
-	foerderbetrag_ges->Location = System::Drawing::Point(s_foerder,start_);
-	foerderbetrag_ges->AutoSize = false;
-	foerderbetrag_ges->Size = System::Drawing::Size(85, 15);
-	foerderbetrag_ges->TextAlign = System::Drawing::ContentAlignment::TopRight;
-	foerderbetrag_ges->Text = foerderbetrag_s;
-	foerderbetrag_ges->Name = "foerderbetrag_ges";
-	foerderbetrag_ges->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 6.75F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,static_cast<System::Byte>(0)));
-	this->Controls->Add(foerderbetrag_ges);
-
-	// bund_land
-	System::Windows::Forms::Label^  bund_land_ges = gcnew System::Windows::Forms::Label();	
-	bund_land_ges->Location = System::Drawing::Point(s_bund_land, start_);
-	bund_land_ges->AutoSize = false;
-	bund_land_ges->Size = System::Drawing::Size(85, 15);
-	bund_land_ges->TextAlign = System::Drawing::ContentAlignment::TopRight;
-	bund_land_ges->Text = bund_land_s;
-	bund_land_ges->Name = "bund_land_ges";
-	bund_land_ges->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 6.75F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,static_cast<System::Byte>(0)));
-	this->Controls->Add(bund_land_ges);
-
-	// mla
-	System::Windows::Forms::Label^  mla_ges = gcnew System::Windows::Forms::Label();	
-	mla_ges->Location = System::Drawing::Point(s_mla, start_);
-	mla_ges->AutoSize = false;
-	mla_ges->Size = System::Drawing::Size(85, 15);
-	mla_ges->TextAlign = System::Drawing::ContentAlignment::TopRight;
-	mla_ges->Text = mla_s;
-	mla_ges->Name = "mla_ges";
-	mla_ges->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 6.75F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,static_cast<System::Byte>(0)));
-	this->Controls->Add(mla_ges);
-
-	// mehr_minder
-	System::Windows::Forms::Label^  mehr_minder_ges = gcnew System::Windows::Forms::Label();	
-	mehr_minder_ges->Location = System::Drawing::Point(s_mehr_minder, start_);
-	mehr_minder_ges->AutoSize = false;
-	mehr_minder_ges->Size = System::Drawing::Size(85, 15);
-	mehr_minder_ges->Text = mehr_minder_s;
-	mehr_minder_ges->Name = "mehr_minder_ges";
-	mehr_minder_ges->TextAlign = System::Drawing::ContentAlignment::TopRight;
-	mehr_minder_ges->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 6.75F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,static_cast<System::Byte>(0)));
-	this->Controls->Add(mehr_minder_ges);
+	row_++;
+	col_ = 6;
+	start = start_;
+	AddTableFooter(foerderbetrag_s, s_foerder,85, 15);
+	AddTableFooter(bund_land_s, s_bund_land, 85, 15);
+	AddTableFooter(mla_s, s_mla, 85, 15);
+	AddTableFooter(mehr_minder_s, s_mehr_minder, 85, 15);
 
 	start_+=25;
 }
@@ -917,12 +662,8 @@ void kostengr_uebersicht_result::place_print_button()
 	btn_print->Location=System::Drawing::Point(5, start_);
 	btn_print->Size = System::Drawing::Size(926, 20);
 	this->Controls->Add(btn_print);
-
-	System::Windows::Forms::Label^  label_freespace = gcnew System::Windows::Forms::Label();
-	label_freespace->Location = System::Drawing::Point(0,start_+20);
-	label_freespace->AutoSize = false;
-	label_freespace->Size = System::Drawing::Size(5, 10);
-	this->Controls->Add(label_freespace);
+	start = start_;
+	ResultForm::place_button();
 }
 
 // Events
@@ -1213,4 +954,11 @@ void kostengr_uebersicht_result::create_page_sign(System::Drawing::Printing::Pri
 	// Programm
 	e->Graphics->DrawString("erstellt mit Hilfe von FÖRDI © MKS",small_format,Brushes::Black,970,810);
 
+}
+
+void kostengr_uebersicht_result::AddCellC(String^ text, int xPos, int row, String^ name)
+{
+	AddCell(text, xPos, row);
+	label->Name = name;
+	label->Click += gcnew System::EventHandler(this, &kostengr_uebersicht_result::Click);
 }

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "test.h"
+#include "ResultForm.h"
 
 namespace Datenbank {
 
@@ -14,7 +15,7 @@ namespace Datenbank {
 	/// <summary>
 	/// Zusammenfassung für kostengr_uebersicht_result
 	/// </summary>
-	public ref class kostengr_uebersicht_result : public System::Windows::Forms::Form
+	public ref class kostengr_uebersicht_result : public ResultForm
 	{
 	public:
 		kostengr_uebersicht_result(void)
@@ -26,6 +27,7 @@ namespace Datenbank {
 			bool show_gk_real,
 			bool show_gk_kom,
 			bool show_gk_priv, int user_id):
+			ResultForm(),
 			user_id_(user_id),
 			kostengruppe_(kostengruppe),
 			stadt_(stadt),
@@ -34,8 +36,7 @@ namespace Datenbank {
 			year_(jahr),
 			show_gk_real_(show_gk_real),
 			show_gk_kom_(show_gk_kom),
-			show_gk_priv_(show_gk_priv),
-			start_(0),
+			show_gk_priv_(show_gk_priv),			
 			s_jahr(10),
 			s_zb_nr(50),
 			s_bezeichnung(115),
@@ -102,8 +103,7 @@ namespace Datenbank {
 		bool show_gk_real_;
 		bool show_gk_kom_;
 		bool show_gk_priv_;
-
-		int start_;
+		
 		int s_jahr;
 		int s_zb_nr;
 		int s_bezeichnung;
@@ -203,7 +203,7 @@ namespace Datenbank {
 
 		// Auswertungselemente
 		void generate_header(String^,String^,String^,String^);
-		void generate_ueberschriften();
+		void GenerateTableHeader();
 		void generate_entry(String^,String^,String^,String^,String^,String^,String^,String^,String^,String^,String^,String^,String^,int);
 		void generate_footer(String^,String^,String^,String^);
 		void place_print_button();
@@ -218,5 +218,8 @@ namespace Datenbank {
 		void create_page_entry(System::Drawing::Printing::PrintPageEventArgs^,String^,String^,String^,String^,String^,String^,String^,String^,String^,String^,String^,String^,int,int);
 		void create_page_footer(System::Drawing::Printing::PrintPageEventArgs^,String^,String^,String^,String^,int);
 		void create_page_sign(System::Drawing::Printing::PrintPageEventArgs^);
+
+	public:
+		void AddCellC(String^ text, int xPos, int row, String^ name);
 };
 }

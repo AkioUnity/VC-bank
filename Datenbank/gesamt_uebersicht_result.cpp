@@ -600,7 +600,7 @@ void gesamt_uebersicht_result::create()
 			[10] GK Gemeinde
 			[11] GK Privat
 			*/
-			generate_ueberschriften();
+			GenerateTableHeader();
 
 			Decimal summe_haushalt=0;
 			Decimal summe_bund_land=0;
@@ -805,136 +805,66 @@ void gesamt_uebersicht_result::generate_header(	String^ stadt,
 	start_+=3*13+10;
 }
 
-void gesamt_uebersicht_result::generate_ueberschriften()
+void gesamt_uebersicht_result::GenerateTableHeader()
 {
-	// Jahr
-	System::Windows::Forms::Label^  jahr = gcnew System::Windows::Forms::Label();	
-	jahr->Location = System::Drawing::Point(spalte_jahr_,start_+3);
-	jahr->AutoSize = true;
-	jahr->Text = "Jahr";
-	jahr->Name = "jahr";
-	jahr->BackColor = System::Drawing::Color::Silver;
-	jahr->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 6.75F, System::Drawing::FontStyle::Underline, System::Drawing::GraphicsUnit::Point,static_cast<System::Byte>(0)));
-	this->Controls->Add(jahr);
-
+	start = start_ + 3;
+	row_++;
+	col_ = 1;
+	AddTableHeaderCell("Jahr", spalte_jahr_);	
 	// Jahreshaushalt
 	if(show_jz_)
 	{
-		System::Windows::Forms::Label^  haushalt = gcnew System::Windows::Forms::Label();	
-		haushalt->Location = System::Drawing::Point(spalte_jh_,start_+3);
-		haushalt->AutoSize = false;
-		haushalt->Size = System::Drawing::Size(spaltenbreite_, 13);
-		haushalt->TextAlign = System::Drawing::ContentAlignment::TopRight;
-		haushalt->Text = "Jahreszuteilung";
-		haushalt->Name = "haushalt";
-		haushalt->BackColor = System::Drawing::Color::Silver;
-		haushalt->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 6.75F, System::Drawing::FontStyle::Underline, System::Drawing::GraphicsUnit::Point,static_cast<System::Byte>(0)));
-		this->Controls->Add(haushalt);
+		AddTableHeaderCell("Jahreszuteilung", spalte_jh_);
+		SetLabelSize(spaltenbreite_, 13);
 	}
 
 	// BundLand
 	if(show_bundland_)
 	{
-		System::Windows::Forms::Label^  bundland = gcnew System::Windows::Forms::Label();	
-		bundland->Location = System::Drawing::Point(spalte_bundland_,start_+3);
-		bundland->AutoSize = false;
-		bundland->Size = System::Drawing::Size(spaltenbreite_, 13);
-		bundland->TextAlign = System::Drawing::ContentAlignment::TopRight;
-		bundland->Text = "Bund/Land";
-		bundland->Name = "bundland";
-		bundland->BackColor = System::Drawing::Color::Silver;
-		bundland->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 6.75F, System::Drawing::FontStyle::Underline, System::Drawing::GraphicsUnit::Point,static_cast<System::Byte>(0)));
-		this->Controls->Add(bundland);
+		AddTableHeaderCell("Bund/Land", spalte_bundland_);
+		SetLabelSize(spaltenbreite_, 13);
 	}
 
 	// MLA
 	if(show_mla_)
 	{
-		System::Windows::Forms::Label^  mla = gcnew System::Windows::Forms::Label();	
-		mla->Location = System::Drawing::Point(spalte_mla_,start_+3);
-		mla->AutoSize = false;
-		mla->Size = System::Drawing::Size(spaltenbreite_, 13);
-		mla->TextAlign = System::Drawing::ContentAlignment::TopRight;
-		mla->Text = "MLA";
-		mla->Name = "mla";
-		mla->BackColor = System::Drawing::Color::Silver;
-		mla->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 6.75F, System::Drawing::FontStyle::Underline, System::Drawing::GraphicsUnit::Point,static_cast<System::Byte>(0)));
-		this->Controls->Add(mla);
+		AddTableHeaderCell("MLA", spalte_mla_);
+		SetLabelSize(spaltenbreite_, 13);
 	}
 
 	// Restmittel
 	if(show_restmittel_)
 	{
-		System::Windows::Forms::Label^  restmittel = gcnew System::Windows::Forms::Label();	
-		restmittel->Location = System::Drawing::Point(spalte_restmittel_,start_+3);
-		restmittel->AutoSize = false;
-		restmittel->Size = System::Drawing::Size(spaltenbreite_, 13);
-		restmittel->TextAlign = System::Drawing::ContentAlignment::TopRight;
-		restmittel->Text = "Restmittel";
-		restmittel->Name = "restmittel";
-		restmittel->BackColor = System::Drawing::Color::Silver;
-		restmittel->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 6.75F, System::Drawing::FontStyle::Underline, System::Drawing::GraphicsUnit::Point,static_cast<System::Byte>(0)));
-		this->Controls->Add(restmittel);
+		AddTableHeaderCell("Restmittel", spalte_restmittel_);
+		SetLabelSize(spaltenbreite_, 13);
 	}
 
 	// Mehr-/Minderkosten
 	if(show_mehrminder_)
 	{
-		System::Windows::Forms::Label^  mehr_minder = gcnew System::Windows::Forms::Label();	
-		mehr_minder->Location = System::Drawing::Point(spalte_mehr_minder_,start_+3);
-		mehr_minder->AutoSize = false;
-		mehr_minder->Size = System::Drawing::Size(spaltenbreite_, 13);
-		mehr_minder->TextAlign = System::Drawing::ContentAlignment::TopRight;
-		mehr_minder->Text = "Mehr-/Minderkosten";
-		mehr_minder->Name = "mehr_minder";
-		mehr_minder->BackColor = System::Drawing::Color::Silver;
-		mehr_minder->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 6.75F, System::Drawing::FontStyle::Underline, System::Drawing::GraphicsUnit::Point,static_cast<System::Byte>(0)));
-		this->Controls->Add(mehr_minder);
+		AddTableHeaderCell("Mehr-/Minderkosten", spalte_mehr_minder_);
+		SetLabelSize(spaltenbreite_, 13);
 	}
 
 	// GK Real
 	if(show_gk_real_)
 	{
-		System::Windows::Forms::Label^  gk_real = gcnew System::Windows::Forms::Label();	
-		gk_real->Location = System::Drawing::Point(spalte_gk_real_,start_+3);
-		gk_real->AutoSize = false;
-		gk_real->Size = System::Drawing::Size(spaltenbreite_, 13);
-		gk_real->TextAlign = System::Drawing::ContentAlignment::TopRight;
-		gk_real->Text = "GK Real";
-		gk_real->Name = "gk_real";
-		gk_real->BackColor = System::Drawing::Color::Silver;
-		gk_real->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 6.75F, System::Drawing::FontStyle::Underline, System::Drawing::GraphicsUnit::Point,static_cast<System::Byte>(0)));
-		this->Controls->Add(gk_real);
+		AddTableHeaderCell("GK Real", spalte_gk_real_);
+		SetLabelSize(spaltenbreite_, 13);
 	}
 
 	// GK Kom
 	if(show_gk_kom_)
 	{
-		System::Windows::Forms::Label^  gk_kom = gcnew System::Windows::Forms::Label();	
-		gk_kom->Location = System::Drawing::Point(spalte_gk_kom_,start_+3);
-		gk_kom->AutoSize = false;
-		gk_kom->Size = System::Drawing::Size(spaltenbreite_, 13);
-		gk_kom->TextAlign = System::Drawing::ContentAlignment::TopRight;
-		gk_kom->Text = "GK Komunal";
-		gk_kom->Name = "gk_kom";
-		gk_kom->BackColor = System::Drawing::Color::Silver;
-		gk_kom->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 6.75F, System::Drawing::FontStyle::Underline, System::Drawing::GraphicsUnit::Point,static_cast<System::Byte>(0)));
-		this->Controls->Add(gk_kom);
+		AddTableHeaderCell("GK Komunal", spalte_gk_kom_);
+		SetLabelSize(spaltenbreite_, 13);
 	}
 
 	// GK Priv
 	if(show_gk_priv_)
 	{
-		System::Windows::Forms::Label^  gk_priv = gcnew System::Windows::Forms::Label();	
-		gk_priv->Location = System::Drawing::Point(spalte_gk_priv_,start_+3);
-		gk_priv->AutoSize = false;
-		gk_priv->Size = System::Drawing::Size(spaltenbreite_, 13);
-		gk_priv->TextAlign = System::Drawing::ContentAlignment::TopRight;
-		gk_priv->Text = "GK Privat";
-		gk_priv->Name = "gk_priv";
-		gk_priv->BackColor = System::Drawing::Color::Silver;
-		gk_priv->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 6.75F, System::Drawing::FontStyle::Underline, System::Drawing::GraphicsUnit::Point,static_cast<System::Byte>(0)));
-		this->Controls->Add(gk_priv);
+		AddTableHeaderCell("GK Privat", spalte_gk_priv_);
+		SetLabelSize(spaltenbreite_, 13);
 	}
 
 	// Hintergrund
@@ -969,135 +899,70 @@ void gesamt_uebersicht_result::generate_entry(	int eintrag,
 		color=System::Drawing::Color::White;
 
 	String^ name=stadt+"\n"+gebiet+"\n"+programm+"\n"+jahr_s;
+	
+	
+	int rowNum = eintrag;
+	row_++;
+	col_ = 1;
 
-	// Jahr
-	System::Windows::Forms::Label^  jahr = gcnew System::Windows::Forms::Label();	
-	jahr->Location = System::Drawing::Point(spalte_jahr_,start_+2);
-	jahr->AutoSize = true;
-	jahr->Text = jahr_s;
-	jahr->Name = name;
-	jahr->BackColor = color;
-	jahr->Click += gcnew System::EventHandler(this, &gesamt_uebersicht_result::Click);	
-	this->Controls->Add(jahr);
+	start = start_ + 2;
+	AddCellC(jahr_s, spalte_jahr_, rowNum, name);
 
+	start = start_ + 3;
 	// Jahreshaushalt
 	if(show_jz_)
-	{
-		System::Windows::Forms::Label^  haushalt = gcnew System::Windows::Forms::Label();
-		haushalt->Click += gcnew System::EventHandler(this, &gesamt_uebersicht_result::Click);
-		haushalt->Location = System::Drawing::Point(spalte_jh_,start_+3);
-		haushalt->AutoSize = false;
-		haushalt->Size = System::Drawing::Size(spaltenbreite_, 13);
-		haushalt->TextAlign = System::Drawing::ContentAlignment::TopRight;
-		haushalt->Text = haushalt_s;
-		haushalt->Name = name;
-		haushalt->BackColor = color;
-		this->Controls->Add(haushalt);
+	{	
+		AddCellC(haushalt_s, spalte_jh_, rowNum, name);
+		SetLabelSize(spaltenbreite_, 13);
 	}
 
 	// BundLand
 	if(show_bundland_)
 	{
-		System::Windows::Forms::Label^  bundland = gcnew System::Windows::Forms::Label();
-		bundland->Click += gcnew System::EventHandler(this, &gesamt_uebersicht_result::Click);	
-		bundland->Location = System::Drawing::Point(spalte_bundland_,start_+3);
-		bundland->AutoSize = false;
-		bundland->Size = System::Drawing::Size(spaltenbreite_, 13);
-		bundland->TextAlign = System::Drawing::ContentAlignment::TopRight;
-		bundland->Text = bund_land_s;
-		bundland->Name = name;
-		bundland->BackColor = color;
-		this->Controls->Add(bundland);
+		AddCellC(bund_land_s, spalte_bundland_, rowNum, name);
+		SetLabelSize(spaltenbreite_, 13);
 	}
 
 	// MLA
 	if(show_mla_)
 	{
-		System::Windows::Forms::Label^  mla = gcnew System::Windows::Forms::Label();
-		mla->Click += gcnew System::EventHandler(this, &gesamt_uebersicht_result::Click);	
-		mla->Location = System::Drawing::Point(spalte_mla_,start_+3);
-		mla->AutoSize = false;
-		mla->Size = System::Drawing::Size(spaltenbreite_, 13);
-		mla->TextAlign = System::Drawing::ContentAlignment::TopRight;
-		mla->Text = mla_s;
-		mla->Name = name;
-		mla->BackColor = color;
-		this->Controls->Add(mla);
+		AddCellC(mla_s, spalte_mla_, rowNum, name);
+		SetLabelSize(spaltenbreite_, 13);
 	}
 
 	// Restmittel
 	if(show_restmittel_)
 	{
-		System::Windows::Forms::Label^  restmittel = gcnew System::Windows::Forms::Label();	
-		restmittel->Click += gcnew System::EventHandler(this, &gesamt_uebersicht_result::Click);
-		restmittel->Location = System::Drawing::Point(spalte_restmittel_,start_+3);
-		restmittel->AutoSize = false;
-		restmittel->Size = System::Drawing::Size(spaltenbreite_, 13);
-		restmittel->TextAlign = System::Drawing::ContentAlignment::TopRight;
-		restmittel->Text = restmittel_s;
-		restmittel->Name = name;
-		restmittel->BackColor = color;
-		this->Controls->Add(restmittel);
+		AddCellC(restmittel_s, spalte_restmittel_, rowNum, name);
+		SetLabelSize(spaltenbreite_, 13);
 	}
 
 	// Mehr-/Minderkosten
 	if(show_mehrminder_)
 	{
-		System::Windows::Forms::Label^  mehr_minder = gcnew System::Windows::Forms::Label();	
-		mehr_minder->Click += gcnew System::EventHandler(this, &gesamt_uebersicht_result::Click);
-		mehr_minder->Location = System::Drawing::Point(spalte_mehr_minder_,start_+3);
-		mehr_minder->AutoSize = false;
-		mehr_minder->Size = System::Drawing::Size(spaltenbreite_, 13);
-		mehr_minder->TextAlign = System::Drawing::ContentAlignment::TopRight;
-		mehr_minder->Text = mehr_minder_s;
-		mehr_minder->Name = name;
-		mehr_minder->BackColor = color;
-		this->Controls->Add(mehr_minder);
+		AddCellC(mehr_minder_s, spalte_mehr_minder_, rowNum, name);
+		SetLabelSize(spaltenbreite_, 13);
 	}
 
 	// GK Real
 	if(show_gk_real_)
 	{
-		System::Windows::Forms::Label^  gk_real = gcnew System::Windows::Forms::Label();	
-		gk_real->Click += gcnew System::EventHandler(this, &gesamt_uebersicht_result::Click);
-		gk_real->Location = System::Drawing::Point(spalte_gk_real_,start_+3);
-		gk_real->AutoSize = false;
-		gk_real->Size = System::Drawing::Size(spaltenbreite_, 13);
-		gk_real->TextAlign = System::Drawing::ContentAlignment::TopRight;
-		gk_real->Text = gk_real_s;
-		gk_real->Name = name;
-		gk_real->BackColor = color;
-		this->Controls->Add(gk_real);
+		AddCellC(gk_real_s, spalte_gk_real_, rowNum, name);
+		SetLabelSize(spaltenbreite_, 13);
 	}
 
 	// GK Kom
 	if(show_gk_kom_)
 	{
-		System::Windows::Forms::Label^  gk_kom = gcnew System::Windows::Forms::Label();	
-		gk_kom->Click += gcnew System::EventHandler(this, &gesamt_uebersicht_result::Click);
-		gk_kom->Location = System::Drawing::Point(spalte_gk_kom_,start_+3);
-		gk_kom->AutoSize = false;
-		gk_kom->Size = System::Drawing::Size(spaltenbreite_, 13);
-		gk_kom->TextAlign = System::Drawing::ContentAlignment::TopRight;
-		gk_kom->Text = gk_kom_s;
-		gk_kom->Name = name;
-		gk_kom->BackColor = color;
-		this->Controls->Add(gk_kom);
+		AddCellC(gk_kom_s, spalte_gk_kom_, rowNum, name);
+		SetLabelSize(spaltenbreite_, 13);
 	}
 
 	// GK Priv
 	if(show_gk_priv_)
 	{
-		System::Windows::Forms::Label^  gk_priv = gcnew System::Windows::Forms::Label();	
-		gk_priv->Click += gcnew System::EventHandler(this, &gesamt_uebersicht_result::Click);
-		gk_priv->Location = System::Drawing::Point(spalte_gk_priv_,start_+3);
-		gk_priv->AutoSize = false;
-		gk_priv->Size = System::Drawing::Size(spaltenbreite_, 13);
-		gk_priv->TextAlign = System::Drawing::ContentAlignment::TopRight;
-		gk_priv->Text = gk_priv_s;
-		gk_priv->Name = name;
-		gk_priv->BackColor = color;
-		this->Controls->Add(gk_priv);
+		AddCellC(gk_priv_s, spalte_gk_priv_, rowNum, name);
+		SetLabelSize(spaltenbreite_, 13);
 	}
 
 	// Hintergrund
@@ -1126,134 +991,57 @@ void gesamt_uebersicht_result::generate_footer(	String^ haushalt_s,
 
 	start_+=1;
 
-	// Label
-	System::Windows::Forms::Label^  label = gcnew System::Windows::Forms::Label();	
-	label->Location = System::Drawing::Point(spalte_jahr_,start_+2);
-	label->AutoSize = true;
-	label->Text = "Summen";
-	label->Name = "label";
-	label->BackColor = color;
-	label->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 6.75F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,static_cast<System::Byte>(0)));
-	this->Controls->Add(label);
+	row_++;
+	col_ = 1;
+	start = start_+2;
+	AddTableFooter("Summen", spalte_jahr_, 20, 15);
 
+	start = start_+3;
 	// Jahreshaushalt
 	if(show_jz_)
 	{
-		System::Windows::Forms::Label^  haushalt = gcnew System::Windows::Forms::Label();
-		haushalt->Location = System::Drawing::Point(spalte_jh_,start_+3);
-		haushalt->AutoSize = false;
-		haushalt->Size = System::Drawing::Size(spaltenbreite_, 13);
-		haushalt->TextAlign = System::Drawing::ContentAlignment::TopRight;
-		haushalt->Text = haushalt_s;
-		haushalt->Name = "haushalt";
-		haushalt->BackColor = color;
-		haushalt->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 6.75F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,static_cast<System::Byte>(0)));
-		this->Controls->Add(haushalt);
+		AddTableFooter(haushalt_s, spalte_jh_, spaltenbreite_, 13);
 	}
-
 	// BundLand
 	if(show_bundland_)
 	{
-		System::Windows::Forms::Label^  bundland = gcnew System::Windows::Forms::Label();
-		bundland->Location = System::Drawing::Point(spalte_bundland_,start_+3);
-		bundland->AutoSize = false;
-		bundland->Size = System::Drawing::Size(spaltenbreite_, 13);
-		bundland->TextAlign = System::Drawing::ContentAlignment::TopRight;
-		bundland->Text = bund_land_s;
-		bundland->Name = "bundland";
-		bundland->BackColor = color;
-		bundland->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 6.75F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,static_cast<System::Byte>(0)));
-		this->Controls->Add(bundland);
+		AddTableFooter(bund_land_s, spalte_bundland_, spaltenbreite_, 13);
 	}
 
 	// MLA
 	if(show_mla_)
 	{
-		System::Windows::Forms::Label^  mla = gcnew System::Windows::Forms::Label();
-		mla->Location = System::Drawing::Point(spalte_mla_,start_+3);
-		mla->AutoSize = false;
-		mla->Size = System::Drawing::Size(spaltenbreite_, 13);
-		mla->TextAlign = System::Drawing::ContentAlignment::TopRight;
-		mla->Text = mla_s;
-		mla->Name = "mla";
-		mla->BackColor = color;
-		mla->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 6.75F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,static_cast<System::Byte>(0)));
-		this->Controls->Add(mla);
+		AddTableFooter(mla_s, spalte_mla_, spaltenbreite_, 13);
 	}
 
 	// Restmittel
 	if(show_restmittel_)
 	{
-		System::Windows::Forms::Label^  restmittel = gcnew System::Windows::Forms::Label();	
-		restmittel->Location = System::Drawing::Point(spalte_restmittel_,start_+3);
-		restmittel->AutoSize = false;
-		restmittel->Size = System::Drawing::Size(spaltenbreite_, 13);
-		restmittel->TextAlign = System::Drawing::ContentAlignment::TopRight;
-		restmittel->Text = restmittel_s;
-		restmittel->Name = "restmittel";
-		restmittel->BackColor = color;
-		restmittel->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 6.75F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,static_cast<System::Byte>(0)));
-		this->Controls->Add(restmittel);
+		AddTableFooter(restmittel_s, spalte_restmittel_, spaltenbreite_, 13);		
 	}
 
 	// Mehr-/Minderkosten
 	if(show_mehrminder_)
 	{
-		System::Windows::Forms::Label^  mehr_minder = gcnew System::Windows::Forms::Label();	
-		mehr_minder->Location = System::Drawing::Point(spalte_mehr_minder_,start_+3);
-		mehr_minder->AutoSize = false;
-		mehr_minder->Size = System::Drawing::Size(spaltenbreite_, 13);
-		mehr_minder->TextAlign = System::Drawing::ContentAlignment::TopRight;
-		mehr_minder->Text = mehr_minder_s;
-		mehr_minder->Name = "mehr_minder";
-		mehr_minder->BackColor = color;
-		mehr_minder->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 6.75F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,static_cast<System::Byte>(0)));
-		this->Controls->Add(mehr_minder);
+		AddTableFooter(mehr_minder_s, spalte_mehr_minder_, spaltenbreite_, 13);		
 	}
 
 	// GK Real
 	if(show_gk_real_)
 	{
-		System::Windows::Forms::Label^  gk_real = gcnew System::Windows::Forms::Label();	
-		gk_real->Location = System::Drawing::Point(spalte_gk_real_,start_+3);
-		gk_real->AutoSize = false;
-		gk_real->Size = System::Drawing::Size(spaltenbreite_, 13);
-		gk_real->TextAlign = System::Drawing::ContentAlignment::TopRight;
-		gk_real->Text = gk_real_s;
-		gk_real->Name = "gk_real";
-		gk_real->BackColor = color;
-		gk_real->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 6.75F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,static_cast<System::Byte>(0)));
-		this->Controls->Add(gk_real);
+		AddTableFooter(gk_real_s, spalte_gk_real_, spaltenbreite_, 13);
 	}
 
 	// GK Kom
 	if(show_gk_kom_)
 	{
-		System::Windows::Forms::Label^  gk_kom = gcnew System::Windows::Forms::Label();	
-		gk_kom->Location = System::Drawing::Point(spalte_gk_kom_,start_+3);
-		gk_kom->AutoSize = false;
-		gk_kom->Size = System::Drawing::Size(spaltenbreite_, 13);
-		gk_kom->TextAlign = System::Drawing::ContentAlignment::TopRight;
-		gk_kom->Text = gk_kom_s;
-		gk_kom->Name = "gk_kom";
-		gk_kom->BackColor = color;
-		gk_kom->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 6.75F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,static_cast<System::Byte>(0)));
-		this->Controls->Add(gk_kom);
+		AddTableFooter(gk_kom_s, spalte_gk_kom_, spaltenbreite_, 13);
 	}
 
 	// GK Priv
 	if(show_gk_priv_)
 	{
-		System::Windows::Forms::Label^  gk_priv = gcnew System::Windows::Forms::Label();	
-		gk_priv->Location = System::Drawing::Point(spalte_gk_priv_,start_+3);
-		gk_priv->AutoSize = false;
-		gk_priv->Size = System::Drawing::Size(spaltenbreite_, 13);
-		gk_priv->TextAlign = System::Drawing::ContentAlignment::TopRight;
-		gk_priv->Text = gk_priv_s;
-		gk_priv->Name = "gk_priv";
-		gk_priv->BackColor = color;
-		gk_priv->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 6.75F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,static_cast<System::Byte>(0)));
-		this->Controls->Add(gk_priv);
+		AddTableFooter(gk_priv_s, spalte_gk_priv_, spaltenbreite_, 13);		
 	}
 
 	// Hintergrund
@@ -1274,12 +1062,8 @@ void gesamt_uebersicht_result::place_print_button()
 	btn_print->Location=System::Drawing::Point(5, start_);
 	btn_print->Size = System::Drawing::Size(926, 20);
 	this->Controls->Add(btn_print);
-
-	System::Windows::Forms::Label^  label_freespace = gcnew System::Windows::Forms::Label();
-	label_freespace->Location = System::Drawing::Point(0,start_+20);
-	label_freespace->AutoSize = false;
-	label_freespace->Size = System::Drawing::Size(5, 10);
-	this->Controls->Add(label_freespace);
+	start = start_;
+	ResultForm::place_button();
 }
 
 // Events
@@ -1718,4 +1502,11 @@ void gesamt_uebersicht_result::create_page_sign(System::Drawing::Printing::Print
 
 	// Programm
 	e->Graphics->DrawString("erstellt mit Hilfe von FÖRDI © MKS",small_format,Brushes::Black,970,810);
+}
+
+void gesamt_uebersicht_result::AddCellC(String^ text, int xPos, int row, String^ name)
+{
+	AddCell(text, xPos, row);
+	label->Name = name;
+	label->Click += gcnew System::EventHandler(this, &gesamt_uebersicht_result::Click);
 }

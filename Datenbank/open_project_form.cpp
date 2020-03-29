@@ -93,26 +93,25 @@ void open_project_form::btn_search_Click(System::Object^  sender, System::EventA
 
 void open_project_form::projekte_DoubleClick(System::Object^  sender, System::EventArgs^  e)
 {
-	if(projekte->SelectedIndex!=-1)
-	{
-		Form^ open_project = gcnew project_form(Convert::ToInt32(id_[projekte->SelectedIndex]),user_id_);
-		Hide();
-		open_project->ShowDialog();
-		Close();
-	}
+	OpenProject();
 }
 
 void open_project_form::btn_open_Click(System::Object^  sender, System::EventArgs^  e)
 {
-	if(projekte->SelectedIndex!=-1)
+	OpenProject();
+}
+
+void open_project_form::OpenProject()
+{
+	if (projekte->SelectedIndex != -1)
 	{
-		Form^ open_project = gcnew project_form(Convert::ToInt32(id_[projekte->SelectedIndex]),user_id_);
+		Form^ open_project = gcnew project_form(Convert::ToInt32(id_[projekte->SelectedIndex]), user_id_);
 		Hide();
 		open_project->ShowDialog();
-		Close();
+		Show();
 	}
 	else
-		Windows::Forms::MessageBox::Show("Bitte wählen Sie ein Projekt.","Kein Eintrag gewählt.");
+		Windows::Forms::MessageBox::Show("Bitte wählen Sie ein Projekt.", "Kein Eintrag gewählt.");
 }
 
 void open_project_form::btn_close_Click(System::Object^  sender, System::EventArgs^  e)

@@ -291,5 +291,7 @@ namespace Datenbank {
 
 		void staedte_TextChanged(System::Object^  sender, System::EventArgs^  e);
 		void gebiete_TextChanged(System::Object^  sender, System::EventArgs^  e);
+
+		void OpenProject();
 };
 }
