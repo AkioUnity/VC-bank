@@ -616,10 +616,7 @@ void bew_ztr_result::GenerateApproval(List<String^>^ werte,int eintrag)
 	AddCellC(werte[9], s_einger, rowNum, id);
 	AddCellC(werte[10], s_gepr, rowNum, id);
 	AddCellC(werte[11], s_mehr_minder, rowNum, id);
-	SetLabelSize(85, 15);
-	AddCellC(werte[12], s_zb_nr, rowNum, id);
-
-	row_++;
+	SetLabelSize(85, 15);	
 
 	System::Windows::Forms::Label^  line_back = gcnew System::Windows::Forms::Label();
 	line_back->Location = System::Drawing::Point(0,start-3);
@@ -642,48 +639,15 @@ void bew_ztr_result::generate_footer( Decimal bund_land, Decimal mla, Decimal me
 	page_content_[page_content_->Count-1]->Add(footer);
 
 	// foerderbetrag
-	System::Windows::Forms::Label^  foerderbetrag_ges = gcnew System::Windows::Forms::Label();	
-	foerderbetrag_ges->Location = System::Drawing::Point(s_foerder,start);
-	foerderbetrag_ges->AutoSize = false;
-	foerderbetrag_ges->Size = System::Drawing::Size(85, 15);
-	foerderbetrag_ges->TextAlign = System::Drawing::ContentAlignment::TopRight;
-	foerderbetrag_ges->Text = Decimal_to_string(bund_land+mla);
-	foerderbetrag_ges->Name = "foerderbetrag_ges";
-	foerderbetrag_ges->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 6.75F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,static_cast<System::Byte>(0)));
-	this->Controls->Add(foerderbetrag_ges);
+	row_++;
+	col_ = 6;	
+	AddTableFooter(Decimal_to_string(bund_land + mla), s_foerder, 85, 15);
+	//foerderbetrag_ges->Text = Decimal_to_string(bund_land + mla);
+	AddTableFooter(Decimal_to_string(bund_land), s_bund_land, 85, 15);
+	AddTableFooter(Decimal_to_string(mla), s_mla, 85, 15);
+	col_ += 3;
+	AddTableFooter(Decimal_to_string(mehr_minder), s_mehr_minder, 85, 15);
 
-	// bund_land
-	System::Windows::Forms::Label^  bund_land_ges = gcnew System::Windows::Forms::Label();	
-	bund_land_ges->Location = System::Drawing::Point(s_bund_land, start);
-	bund_land_ges->AutoSize = false;
-	bund_land_ges->Size = System::Drawing::Size(85, 15);
-	bund_land_ges->TextAlign = System::Drawing::ContentAlignment::TopRight;
-	bund_land_ges->Text = Decimal_to_string(bund_land);
-	bund_land_ges->Name = "bund_land_ges";
-	bund_land_ges->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 6.75F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,static_cast<System::Byte>(0)));
-	this->Controls->Add(bund_land_ges);
-
-	// mla
-	System::Windows::Forms::Label^  mla_ges = gcnew System::Windows::Forms::Label();	
-	mla_ges->Location = System::Drawing::Point(s_mla, start);
-	mla_ges->AutoSize = false;
-	mla_ges->Size = System::Drawing::Size(85, 15);
-	mla_ges->TextAlign = System::Drawing::ContentAlignment::TopRight;
-	mla_ges->Text = Decimal_to_string(mla);
-	mla_ges->Name = "mla_ges";
-	mla_ges->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 6.75F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,static_cast<System::Byte>(0)));
-	this->Controls->Add(mla_ges);
-
-	// mehr_minder
-	System::Windows::Forms::Label^  mehr_minder_ges = gcnew System::Windows::Forms::Label();	
-	mehr_minder_ges->Location = System::Drawing::Point(s_mehr_minder, start);
-	mehr_minder_ges->AutoSize = false;
-	mehr_minder_ges->Size = System::Drawing::Size(85, 15);
-	mehr_minder_ges->Text = Decimal_to_string(mehr_minder);
-	mehr_minder_ges->Name = "mehr_minder_ges";
-	mehr_minder_ges->TextAlign = System::Drawing::ContentAlignment::TopRight;
-	mehr_minder_ges->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 6.75F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,static_cast<System::Byte>(0)));
-	this->Controls->Add(mehr_minder_ges);
 	start+=20;
 }
 

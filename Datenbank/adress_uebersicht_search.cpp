@@ -140,6 +140,7 @@ void adress_uebersicht_search::btn_create_result_Click(System::Object^  sender, 
 	Hide();
 	result->ShowDialog();
 	Show();
+	delete result;
 	//Close();
 }
 

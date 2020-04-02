@@ -69,6 +69,7 @@ namespace Datenbank {
 			{
 				delete components;
 			}
+			delete exl_;
 		}
 	private: System::ComponentModel::IContainer^  components;
 	protected: 

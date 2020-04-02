@@ -483,52 +483,20 @@ void kostengr_uebersicht_result::generate_header(	String^ kostengruppe,
 	header->Add(programm);
 	page_content_[page_content_->Count-1]->Add(header);
 
-	System::Windows::Forms::Label^  kostengr_label = gcnew System::Windows::Forms::Label();
-	kostengr_label->Location = System::Drawing::Point(5, 1+start_);
-	kostengr_label->AutoSize = true;
-	kostengr_label->Text = "Kostengruppe  : "+kostengruppe;
-	kostengr_label->BackColor = System::Drawing::Color::Silver;
-	kostengr_label->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 6.75F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,static_cast<System::Byte>(0)));
-	this->Controls->Add(kostengr_label);
-
-	System::Windows::Forms::Label^  stadt_label = gcnew System::Windows::Forms::Label();
-	stadt_label->Location = System::Drawing::Point(5, 1*13+start_);
-	stadt_label->AutoSize = true;
-	stadt_label->Text = "Stadt                : "+stadt;
-	stadt_label->BackColor = System::Drawing::Color::Silver;
-	stadt_label->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 6.75F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,static_cast<System::Byte>(0)));
-	this->Controls->Add(stadt_label);
-
-	System::Windows::Forms::Label^  gebiet_label = gcnew System::Windows::Forms::Label();
-	gebiet_label->Location = System::Drawing::Point(5, 2*13+1+start_);
-	gebiet_label->AutoSize = true;
-	gebiet_label->Text = "Gebiet              : "+gebiet;
-	gebiet_label->BackColor = System::Drawing::Color::Silver;
-	gebiet_label->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 6.75F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,static_cast<System::Byte>(0)));
-	this->Controls->Add(gebiet_label);
-
-	System::Windows::Forms::Label^  programm_label = gcnew System::Windows::Forms::Label();
-	programm_label->Location = System::Drawing::Point(5, 3*13+1+start_);
-	programm_label->AutoSize = true;
-	programm_label->Text = "Programm        : "+programm;
-	programm_label->BackColor = System::Drawing::Color::Silver;
-	programm_label->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 6.75F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,static_cast<System::Byte>(0)));
-	this->Controls->Add(programm_label);
-
-	System::Windows::Forms::Label^  header_back = gcnew System::Windows::Forms::Label();
-	header_back->Location = System::Drawing::Point(0, start_);
-	header_back->AutoSize = false;
-	header_back->Size = System::Drawing::Size(936, 4*13+1);
-	header_back->BackColor = System::Drawing::Color::Silver;
-	this->Controls->Add(header_back);	
-
-	start_+=4*13+10;
+	AddHeaderCell("Kostengruppe  : " + kostengruppe, 5, 1 + start_);
+	AddHeaderCell("Stadt         : " + stadt, 5, 1 * 13 + start_);
+	AddHeaderCell("Gebiet       : " + gebiet, 5, 2 * 13 + 1 + start_);
+	AddHeaderCell("Programm : " + programm, 5, 3 * 13 + 1 + start_);
+	start = start_;
+	AddHeaderDivider(936, 4 * 13 + 1);
+	start_ += 4 * 13 + 10;	
 }
 
 void kostengr_uebersicht_result::GenerateTableHeader()
 {
 	// zb_nr
 	row_++;
+	col_ = 2;
 	start = start_;
 	AddTableHeaderCell("ZB-Nr.", s_zb_nr);	
 	AddTableHeaderCell("Vorhaben", s_bezeichnung);
@@ -614,6 +582,7 @@ void kostengr_uebersicht_result::generate_entry(	String^ id,
 	SetLabelSize(85, 15);
 	AddCellC(mla_t, s_mla, rowNum, id);
 	SetLabelSize(85, 15);
+	AddCellC(bew_ztr_t, s_bew_ztr, rowNum, id);
 	AddCellC(vn_einger_t, s_einger, rowNum, id);
 	AddCellC(vn_gepr_t, s_gepr, rowNum, id);
 	AddCellC(mehr_minder_t, s_mehr_minder, rowNum, id);
@@ -650,9 +619,11 @@ void kostengr_uebersicht_result::generate_footer(	String^ foerderbetrag_s,
 	AddTableFooter(foerderbetrag_s, s_foerder,85, 15);
 	AddTableFooter(bund_land_s, s_bund_land, 85, 15);
 	AddTableFooter(mla_s, s_mla, 85, 15);
+	col_ += 3;
 	AddTableFooter(mehr_minder_s, s_mehr_minder, 85, 15);
 
 	start_+=25;
+	row_++;
 }
 
 void kostengr_uebersicht_result::place_print_button()

@@ -187,6 +187,7 @@ void kostengr_uebersicht_search::btn_create_Click(System::Object^  sender, Syste
 	Hide();
 	result->ShowDialog();
 	Show();
+	delete result;
 	//Close();
 }
 

@@ -1020,14 +1020,20 @@ void bewilligung_result_form::generate_footer(Decimal jahreshaushalt, Decimal bu
 	footer->Add(Convert::ToString(mehr_minder));
 	page_content_[page_content_->Count - 1]->Add(footer);
 
-	// foerderbetrag
+	row_++;
+	col_ = 6;
+	
+	AddTableFooter(Decimal_to_string(bund_land + mla), s_foerder, 85, 15);	
+	AddTableFooter(Decimal_to_string(bund_land ), s_bund_land, 85, 15);
+	AddTableFooter(Decimal_to_string( mla), s_mla, 85, 15);
+	AddTableFooter(Decimal_to_string(mehr_minder), s_mehr_minder, 85, 15);
+	// foerderbetrag    why can't I delete below code? very strange.
 	System::Windows::Forms::Label^  foerderbetrag_ges = gcnew System::Windows::Forms::Label();
 	foerderbetrag_ges->Location = System::Drawing::Point(s_foerder, start);
 	foerderbetrag_ges->AutoSize = false;
 	foerderbetrag_ges->Size = System::Drawing::Size(85, 15);
 	foerderbetrag_ges->TextAlign = System::Drawing::ContentAlignment::TopRight;
 	foerderbetrag_ges->Text = Decimal_to_string(bund_land + mla);
-	foerderbetrag_ges->Name = "foerderbetrag_ges";
 	foerderbetrag_ges->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 6.75F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
 	this->Controls->Add(foerderbetrag_ges);
 
@@ -1063,10 +1069,11 @@ void bewilligung_result_form::generate_footer(Decimal jahreshaushalt, Decimal bu
 	mehr_minder_ges->TextAlign = System::Drawing::ContentAlignment::TopRight;
 	mehr_minder_ges->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 6.75F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
 	this->Controls->Add(mehr_minder_ges);
-
 	if (jahreshaushalt != -1)
 	{
-		// Restmittel
+		row_++;
+		col_ = 4;
+
 		System::Windows::Forms::Label^  restmittel_label = gcnew System::Windows::Forms::Label();
 		restmittel_label->Location = System::Drawing::Point(s_foerder - 100, start + 20);
 		restmittel_label->AutoSize = true;
@@ -1084,8 +1091,16 @@ void bewilligung_result_form::generate_footer(Decimal jahreshaushalt, Decimal bu
 		restmittel->TextAlign = System::Drawing::ContentAlignment::TopRight;
 		restmittel->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 6.75F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
 		this->Controls->Add(restmittel);
+
+		start = start + 20;
+		AddTableFooter("Restmittel", s_foerder - 100, 85, 15);
+		col_++;
+		AddTableFooter(Decimal_to_string(jahreshaushalt - (bund_land + mla)), s_foerder , 85, 15);
+		start = start - 20;
 	}
 	start += 30;
+	row_++;
+	row_++;
 }
 
 void bewilligung_result_form::place_button()

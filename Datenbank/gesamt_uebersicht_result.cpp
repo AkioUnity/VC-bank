@@ -770,44 +770,17 @@ void gesamt_uebersicht_result::generate_header(	String^ stadt,
 	if(start_!=0)
 		start_+=10;
 
-	System::Windows::Forms::Label^  stadt_label = gcnew System::Windows::Forms::Label();
-	stadt_label->Location = System::Drawing::Point(5, 1+start_);
-	stadt_label->AutoSize = true;
-	stadt_label->Text = "Stadt         : "+stadt;
-	stadt_label->BackColor = System::Drawing::Color::Silver;
-	stadt_label->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 6.75F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,static_cast<System::Byte>(0)));
-	this->Controls->Add(stadt_label);
-
-
-	System::Windows::Forms::Label^  gebiet_label = gcnew System::Windows::Forms::Label();
-	gebiet_label->Location = System::Drawing::Point(5, 1*13+1+start_);
-	gebiet_label->AutoSize = true;
-	gebiet_label->Text = "Gebiet       : "+gebiet;
-	gebiet_label->BackColor = System::Drawing::Color::Silver;
-	gebiet_label->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 6.75F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,static_cast<System::Byte>(0)));
-	this->Controls->Add(gebiet_label);
-
-	System::Windows::Forms::Label^  programm_label = gcnew System::Windows::Forms::Label();
-	programm_label->Location = System::Drawing::Point(5, 2*13+1+start_);
-	programm_label->AutoSize = true;
-	programm_label->Text = "Programm : "+programm;
-	programm_label->BackColor = System::Drawing::Color::Silver;
-	programm_label->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 6.75F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,static_cast<System::Byte>(0)));
-	this->Controls->Add(programm_label);
-
-	System::Windows::Forms::Label^  header_back = gcnew System::Windows::Forms::Label();
-	header_back->Location = System::Drawing::Point(0, start_);
-	header_back->AutoSize = false;
-	header_back->Size = System::Drawing::Size(936, 3*13+1);
-	header_back->BackColor = System::Drawing::Color::Silver;
-	this->Controls->Add(header_back);	
-
-	start_+=3*13+10;
+	start = start_;
+	AddHeaderCell("Stadt         : " + stadt, 5, 1 + start);
+	AddHeaderCell("Gebiet       : " + gebiet, 5, 1 * 13 + 1 + start);
+	AddHeaderCell("Programm : " + programm, 5, 2 * 13 + 1 + start);
+	AddHeaderDivider(936, 3 * 13 + 1);
+	start_ += 3 * 13 + 10;	
+	start = start_;
 }
 
 void gesamt_uebersicht_result::GenerateTableHeader()
 {
-	start = start_ + 3;
 	row_++;
 	col_ = 1;
 	AddTableHeaderCell("Jahr", spalte_jahr_);	
@@ -1049,10 +1022,11 @@ void gesamt_uebersicht_result::generate_footer(	String^ haushalt_s,
 	ueberschrift_back->Location = System::Drawing::Point(0,start_);
 	ueberschrift_back->AutoSize = false;
 	ueberschrift_back->Size = System::Drawing::Size(936, 17);
-	ueberschrift_back->BackColor = color;
+	//ueberschrift_back->BackColor = color;
 	this->Controls->Add(ueberschrift_back);
 
 	start_+=15;
+	row_++;
 }
 
 void gesamt_uebersicht_result::place_print_button()

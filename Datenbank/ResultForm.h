@@ -25,6 +25,15 @@ public:
 		InitializeComponent();
 	}
 
+protected:
+	/// <summary>
+	/// Verwendete Ressourcen bereinigen.
+	/// </summary>
+	~ResultForm()
+	{
+		delete exl_;
+	}
+public:
 	void InitializeComponent(void)
 	{	
 		this->btn_exportExl = (gcnew System::Windows::Forms::Button());

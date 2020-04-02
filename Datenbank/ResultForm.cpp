@@ -37,8 +37,7 @@ void ResultForm::AddHeaderCell(String^ text, int xPos, int yPos)
 	int col = 1;
 	exl_->setCell(row_,col, text);
 	exl_->setCellAutofit(row_, col);
-	exl_->setCellItalic(row_, col);
-
+	//exl_->setCellItalic(row_, col);
 	row_++;
 }
 
@@ -102,6 +101,7 @@ void ResultForm::AddCell(String^ text, int xPos, int row)
 	//kostenart->Click += gcnew System::EventHandler(this, &bew_ztr_result::Click);
 	this->Controls->Add(label);
 	exl_->setCell(row_, col_, text);
+	exl_->setCellAutofit(row_, col_);
 	col_++;
 }
 

@@ -142,6 +142,7 @@ void bewilligung_auswertung_form::button1_Click(System::Object^  sender, System:
 	Hide();
 	result->ShowDialog();
 	Show();
+	delete result;
 	//Close();
 }
 

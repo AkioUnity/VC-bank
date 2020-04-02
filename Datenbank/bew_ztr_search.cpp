@@ -115,6 +115,8 @@ void bew_ztr_search::search_Click(System::Object^  sender, System::EventArgs^  e
 		Hide();
 		result->ShowDialog();
 		Show();
+		delete result;
+
 		//Close();
 	}
 	else
