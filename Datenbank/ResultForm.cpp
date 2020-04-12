@@ -133,3 +133,18 @@ void ResultForm::AddHeaderDivider(int width, int height)
 	this->Controls->Add(header_back);
 }
 
+
+
+void ResultForm::AddLineBreak(System::Drawing::Color color)
+{
+	label = gcnew System::Windows::Forms::Label();
+	label->Location = System::Drawing::Point(0, start - 3);  //-3
+	label->AutoSize = false;
+	if (heightCalc < 20)
+		heightCalc = 20;
+	label->Size = System::Drawing::Size(936, heightCalc + 6);  //20
+	label->BackColor = color;	
+	this->Controls->Add(label);
+
+	start += heightCalc + 8;
+}

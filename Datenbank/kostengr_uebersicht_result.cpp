@@ -575,7 +575,10 @@ void kostengr_uebersicht_result::generate_entry(	String^ id,
 	AddCellC(jahr_t, s_jahr, rowNum, id);
 	AddCellC(ZB_NR_t, s_zb_nr, rowNum, id);
 	AddCellC(bezeichnung_t, s_bezeichnung, rowNum, id);
-	SetLabelSize(110, 15);
+
+	label->MaximumSize = System::Drawing::Size(110, 0);
+	heightCalc = label->Size.Height;
+	
 	AddCellC(tb_t, s_tb, rowNum, id);
 	AddCellC(vom_t, s_vom, rowNum, id);
 	AddCellC(foerderbetrag_t, s_foerder, rowNum, id,true);
@@ -590,16 +593,9 @@ void kostengr_uebersicht_result::generate_entry(	String^ id,
 	AddCellC(mehr_minder_t, s_mehr_minder, rowNum, id,true);
 	SetLabelSize(85, 15);	
 
-	System::Windows::Forms::Label^  line_back = gcnew System::Windows::Forms::Label();
-	line_back->Location = System::Drawing::Point(0,start_-3);
-	line_back->Name = id;
-	line_back->AutoSize = false;
-	line_back->Size = System::Drawing::Size(936, 20);
-	line_back->BackColor = color;
-	line_back->Click += gcnew System::EventHandler(this, &kostengr_uebersicht_result::Click);
-	this->Controls->Add(line_back);
-
-	start_+=20;
+	AddLineBreak(color);
+	label->Name = id;
+	label->Click += gcnew System::EventHandler(this, &kostengr_uebersicht_result::Click);
 }
 
 void kostengr_uebersicht_result::generate_footer(	String^ foerderbetrag_s, 

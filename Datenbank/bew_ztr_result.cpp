@@ -605,7 +605,10 @@ void bew_ztr_result::GenerateApproval(List<String^>^ werte,int eintrag)
 	AddCellC(RC.get_val(0, 1), s_kostenart, rowNum,id);
 	AddCellC(werte[1], s_zb_nr, rowNum,id);
 	AddCellC(werte[2], s_bezeichnung, rowNum, id);
-	SetLabelSize(110, 15);
+
+	label->MaximumSize = System::Drawing::Size(110, 0);
+	heightCalc = label->Size.Height;
+
 	AddCellC(werte[3], s_tb, rowNum, id);
 	AddCellC(werte[4], s_vom, rowNum, id);
 	AddCellC(werte[5], s_foerder, rowNum, id,true);  // foerderbetrag
@@ -620,15 +623,9 @@ void bew_ztr_result::GenerateApproval(List<String^>^ werte,int eintrag)
 	AddCellC(werte[11], s_mehr_minder, rowNum, id,true);
 	SetLabelSize(85, 15);	
 
-	System::Windows::Forms::Label^  line_back = gcnew System::Windows::Forms::Label();
-	line_back->Location = System::Drawing::Point(0,start-3);
-	line_back->Name = id;
-	line_back->AutoSize = false;
-	line_back->Size = System::Drawing::Size(936, 20);
-	line_back->BackColor = color;
-	line_back->Click += gcnew System::EventHandler(this, &bew_ztr_result::Click);
-	this->Controls->Add(line_back);
-	start+=20;
+	AddLineBreak(color);
+	label->Name = id;
+	label->Click += gcnew System::EventHandler(this, &bew_ztr_result::Click);
 }
 
 void bew_ztr_result::generate_footer( Decimal bund_land, Decimal mla, Decimal mehr_minder)

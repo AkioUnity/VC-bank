@@ -76,4 +76,6 @@ public:
 	void AddTableHeaderCell(String^ text, int xPos, int width, int height);
 	void SetLabelSize(int width, int height);
 	void AddHeaderDivider(int width, int height);
+	void AddLineBreak(System::Drawing::Color color);
+	int heightCalc;
 };

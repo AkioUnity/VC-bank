@@ -849,10 +849,11 @@ void bewilligung_result_form::GenerateApproval(List<String^>^ valueList, int ein
 	AddCellC(valueList[2], s_bezeichnung, rowNum, id);
 
 	label->MaximumSize = System::Drawing::Size(100, 0);
-	int heightCalc = label->Size.Height;	
+	heightCalc = label->Size.Height;	
 
-	AddCellC(valueList[3], s_tb, rowNum, id);
+	AddCellC(valueList[3], s_tb, rowNum, id);	
 	AddCellC(valueList[4], s_vom, rowNum, id);
+	
 	AddCellC(valueList[5], s_foerder, rowNum, id,true);
 	SetLabelSize(85, 15);
 	AddCellC(valueList[6], s_bund_land, rowNum, id,true);
@@ -864,17 +865,10 @@ void bewilligung_result_form::GenerateApproval(List<String^>^ valueList, int ein
 	AddCellC(valueList[10], s_gepr, rowNum, id);
 	AddCellC(valueList[11], s_mehr_minder, rowNum, id,true);
 	SetLabelSize(85, 15);
-	
-	System::Windows::Forms::Label^  line_back = gcnew System::Windows::Forms::Label();
-	line_back->Location = System::Drawing::Point(0, start - 3);
-	line_back->Name = id;
-	line_back->AutoSize = false;
-	line_back->Size = System::Drawing::Size(936, 20);
-	line_back->BackColor = color;
-	line_back->Click += gcnew System::EventHandler(this, &bewilligung_result_form::Click);
-	this->Controls->Add(line_back);
 
-	start += heightCalc+8;
+	AddLineBreak(color);
+	label->Name = id;	
+	label->Click += gcnew System::EventHandler(this, &bewilligung_result_form::Click);
 }
 
 void bewilligung_result_form::generate_footer(Decimal jahreshaushalt, Decimal bund_land, Decimal mla, Decimal mehr_minder)
