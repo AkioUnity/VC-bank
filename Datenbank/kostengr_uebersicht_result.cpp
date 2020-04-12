@@ -513,6 +513,8 @@ void kostengr_uebersicht_result::GenerateTableHeader()
 	AddTableHeaderCell("VN eingereicht", s_einger);
 	AddTableHeaderCell("VN geprüft", s_gepr);
 	AddTableHeaderCell("Mehr-/Minderkosten", s_mehr_minder);
+
+	sumStart = row_ + 1;
 	
 	System::Windows::Forms::Label^  ueberschrift_back = gcnew System::Windows::Forms::Label();
 	ueberschrift_back->Location = System::Drawing::Point(0,start_);
@@ -576,16 +578,16 @@ void kostengr_uebersicht_result::generate_entry(	String^ id,
 	SetLabelSize(110, 15);
 	AddCellC(tb_t, s_tb, rowNum, id);
 	AddCellC(vom_t, s_vom, rowNum, id);
-	AddCellC(foerderbetrag_t, s_foerder, rowNum, id);
+	AddCellC(foerderbetrag_t, s_foerder, rowNum, id,true);
 	SetLabelSize(85, 15);
-	AddCellC(bund_land_t, s_bund_land, rowNum, id);
+	AddCellC(bund_land_t, s_bund_land, rowNum, id,true);
 	SetLabelSize(85, 15);
-	AddCellC(mla_t, s_mla, rowNum, id);
+	AddCellC(mla_t, s_mla, rowNum, id,true);
 	SetLabelSize(85, 15);
 	AddCellC(bew_ztr_t, s_bew_ztr, rowNum, id);
 	AddCellC(vn_einger_t, s_einger, rowNum, id);
 	AddCellC(vn_gepr_t, s_gepr, rowNum, id);
-	AddCellC(mehr_minder_t, s_mehr_minder, rowNum, id);
+	AddCellC(mehr_minder_t, s_mehr_minder, rowNum, id,true);
 	SetLabelSize(85, 15);	
 
 	System::Windows::Forms::Label^  line_back = gcnew System::Windows::Forms::Label();
@@ -613,6 +615,7 @@ void kostengr_uebersicht_result::generate_footer(	String^ foerderbetrag_s,
 	footer->Add(mehr_minder_s);
 	page_content_[page_content_->Count-1]->Add(footer);
 
+	row_++;
 	row_++;
 	col_ = 6;
 	start = start_;
@@ -929,7 +932,12 @@ void kostengr_uebersicht_result::create_page_sign(System::Drawing::Printing::Pri
 
 void kostengr_uebersicht_result::AddCellC(String^ text, int xPos, int row, String^ name)
 {
-	AddCell(text, xPos, row);
+	AddCellC(text, xPos, row, name, false);
+}
+
+void kostengr_uebersicht_result::AddCellC(String^ text, int xPos, int row, String^ name, bool isDecimal)
+{
+	AddCell(text, xPos, row, isDecimal);
 	label->Name = name;
 	label->Click += gcnew System::EventHandler(this, &kostengr_uebersicht_result::Click);
 }

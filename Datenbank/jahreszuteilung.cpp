@@ -13,6 +13,10 @@ using namespace System::Collections::Generic;
 
 void jahreszuteilung::jahreszuteilung_Load(System::Object^  sender, System::EventArgs^  e)
 {
+	Hide();
+	loadingForm->Show();
+	loadingForm->Controls->Find("texter", true)[0]->Text = "Lade";
+
 	if(load_stadt())
 	{
 		jh_stadt->Enabled=true;
@@ -39,6 +43,8 @@ void jahreszuteilung::jahreszuteilung_Load(System::Object^  sender, System::Even
 		jh_jahr->Enabled=false;
 		jh_jahr->Text="";*/
 	}
+	loadingForm->Hide();
+	Show();
 }
 
 bool jahreszuteilung::load_stadt()
@@ -63,6 +69,7 @@ bool jahreszuteilung::load_stadt()
 		MyRecordSet RC("SELECT * FROM Staedte");
 		for(int i=0;i<RC.get_row();++i)
 		{
+			loadingForm->SetProgress();
 			if(is_existent_in(stadt_ids,RC.get_val(i,0)))
 			{
 				bool insert=false;
@@ -179,6 +186,9 @@ void jahreszuteilung::load_jh()  //
 	String^ query = MyRecordSet::QueryOneAnnualBudget(jh_stadt->Text, jh_gebiet->Text, jh_programm->Text, jh_jahr->Text);
 	MyRecordSet RC(query);
 	Decimal summe=0;
+
+	loadingForm->SetProgress();
+
 	for(int i=0;i<RC.get_row();++i)
 	{
 		Decimal betrag=Decimal(Convert::ToDouble(RC.get_val(i,2)));

@@ -291,6 +291,7 @@ namespace Datenbank {
 		void create_page_sign(System::Drawing::Printing::PrintPageEventArgs^);
 	public:
 		void AddCellC(String^ text, int xPos, int row, String^ name);
+		void AddCellC(String^ text, int xPos, int row, String^ name, bool isDecimal);
 
 };
 }

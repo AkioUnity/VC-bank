@@ -47,8 +47,7 @@ namespace Datenbank {
 			s_bew_ztr(605),
 			s_einger(680),
 			s_gepr(755),
-			s_mehr_minder(830),
-			start(0),
+			s_mehr_minder(830),			
 			// Printer Stuff
 			pages_(0),
 			print_page_(0),
@@ -110,8 +109,6 @@ namespace Datenbank {
 		int s_einger;
 		int s_gepr;
 		int s_mehr_minder;
-		int start;
-
 
 		// Print Stuff
 		int pages_;
@@ -236,5 +233,9 @@ namespace Datenbank {
 		void create_page_entry(System::Drawing::Printing::PrintPageEventArgs^, String^, String^, String^, String^, String^, String^, String^, String^, String^, String^, String^, String^, int, int);
 		void create_page_footer(System::Drawing::Printing::PrintPageEventArgs^, String^, String^, String^, String^, int);
 		void create_page_sign(System::Drawing::Printing::PrintPageEventArgs^);
+
+	public:
+		void AddCellC(String^ text, int xPos, int row, String^ name);
+		void AddCellC(String^ text, int xPos, int row, String^ name,bool isDecimal);
 	};
 }

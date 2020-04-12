@@ -708,7 +708,7 @@ void verwendungsnachweis_form::tB_summe_TextChanged(System::Object^  sender, Sys
 {
 	String^ txt=tabPage1->Controls->Find("tB_summe",true)[0]->Text;
 	txt=txt->Replace(".","");
-	txt=txt->Replace("€","");
+	txt=txt->Replace(L"€","");
 	txt=txt->Trim();
 	if(txt->Length>0)
 		if(txt[txt->Length-1]==',')
@@ -732,7 +732,7 @@ void verwendungsnachweis_form::tB_zuwendungsf_TextChanged(System::Object^  sende
 {
 	String^ txt=tabPage1->Controls->Find("tB_zuwendungsf",true)[0]->Text;
 	txt=txt->Replace(".","");
-	txt=txt->Replace("€","");
+	txt=txt->Replace(L"€","");
 	txt=txt->Trim();
 	if(txt->Length>0)
 		if(txt[txt->Length-1]==',')
@@ -813,7 +813,7 @@ void verwendungsnachweis_form::AdrChanged(System::Object^  sender, System::Event
 	String^ text=tabPage2->Controls[index]->Text;
 
 	text=text->Replace(".","");
-	text=text->Replace("€","");
+	text=text->Replace(L"€","");
 	text=text->Trim();
 
 	if(check_if_Decimal(text))
@@ -923,7 +923,7 @@ void verwendungsnachweis_form::TextChanged(System::Object^  sender, System::Even
 	String^ text=tabPage1->Controls[index]->Text;
 
 	text=text->Replace(".","");
-	text=text->Replace("€","");
+	text=text->Replace(L"€","");
 	text=text->Trim();
 
 	if(check_if_Decimal(text))

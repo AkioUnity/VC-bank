@@ -41,7 +41,7 @@ List<String^>^ fremdfoerderung_class::get_all(bool show_betrag)
 	List<String^>^ gesamt=gcnew List<String^>;
 	if(show_betrag)
 		for(int i=0;i<programm_->Count;++i)
-			gesamt->Add(programm_[i]+" ( "+Convert::ToString(betrag_[i])+" € )");
+			gesamt->Add(programm_[i]+" ( "+Convert::ToString(betrag_[i])+L" € )");
 	else
 		for(int i=0;i<programm_->Count;++i)
 			gesamt->Add(programm_[i]);

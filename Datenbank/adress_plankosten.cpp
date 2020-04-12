@@ -27,7 +27,7 @@ void adress_plankosten::tB_kosten_TextChanged(System::Object^  sender, System::E
 {
 	String^ txt=tB_kosten->Text;
 	txt=txt->Replace(".","");
-	txt=txt->Replace("€","");
+	txt=txt->Replace(L"€","");
 	txt=txt->Trim();
 	if(txt->Length>0)
 		if(txt[txt->Length-1]==',')
@@ -50,7 +50,7 @@ void adress_plankosten::tB_foerder_TextChanged(System::Object^  sender, System::
 {
 	String^ txt=tB_foerder->Text;
 	txt=txt->Replace(".","");
-	txt=txt->Replace("€","");
+	txt=txt->Replace(L"€","");
 	txt=txt->Trim();
 	if(txt->Length>0)
 		if(txt[txt->Length-1]==',')

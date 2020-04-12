@@ -8,6 +8,39 @@ using namespace System::Security::Cryptography;
 // Windows::Forms::MessageBox::Show();
 
 // Typconvert
+
+Decimal String_to_Decimal(String^ input)
+{
+	//if (input == "-")
+		//return 0;
+	String^ res = input->Replace(L" €", "");
+	/*res = res->Replace(".", "a");
+	res = res->Replace(",", ".");
+	res = res->Replace("a", ",");*/
+	try
+	{
+		Decimal dec = Convert::ToDecimal(res);
+		return  dec;
+	}
+	catch (System::OverflowException^)
+	{
+		System::Console::WriteLine(
+			"The conversion from String to decimal overflowed.");
+		return 0;
+	}
+	catch (System::FormatException^)
+	{
+		System::Console::WriteLine(
+			"The String is not formatted as a decimal.");
+		return 0;
+	}
+	catch (System::ArgumentNullException^)
+	{
+		System::Console::WriteLine("The String is 0.");
+		return 0;
+	}
+}
+
 String^ Decimal_to_string(Decimal input)
 {
 	String^ pre_comma=Decimal_to_dez(input);
@@ -68,12 +101,12 @@ String^ Decimal_to_kom(Decimal input)
 		if(post_comma->Length==1)
 			post_comma+="0";
 
-		post_comma+=" €";
+		post_comma+= L" €";
 
 		return post_comma;
 	}
 	else
-		return "00 €";
+		return L"00 €";
 }
 
 String^ date_to_string(String^ input)

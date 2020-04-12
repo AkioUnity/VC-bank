@@ -221,5 +221,6 @@ namespace Datenbank {
 
 	public:
 		void AddCellC(String^ text, int xPos, int row, String^ name);
+		void AddCellC(String^ text, int xPos, int row, String^ name, bool isDecimal);
 };
 }

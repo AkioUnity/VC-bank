@@ -453,7 +453,7 @@ void project_form::gk_real_TextChanged(System::Object^  sender, System::EventArg
 {
 	String^ txt=gk_real->Text;
 	txt=txt->Replace(".","");
-	txt=txt->Replace("€","");
+	txt=txt->Replace(L"€","");
 	txt=txt->Trim();
 	if(txt->Length>0)
 		if(txt[txt->Length-1]==',')
@@ -484,7 +484,7 @@ void project_form::gk_zuwendungsf_TextChanged(System::Object^  sender, System::E
 {
 	String^ txt=gk_zuwendungsf->Text;
 	txt=txt->Replace(".","");
-	txt=txt->Replace("€","");
+	txt=txt->Replace(L"€","");
 	txt=txt->Trim();
 	if(txt->Length>0)
 		if(txt[txt->Length-1]==',')

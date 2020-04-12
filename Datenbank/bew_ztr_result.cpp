@@ -253,9 +253,9 @@ void bew_ztr_result::bew_ztr_result_Load(System::Object^  sender, System::EventA
 				bool neg=false;
 				if(mehr_minder[0]=='-')
 					neg=true;
-				mehr_minder=mehr_minder->Replace("€","")->Replace("-","")->Replace(".","")->Trim();
-				bund_land=bund_land->Replace("€","")->Replace(".","")->Trim();
-				mla=mla->Replace("€","")->Replace(".","")->Trim();
+				mehr_minder=mehr_minder->Replace(L"€","")->Replace("-","")->Replace(".","")->Trim();
+				bund_land=bund_land->Replace(L"€","")->Replace(".","")->Trim();
+				mla=mla->Replace(L"€","")->Replace(".","")->Trim();
 				summe_bund_land+=Decimal(Convert::ToDouble(bund_land));
 				summe_mla+=Decimal(Convert::ToDouble(mla));
 				if(mehr_minder=="")
@@ -541,6 +541,8 @@ void bew_ztr_result::Generate_TableHeadings()
 	AddTableHeaderCell("VN eingereicht", s_einger);
 	AddTableHeaderCell("VN geprüft", s_gepr);
 	AddTableHeaderCell("Mehr-/Minderkosten", s_mehr_minder);
+
+	sumStart = row_+1;
 			
 	System::Windows::Forms::Label^  ueberschrift_back = gcnew System::Windows::Forms::Label();
 	ueberschrift_back->Location = System::Drawing::Point(0,start);
@@ -606,16 +608,16 @@ void bew_ztr_result::GenerateApproval(List<String^>^ werte,int eintrag)
 	SetLabelSize(110, 15);
 	AddCellC(werte[3], s_tb, rowNum, id);
 	AddCellC(werte[4], s_vom, rowNum, id);
-	AddCellC(werte[5], s_foerder, rowNum, id);  // foerderbetrag
+	AddCellC(werte[5], s_foerder, rowNum, id,true);  // foerderbetrag
 	SetLabelSize(85, 15);
-	AddCellC(werte[6], s_bund_land, rowNum, id);  // bund_land
+	AddCellC(werte[6], s_bund_land, rowNum, id,true);  // bund_land
 	SetLabelSize(85, 15);
-	AddCellC(werte[7], s_mla, rowNum, id);  // bund_land
+	AddCellC(werte[7], s_mla, rowNum, id,true);  // bund_land
 	SetLabelSize(85, 15);
 	AddCellC(werte[8], s_bew_ztr, rowNum, id);
 	AddCellC(werte[9], s_einger, rowNum, id);
 	AddCellC(werte[10], s_gepr, rowNum, id);
-	AddCellC(werte[11], s_mehr_minder, rowNum, id);
+	AddCellC(werte[11], s_mehr_minder, rowNum, id,true);
 	SetLabelSize(85, 15);	
 
 	System::Windows::Forms::Label^  line_back = gcnew System::Windows::Forms::Label();
@@ -639,6 +641,7 @@ void bew_ztr_result::generate_footer( Decimal bund_land, Decimal mla, Decimal me
 	page_content_[page_content_->Count-1]->Add(footer);
 
 	// foerderbetrag
+	row_++;
 	row_++;
 	col_ = 6;	
 	AddTableFooter(Decimal_to_string(bund_land + mla), s_foerder, 85, 15);
@@ -982,7 +985,13 @@ void bew_ztr_result::create_page_sign(System::Drawing::Printing::PrintPageEventA
 
 void Datenbank::bew_ztr_result::AddCellC(String^ text, int xPos, int row,String^ name)
 {
-	AddCell(text, xPos, row);
+	AddCellC(text, xPos, row, name, false);
+}
+
+void Datenbank::bew_ztr_result::AddCellC(String^ text, int xPos, int row, String^ name, bool isDecimal)
+{
+	AddCell(text, xPos, row,isDecimal);
 	label->Name = name;
 	label->Click += gcnew System::EventHandler(this, &bew_ztr_result::Click);
 }
+

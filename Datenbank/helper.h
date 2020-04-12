@@ -4,6 +4,7 @@ using namespace System::Collections::Generic;
 
 // Typconvert
 System::String^ Decimal_to_string(System::Decimal);
+System::Decimal String_to_Decimal(System::String^);
 System::String^ Decimal_to_dez(System::Decimal);
 System::String^ Decimal_to_kom(System::Decimal);
 

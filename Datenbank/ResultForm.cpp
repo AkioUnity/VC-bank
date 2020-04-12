@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "ResultForm.h"
+#include "helper.h"
 
 void ResultForm::btn_exportExl_Click(System::Object^  sender, System::EventArgs^  e) {
 	exl_->saveDialoge();
@@ -68,7 +69,10 @@ void ResultForm::AddTableFooter(String^ text, int xPos, int width, int height)
 	label->TextAlign = System::Drawing::ContentAlignment::TopRight;
 	this->Controls->Add(label);
 
-	exl_->setCell(row_, col_, text);
+	if (col_==1)
+		exl_->setCell(row_, col_,text);
+	else
+		exl_->setCellSum(row_, col_, sumStart,row_-2);
 	exl_->setCellAutofit(row_, col_);
 	exl_->setCellBold(row_, col_);
 	col_++;
@@ -92,15 +96,28 @@ void ResultForm::SetLabelSize(int width, int height)
 
 void ResultForm::AddCell(String^ text, int xPos, int row)
 {
+	AddCell(text, xPos, row, false);
+}
+
+void ResultForm::AddCell(String^ text, int xPos, int row, bool isDecimal)
+{
 	label = gcnew System::Windows::Forms::Label();
 	label->Location = System::Drawing::Point(xPos, start);
 	label->AutoSize = true;
 	label->Text = text;
-	label->BackColor = (row % 2 != 0)?System::Drawing::Color::Gainsboro: System::Drawing::Color::White;
+	label->BackColor = (row % 2 != 0) ? System::Drawing::Color::Gainsboro : System::Drawing::Color::White;
 	label->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 6.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
-	//kostenart->Click += gcnew System::EventHandler(this, &bew_ztr_result::Click);
+	
 	this->Controls->Add(label);
-	exl_->setCell(row_, col_, text);
+
+	if (isDecimal)
+		exl_->setCellCurrency(row_, col_, String_to_Decimal(text));
+	else {
+		if (col_==1)
+			exl_->setCellYear(row_, col_, text);
+		else
+			exl_->setCell(row_, col_, text);
+	}		
 	exl_->setCellAutofit(row_, col_);
 	col_++;
 }

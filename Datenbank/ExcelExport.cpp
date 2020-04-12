@@ -67,10 +67,17 @@ void ExcelExport::setCell(int x, int y, int value) {
 	_workSheet->Cells[x, y] = value;
 }
 
+void ExcelExport::setCellYear(int x, int y, System::String ^ value) {
+	Microsoft::Office::Interop::Excel::Range ^ cells;
+	cells = (Microsoft::Office::Interop::Excel::Range ^) _workSheet->Cells[x, y];
+	cells->NumberFormat = "##00";
+	_workSheet->Cells[x, y] = value;
+}
+
 void ExcelExport::setCellCurrency(int x, int y, Decimal value) {
 	Microsoft::Office::Interop::Excel::Range ^ cells;
 	cells = (Microsoft::Office::Interop::Excel::Range ^) _workSheet->Cells[x, y];
-	cells->NumberFormat = "#,##0.00 €";
+	cells->NumberFormat = L"#,##0.00 €";
 	_workSheet->Cells[x, y] = value;
 }
 
@@ -97,11 +104,31 @@ void ExcelExport::setCellSum(int x, int y, int start, int end) {
 	cells = (Microsoft::Office::Interop::Excel::Range ^) _workSheet->Cells[x, y];
 	String ^ index;
 	switch (y) {
+	case 2: index = "B";
+		break;
+	case 3: index = "C";
+		break;
+	case 4: index = "D";
+		break;	
+	case 5: index = "E";
+		break;
+	case 6: index = "F";
+		break;
 	case 7: index = "G";
 		break;
 	case 8: index = "H";
 		break;
+	case 9: index = "I";
+		break;
+	case 10: index = "J";
+		break;
+	case 11: index = "K";
+		break;
+	case 12: index = "L";
+		break;
+	case 13: index = "M";
+		break;
 	}
 	cells->Formula = "=SUM(" + index + start.ToString() + ":" + index + end.ToString() + ")";
-	cells->NumberFormat = "#,##0.00 €";
+	cells->NumberFormat = L"#,##0.00 €";
 }

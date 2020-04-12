@@ -10,6 +10,7 @@ ref class ExcelExport
 
 		void setCell(int x, int y, System::String ^ value);
 		void setCell(int x, int y, int value);
+		void setCellYear(int x, int y, System::String ^ value);
 		void setCellCurrency(int x, int y, System::Decimal value);
 		void setCellBold(int x, int y);
 		void setCellItalic(int x, int y);

@@ -59,6 +59,7 @@ public:
 	int col_;
 
 	int start;
+	int sumStart;
 	int start_;
 
 	System::Windows::Forms::Button^  btn_exportExl;	
@@ -68,6 +69,7 @@ public:
 
 	void place_button();
 	void AddCell(String^ text, int xPos, int row);
+	void AddCell(String^ text, int xPos, int row,bool isDecimal);
 	void AddHeaderCell(String^ text, int xPos, int yPos);
 	void AddTableHeaderCell(String^ text, int xPos);
 	void AddTableFooter(String^ text, int xPos, int width, int height);

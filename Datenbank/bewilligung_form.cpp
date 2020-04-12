@@ -57,7 +57,7 @@ void bewilligung_form::bund_land_TextChanged(System::Object^  sender, System::Ev
 {
 	String^ txt=bund_land->Text;
 	txt=txt->Replace(".","");
-	txt=txt->Replace("€","");
+	txt=txt->Replace(L"€","");
 	txt=txt->Trim();
 	if(txt->Length>0)
 		if(txt[txt->Length-1]==',')
@@ -80,7 +80,7 @@ void bewilligung_form::mla_TextChanged(System::Object^  sender, System::EventArg
 {
 	String^ txt=mla->Text;
 	txt=txt->Replace(".","");
-	txt=txt->Replace("€","");
+	txt=txt->Replace(L"€","");
 	txt=txt->Trim();
 	if(txt->Length>0)
 		if(txt[txt->Length-1]==',')

@@ -849,6 +849,8 @@ void gesamt_uebersicht_result::GenerateTableHeader()
 	this->Controls->Add(ueberschrift_back);
 
 	start_+=20;
+
+	sumStart = row_ + 1;
 }
 
 void gesamt_uebersicht_result::generate_entry(	int eintrag,
@@ -879,7 +881,7 @@ void gesamt_uebersicht_result::generate_entry(	int eintrag,
 	col_ = 1;
 
 	start = start_ + 2;
-	AddCellC(jahr_s, spalte_jahr_, rowNum, name);
+	AddCellC(jahr_s, spalte_jahr_, rowNum, name,false);
 
 	start = start_ + 3;
 	// Jahreshaushalt
@@ -965,6 +967,8 @@ void gesamt_uebersicht_result::generate_footer(	String^ haushalt_s,
 	start_+=1;
 
 	row_++;
+	row_++;
+
 	col_ = 1;
 	start = start_+2;
 	AddTableFooter("Summen", spalte_jahr_, 20, 15);
@@ -1480,7 +1484,12 @@ void gesamt_uebersicht_result::create_page_sign(System::Drawing::Printing::Print
 
 void gesamt_uebersicht_result::AddCellC(String^ text, int xPos, int row, String^ name)
 {
-	AddCell(text, xPos, row);
+	AddCellC(text, xPos, row, name, true);
+}
+
+void gesamt_uebersicht_result::AddCellC(String^ text, int xPos, int row, String^ name, bool isDecimal)
+{
+	AddCell(text, xPos, row, isDecimal);
 	label->Name = name;
 	label->Click += gcnew System::EventHandler(this, &gesamt_uebersicht_result::Click);
 }
