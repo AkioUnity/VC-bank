@@ -14,7 +14,7 @@ using namespace System;
 using namespace System::IO;
 using namespace System::Text;
 
-// Windows::Forms::MessageBox::Show(
+// Windows::Forms::MessageBox::Show(   amg3.3
 
 void kostengr_uebersicht_result::kostengr_uebersicht_result_Load(System::Object^  sender, System::EventArgs^  e)
 {	
@@ -22,10 +22,12 @@ void kostengr_uebersicht_result::kostengr_uebersicht_result_Load(System::Object^
 	ladebalken_->Show();
 	ladebalken_->Controls->Find("texter",true)[0]->Text="Lade Kostengruppenübersicht";
 	ladebalken_->Controls->Find("texter",true)[0]->Text="Lade Kostengruppenübersicht";
-	page_content_->Clear();
+
+	total_list->Clear();
 	pages_=0;
-	start_=0;
+	start_pos=0;
 	this->Controls->Clear();
+
 	List< List<String^>^ >^ bewilligungen = load_bewilligungen();
 	if(bewilligungen->Count==0)
 	{
@@ -35,6 +37,9 @@ void kostengr_uebersicht_result::kostengr_uebersicht_result_Load(System::Object^
 		Close();
 	}
 	//Windows::Forms::MessageBox::Show(Convert::ToString(bewilligungen->Count));
+
+	calc_coloumns();
+
 	List<String^>^ kostengruppen=gcnew List<String^>;
 	List<String^>^ staedte=gcnew List<String^>;
 	List<String^>^ gebiete=gcnew List<String^>;
@@ -474,22 +479,22 @@ void kostengr_uebersicht_result::generate_header(	String^ kostengruppe,
 													String^ gebiet,
 													String^ programm)
 {
-	page_content_->Add(gcnew List< List<String^>^ >);
+	total_list->Add(gcnew List< List<String^>^ >);
 	List<String^>^ header=gcnew List<String^>;
 	header->Add("header");
 	header->Add(kostengruppe);
 	header->Add(stadt);
 	header->Add(gebiet);
 	header->Add(programm);
-	page_content_[page_content_->Count-1]->Add(header);
+	total_list[total_list->Count-1]->Add(header);
 
-	AddHeaderCell("Kostengruppe  : " + kostengruppe, 5, 1 + start_);
-	AddHeaderCell("Stadt         : " + stadt, 5, 1 * 13 + start_);
-	AddHeaderCell("Gebiet       : " + gebiet, 5, 2 * 13 + 1 + start_);
-	AddHeaderCell("Programm : " + programm, 5, 3 * 13 + 1 + start_);
-	start = start_;
+	AddHeaderCell("Kostengruppe  : " + kostengruppe, 5, 1 + start_pos);
+	AddHeaderCell("Stadt         : " + stadt, 5, 1 * 13 + start_pos);
+	AddHeaderCell("Gebiet       : " + gebiet, 5, 2 * 13 + 1 + start_pos);
+	AddHeaderCell("Programm : " + programm, 5, 3 * 13 + 1 + start_pos);
+	
 	AddHeaderDivider(936, 4 * 13 + 1);
-	start_ += 4 * 13 + 10;	
+	start_pos += 4 * 13 + 10;	
 }
 
 void kostengr_uebersicht_result::GenerateTableHeader()
@@ -497,7 +502,7 @@ void kostengr_uebersicht_result::GenerateTableHeader()
 	// zb_nr
 	row_++;
 	col_ = 2;
-	start = start_;
+	
 	AddTableHeaderCell("ZB-Nr.", s_zb_nr);	
 	AddTableHeaderCell("Vorhaben", s_bezeichnung);
 	SetLabelSize(110, 15);
@@ -515,15 +520,8 @@ void kostengr_uebersicht_result::GenerateTableHeader()
 	AddTableHeaderCell("Mehr-/Minderkosten", s_mehr_minder);
 
 	sumStart = row_ + 1;
-	
-	System::Windows::Forms::Label^  ueberschrift_back = gcnew System::Windows::Forms::Label();
-	ueberschrift_back->Location = System::Drawing::Point(0,start_);
-	ueberschrift_back->AutoSize = false;
-	ueberschrift_back->Size = System::Drawing::Size(936, 15);
-	ueberschrift_back->BackColor = System::Drawing::Color::Silver;
-	this->Controls->Add(ueberschrift_back);
 
-	start_+=20;
+	ResultGk::GenerateTableHeader();
 }
 
 void kostengr_uebersicht_result::generate_entry(	String^ id,
@@ -555,7 +553,7 @@ void kostengr_uebersicht_result::generate_entry(	String^ id,
 	entry->Add(bund_land_t);
 	entry->Add(foerderbetrag_t);
 	entry->Add(mehr_minder_t);
-	page_content_[page_content_->Count-1]->Add(entry);
+	total_list[total_list->Count-1]->Add(entry);
 
 	System::Drawing::Color color;
 	if(eintrag%2!=0)
@@ -567,7 +565,7 @@ void kostengr_uebersicht_result::generate_entry(	String^ id,
 		color=System::Drawing::Color::White;
 	}
 
-	start = start_;
+	
 	int rowNum = eintrag;
 	row_++;
 	col_ = 1;
@@ -609,30 +607,32 @@ void kostengr_uebersicht_result::generate_footer(	String^ foerderbetrag_s,
 	footer->Add(mla_s);
 	footer->Add(bund_land_s);
 	footer->Add(mehr_minder_s);
-	page_content_[page_content_->Count-1]->Add(footer);
+	total_list[total_list->Count-1]->Add(footer);
 
 	row_++;
 	row_++;
 	col_ = 6;
-	start = start_;
+	
 	AddTableFooter(foerderbetrag_s, s_foerder,85, 15);
 	AddTableFooter(bund_land_s, s_bund_land, 85, 15);
 	AddTableFooter(mla_s, s_mla, 85, 15);
 	col_ += 3;
 	AddTableFooter(mehr_minder_s, s_mehr_minder, 85, 15);
 
-	start_+=25;
+	start_pos+=25;
+
+	row_++;
 	row_++;
 }
 
 void kostengr_uebersicht_result::place_print_button()
 {
-	start_=start_+10;
+	start_pos=start_pos+10;
 
-	btn_print->Location=System::Drawing::Point(5, start_);
+	btn_print->Location=System::Drawing::Point(5, start_pos);
 	btn_print->Size = System::Drawing::Size(926, 20);
 	this->Controls->Add(btn_print);
-	start = start_;
+	
 	ResultForm::place_button();
 }
 
@@ -670,7 +670,7 @@ void kostengr_uebersicht_result::btn_print_Click(System::Object^  sender, System
 	choose_print->ShowDialog();
 	if(cache->Text!="-1")
 	{
-		pages_=page_content_->Count;
+		pages_=total_list->Count;
 		print_page_=0;
 
 		printDocument1->PrinterSettings->PrinterName=cache->Text;
@@ -709,52 +709,52 @@ void kostengr_uebersicht_result::printDocument1_PrintPage(System::Object^  sende
 
 
 	// iterate through Content of actual Page
-	for(int i=done_page_content_;i<page_content_[print_page_]->Count;++i)
+	for(int i=done_page_content_;i<total_list[print_page_]->Count;++i)
 	{
 		if(begin_at>=end)
 		{
-			page_content_[print_page_]->Insert(i,page_content_[print_page_][0]);
+			total_list[print_page_]->Insert(i,total_list[print_page_][0]);
 			break;
 		}
 		
 		done_page_content_=i;
 
-		if(page_content_[print_page_][i][0]=="header")
+		if(total_list[print_page_][i][0]=="header")
 		{
-			String^ kostengruppe=page_content_[print_page_][i][1];
-			String^ stadt=page_content_[print_page_][i][2];
-			String^ gebiet=page_content_[print_page_][i][3];
-			String^ programm=page_content_[print_page_][i][4];
+			String^ kostengruppe=total_list[print_page_][i][1];
+			String^ stadt=total_list[print_page_][i][2];
+			String^ gebiet=total_list[print_page_][i][3];
+			String^ programm=total_list[print_page_][i][4];
 			create_page_header(e,kostengruppe,stadt,gebiet,programm);
 			begin_at+=80;
 		}
 
-		if(page_content_[print_page_][i][0]=="eintrag")
+		if(total_list[print_page_][i][0]=="eintrag")
 		{
-			String^ jahr=page_content_[print_page_][i][1];
-			String^ bew_ztr=page_content_[print_page_][i][2];
-			String^ bezeichnung=page_content_[print_page_][i][3];
-			String^ vn_einger=page_content_[print_page_][i][4];
-			String^ vn_gepr=page_content_[print_page_][i][5];
-			String^ tb=page_content_[print_page_][i][6];
-			String^ ZB_NR=page_content_[print_page_][i][7];
-			String^ vom=page_content_[print_page_][i][8];
-			String^ mla=page_content_[print_page_][i][9];
-			String^ bund_land=page_content_[print_page_][i][10];
-			String^ foerderbetrag=page_content_[print_page_][i][11];
-			String^ mehr_minder=page_content_[print_page_][i][12];
+			String^ jahr=total_list[print_page_][i][1];
+			String^ bew_ztr=total_list[print_page_][i][2];
+			String^ bezeichnung=total_list[print_page_][i][3];
+			String^ vn_einger=total_list[print_page_][i][4];
+			String^ vn_gepr=total_list[print_page_][i][5];
+			String^ tb=total_list[print_page_][i][6];
+			String^ ZB_NR=total_list[print_page_][i][7];
+			String^ vom=total_list[print_page_][i][8];
+			String^ mla=total_list[print_page_][i][9];
+			String^ bund_land=total_list[print_page_][i][10];
+			String^ foerderbetrag=total_list[print_page_][i][11];
+			String^ mehr_minder=total_list[print_page_][i][12];
 			create_page_entry(e,jahr,bew_ztr,bezeichnung,vn_einger,vn_gepr,tb,ZB_NR,vom,mla,bund_land,foerderbetrag,mehr_minder,begin_at,entry);
 			entry++;
 			begin_at+=20;
 		}
 
-		if(page_content_[print_page_][i][0]=="footer")
+		if(total_list[print_page_][i][0]=="footer")
 		{
 			begin_at+=10;
-			String^ foerderbetrag=page_content_[print_page_][i][1]; 
-			String^ mla=page_content_[print_page_][i][2];
-			String^ bund_land=page_content_[print_page_][i][3];
-			String^ mehr_minder=page_content_[print_page_][i][4];
+			String^ foerderbetrag=total_list[print_page_][i][1]; 
+			String^ mla=total_list[print_page_][i][2];
+			String^ bund_land=total_list[print_page_][i][3];
+			String^ mehr_minder=total_list[print_page_][i][4];
 			create_page_footer(e,foerderbetrag,mla,bund_land,mehr_minder,begin_at);
 		}
 	}
@@ -936,4 +936,105 @@ void kostengr_uebersicht_result::AddCellC(String^ text, int xPos, int row, Strin
 	AddCell(text, xPos, row, isDecimal);
 	label->Name = name;
 	label->Click += gcnew System::EventHandler(this, &kostengr_uebersicht_result::Click);
+}
+
+// Evaluation elements
+void kostengr_uebersicht_result::calc_coloumns()
+{
+	// total_width 1000
+	// jahr ca. 50
+	// work surface ca. 900 ( start_pos bei 50 )
+	int total_width = 890;
+	int start = 50;
+
+	/*int s_jahr;
+	int s_zb_nr;
+	int s_bezeichnung;
+	int s_tb;
+	int s_vom;
+	int s_foerder;
+	int s_bund_land;
+	int s_mla;
+	int s_bew_ztr;  //1
+	int s_einger;  //2
+	int s_gepr;
+	int s_mehr_minder;*/
+
+	//spalte_jh_ = -1;
+	//spalte_bundland_ = -1;
+	//spalte_mla_ = -1;
+	//spalte_restmittel_ = -1;
+	//spalte_mehr_minder_ = -1;
+
+	//spalte_gk_real_ = -1;
+	//spalte_gk_kom_ = -1;
+	//spalte_gk_priv_ = -1;
+
+	//// anzahl spalten
+	//int column_count0 = 0;
+
+	//if (show_jz_)
+	//	++column_count0;
+	//if (show_bundland_)
+	//	++column_count0;
+	//if (show_mla_)
+	//	++column_count0;
+	//if (show_restmittel_)
+	//	++column_count0;
+	//if (show_mehrminder_)
+	//	++column_count0;
+
+	//if (show_gk_real_)
+	//	++column_count0;
+	//if (show_gk_kom_)
+	//	++column_count0;
+	//if (show_gk_priv_)
+	//	++column_count0;
+
+	//int distance0 = Convert::ToInt32(total_width / column_count0);
+
+	//for (int i = 0;i < column_count0;++i)
+	//{
+	//	if (spalte_jh_ == -1 && show_jz_)
+	//	{
+	//		spalte_jh_ = i * distance0 + start_pos;
+	//		continue;
+	//	}
+	//	if (spalte_bundland_ == -1 && show_bundland_)
+	//	{
+	//		spalte_bundland_ = i * distance0 + start_pos;
+	//		continue;
+	//	}
+	//	if (spalte_mla_ == -1 && show_mla_)
+	//	{
+	//		spalte_mla_ = i * distance0 + start_pos;
+	//		continue;
+	//	}
+	//	if (spalte_restmittel_ == -1 && show_restmittel_)
+	//	{
+	//		spalte_restmittel_ = i * distance0 + start_pos;
+	//		continue;
+	//	}
+	//	if (spalte_mehr_minder_ == -1 && show_mehrminder_)
+	//	{
+	//		spalte_mehr_minder_ = i * distance0 + start_pos;
+	//		continue;
+	//	}
+	//	if (spalte_gk_real_ == -1 && show_gk_real_)
+	//	{
+	//		spalte_gk_real_ = i * distance0 + start_pos;
+	//		continue;
+	//	}
+	//	if (spalte_gk_kom_ == -1 && show_gk_kom_)
+	//	{
+	//		spalte_gk_kom_ = i * distance0 + start_pos;
+	//		continue;
+	//	}
+	//	if (spalte_gk_priv_ == -1 && show_gk_priv_)
+	//	{
+	//		spalte_gk_priv_ = i * distance0 + start_pos;
+	//		continue;
+	//	}
+	//}
+	//column_width_ = distance0 - 10;
 }

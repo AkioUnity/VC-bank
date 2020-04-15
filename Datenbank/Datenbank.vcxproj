@@ -136,6 +136,8 @@
     <ClCompile Include="project_class.cpp" />
     <ClCompile Include="project_form.cpp" />
     <ClCompile Include="ResultForm.cpp" />
+    <ClCompile Include="ResultForm0.cpp" />
+    <ClCompile Include="ResultGk.cpp" />
     <ClCompile Include="Set_DB_path.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -224,6 +226,8 @@
     </ClInclude>
     <ClInclude Include="resource.h" />
     <ClInclude Include="ResultForm.h" />
+    <ClInclude Include="ResultForm0.h" />
+    <ClInclude Include="ResultGk.h" />
     <ClInclude Include="Set_DB_path.h">
       <FileType>CppForm</FileType>
     </ClInclude>

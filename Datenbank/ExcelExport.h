@@ -7,6 +7,8 @@ ref class ExcelExport
 		~ExcelExport(void);
 		void saveDialoge();
 		void show();
+		
+		System::String^ getColumnName(int y);
 
 		void setCell(int x, int y, System::String ^ value);
 		void setCell(int x, int y, int value);
@@ -16,6 +18,7 @@ ref class ExcelExport
 		void setCellItalic(int x, int y);
 		void setCellAutofit(int x, int y);
 		void setCellSum(int x, int y,int start,int end);
+		void setCellSumCell(int x, int y, int x1, int y1, int x2, int y2);
 
 	private:
 		Microsoft::Office::Interop::Excel::Application ^ _app;

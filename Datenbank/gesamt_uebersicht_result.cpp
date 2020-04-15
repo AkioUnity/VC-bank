@@ -14,14 +14,15 @@ using namespace System;
 using namespace System::IO;
 using namespace System::Text;
 
-// Loader       total_overview_result
+// Loader       total_overview_result   amg3.5
 void gesamt_uebersicht_result::gesamt_uebersicht_result_Load(System::Object^  sender, System::EventArgs^  e)
 {
 	//Windows::Forms::MessageBox::Show("t1");
 	ladebalken_->Show();
 	Hide();
 	ladebalken_->Controls->Find("texter",true)[0]->Text="Lade Daten aus Datenbank";
-	start_=0;
+
+	start_pos=0;
 	load_from_DB();
 
 	if(bewilligung_liste->Count==0)
@@ -33,6 +34,7 @@ void gesamt_uebersicht_result::gesamt_uebersicht_result_Load(System::Object^  se
 	ladebalken_->Controls->Find("texter",true)[0]->Text="Verarbeite Daten";
 	sort_lists();
 	ladebalken_->Controls->Find("texter",true)[0]->Text="Erzeuge Formular";
+	calc_coloumns();
 	create();
 
 	place_print_button();
@@ -169,7 +171,7 @@ void gesamt_uebersicht_result::load_from_DB()
 void gesamt_uebersicht_result::sort_lists()
 {
 	staedte_->Clear();
-	result_liste_->Clear();
+	total_list->Clear();
 
 	My_Connection data;
 	data.connect();
@@ -242,7 +244,7 @@ void gesamt_uebersicht_result::sort_lists()
 					}
 				}
 			
-				result_liste_->Add(get_informations(cache,stadt,gebiet,programm));
+				total_list->Add(get_informations(cache,stadt,gebiet,programm));
 
 				ladebalken_->Controls->Find("progress",true)[0]->Text="a";
 				ladebalken_->Controls->Find("progress",true)[0]->Text=" ";
@@ -414,117 +416,6 @@ Decimal gesamt_uebersicht_result::get_haushalt(	String^ jahr,
 	return summe;
 }
 
-List<Decimal>^ gesamt_uebersicht_result::get_gk_real(String^ stadt,String^ gebiet,String^ programm,List<String^>^ jahre)
-{
-	My_Connection data;
-	data.connect();
-	MyResult^ R_Proj=data.get_result("SELECT * FROM db_projekte WHERE stadt='"+stadt+"' AND gebiet='"+gebiet+"'");
-
-	List<Decimal>^ summen=gcnew List<Decimal>;
-	for(int i=0;i<jahre->Count;++i)
-		summen->Add(0);
-
-	for(int i=0;i<R_Proj->get_row();++i)
-	{
-		Decimal gk=Decimal(Convert::ToDouble(R_Proj->get_val(i,1)));
-		String^ projekt_id=R_Proj->get_val(i,0);
-
-		MyResult^ R_Prog=data.get_result("SELECT * FROM db_programme WHERE Projekt_ID="+projekt_id+" AND name='"+programm+"'");
-		if(R_Prog->get_row()!=0)
-		{
-			String^ programm_id=R_Prog->get_val(0,0);
-			MyResult^ R_Bew=data.get_result("SELECT * FROM db_programme_bewilligung WHERE programm_ID="+programm_id);
-
-			if(R_Bew->get_row()!=0)
-			{
-				String^ jahr=R_Bew->get_val(0,4);
-				if(R_Bew->get_val(0,10)=="1")
-					jahr="SBE";
-				int index=jahre->IndexOf(jahr);
-				if(index!=-1)
-					summen[index]+=gk;
-			}
-		}
-	}
-	data.disconnect();
-
-	return summen;
-}
-
-List<Decimal>^ gesamt_uebersicht_result::get_gk_kom(String^ stadt,String^ gebiet,String^ programm,List<String^>^ jahre)
-{
-	My_Connection data;
-	data.connect();
-	MyResult^ R_Proj=data.get_result("SELECT * FROM db_projekte WHERE stadt='"+stadt+"' AND gebiet='"+gebiet+"' AND sk_bha='Gemeinde'");    //local community
-
-	List<Decimal>^ summen=gcnew List<Decimal>;
-	for(int i=0;i<jahre->Count;++i)
-		summen->Add(0);
-
-	for(int i=0;i<R_Proj->get_row();++i)
-	{
-		Decimal gk=Decimal(Convert::ToDouble(R_Proj->get_val(i,1)));
-		String^ projekt_id=R_Proj->get_val(i,0);
-
-		MyResult^ R_Prog=data.get_result("SELECT * FROM db_programme WHERE Projekt_ID="+projekt_id+" AND name='"+programm+"'");
-		if(R_Prog->get_row()!=0)
-		{
-			String^ programm_id=R_Prog->get_val(0,0);
-			MyResult^ R_Bew=data.get_result("SELECT * FROM db_programme_bewilligung WHERE programm_ID="+programm_id);
-
-			if(R_Bew->get_row()!=0)
-			{
-				String^ jahr=R_Bew->get_val(0,4);
-				if(R_Bew->get_val(0,10)=="1")
-					jahr="SBE";
-				int index=jahre->IndexOf(jahr);
-				if(index!=-1)
-					summen[index]+=gk;
-			}
-		}
-	}
-	data.disconnect();
-
-	return summen;
-}
-
-List<Decimal>^ gesamt_uebersicht_result::get_gk_priv(String^ stadt,String^ gebiet,String^ programm,List<String^>^ jahre)
-{
-	My_Connection data;
-	data.connect();
-	MyResult^ R_Proj=data.get_result("SELECT * FROM db_projekte WHERE stadt='"+stadt+"' AND gebiet='"+gebiet+"' AND sk_bha='Privat'");
-
-	List<Decimal>^ summen=gcnew List<Decimal>;
-	for(int i=0;i<jahre->Count;++i)
-		summen->Add(0);
-
-	for(int i=0;i<R_Proj->get_row();++i)
-	{
-		Decimal gk=Decimal(Convert::ToDouble(R_Proj->get_val(i,1)));
-		String^ projekt_id=R_Proj->get_val(i,0);
-
-		MyResult^ R_Prog=data.get_result("SELECT * FROM db_programme WHERE Projekt_ID="+projekt_id+" AND name='"+programm+"'");
-		if(R_Prog->get_row()!=0)
-		{
-			String^ programm_id=R_Prog->get_val(0,0);
-			MyResult^ R_Bew=data.get_result("SELECT * FROM db_programme_bewilligung WHERE programm_ID="+programm_id);
-
-			if(R_Bew->get_row()!=0)
-			{
-				String^ jahr=R_Bew->get_val(0,4);
-				if(R_Bew->get_val(0,10)=="1")
-					jahr="SBE";
-				int index=jahre->IndexOf(jahr);
-				if(index!=-1)
-					summen[index]+=gk;
-			}
-		}
-	}
-	data.disconnect();
-
-	return summen;
-}
-
 bool gesamt_uebersicht_result::is_existent_in(	List<String^>^ liste,
 												String^ value)
 {
@@ -574,14 +465,13 @@ void gesamt_uebersicht_result::sort_for_year(List<String^>^ input)
 
 void gesamt_uebersicht_result::create()
 {
-	calc_coloumns();
-	for(int main_param=0;main_param<result_liste_->Count;++main_param)
+	for(int main_param=0;main_param<total_list->Count;++main_param)
 	{
-		if(result_liste_[main_param]->Count!=0)
+		if(total_list[main_param]->Count!=0)
 		{
-			String^ stadt=result_liste_[main_param][0][0];
-			String^ gebiet=result_liste_[main_param][0][1];
-			String^ programm=result_liste_[main_param][0][2];
+			String^ stadt=total_list[main_param][0][0];
+			String^ gebiet=total_list[main_param][0][1];
+			String^ programm=total_list[main_param][0][2];
 
 			generate_header(stadt,gebiet,programm);
 
@@ -612,17 +502,17 @@ void gesamt_uebersicht_result::create()
 			Decimal summe_priv_gk=0;
 
 			int count=0;
-			for(int entry_param=0;entry_param<result_liste_[main_param]->Count;++entry_param)
+			for(int entry_param=0;entry_param<total_list[main_param]->Count;++entry_param)
 			{
-				String^ jahr=result_liste_[main_param][entry_param][3];
-				Decimal haushalt=Decimal(Convert::ToDouble(result_liste_[main_param][entry_param][4]));
-				Decimal bund_land=Decimal(Convert::ToDouble(result_liste_[main_param][entry_param][5]));
-				Decimal mla=Decimal(Convert::ToDouble(result_liste_[main_param][entry_param][6]));
-				Decimal restmittel=Decimal(Convert::ToDouble(result_liste_[main_param][entry_param][7]));
-				Decimal mehr_minder=Decimal(Convert::ToDouble(result_liste_[main_param][entry_param][8]));
-				Decimal gk_real=Decimal(Convert::ToDouble(result_liste_[main_param][entry_param][9]));
-				Decimal gk_kom=Decimal(Convert::ToDouble(result_liste_[main_param][entry_param][10]));
-				Decimal gk_priv=Decimal(Convert::ToDouble(result_liste_[main_param][entry_param][11]));
+				String^ jahr=total_list[main_param][entry_param][3];
+				Decimal haushalt=Decimal(Convert::ToDouble(total_list[main_param][entry_param][4]));
+				Decimal bund_land=Decimal(Convert::ToDouble(total_list[main_param][entry_param][5]));
+				Decimal mla=Decimal(Convert::ToDouble(total_list[main_param][entry_param][6]));
+				Decimal restmittel=Decimal(Convert::ToDouble(total_list[main_param][entry_param][7]));
+				Decimal mehr_minder=Decimal(Convert::ToDouble(total_list[main_param][entry_param][8]));
+				Decimal gk_real=Decimal(Convert::ToDouble(total_list[main_param][entry_param][9]));
+				Decimal gk_kom=Decimal(Convert::ToDouble(total_list[main_param][entry_param][10]));
+				Decimal gk_priv=Decimal(Convert::ToDouble(total_list[main_param][entry_param][11]));
 
 				if(/*haushalt+bund_land+mla+restmittel+mehr_minder+gk_real+gk_kom+gk_priv!=0 &&*/ jahr!="XX")
 				{
@@ -676,13 +566,13 @@ void gesamt_uebersicht_result::create()
 	}
 }
 
-// Auswertungselemente 
+// Evaluation elements
 void gesamt_uebersicht_result::calc_coloumns()
 {
-	// gesamt 1000
+	// total_width 1000
 	// jahr ca. 50
-	// arbeitsfläche ca. 900 ( start bei 50 )
-	int gesamt=890;
+	// work surface ca. 900 ( start_pos bei 50 )
+	int total_width=890;
 	int start=50;
 
 	spalte_jh_=-1;
@@ -690,93 +580,94 @@ void gesamt_uebersicht_result::calc_coloumns()
 	spalte_mla_=-1;
 	spalte_restmittel_=-1;
 	spalte_mehr_minder_=-1;
+
 	spalte_gk_real_=-1;
 	spalte_gk_kom_=-1;
 	spalte_gk_priv_=-1;
-	spaltenbreite_=-1;
 
 	// anzahl spalten
-	int spalten_anzahl=0;
+	int column_count0=0;
 
 	if(show_jz_)
-		++spalten_anzahl;
+		++column_count0;
 	if(show_bundland_)
-		++spalten_anzahl;
+		++column_count0;
 	if(show_mla_)
-		++spalten_anzahl;
+		++column_count0;
 	if(show_restmittel_)
-		++spalten_anzahl;
+		++column_count0;
 	if(show_mehrminder_)
-		++spalten_anzahl;
+		++column_count0;
+
 	if(show_gk_real_)
-		++spalten_anzahl;
+		++column_count0;
 	if(show_gk_kom_)
-		++spalten_anzahl;
+		++column_count0;
 	if(show_gk_priv_)
-		++spalten_anzahl;
+		++column_count0;
 
-	int abstand=Convert::ToInt32(gesamt/spalten_anzahl);
+	int distance0=Convert::ToInt32(total_width/column_count0);
 
-	for(int i=0;i<spalten_anzahl;++i)
+	for(int i=0;i<column_count0;++i)
 	{
 		if(spalte_jh_==-1 && show_jz_)
 		{
-			spalte_jh_=i*abstand+start;
+			spalte_jh_=i*distance0+start;
 			continue;
 		}
 		if(spalte_bundland_==-1 && show_bundland_)
 		{
-			spalte_bundland_=i*abstand+start;
+			spalte_bundland_=i*distance0+start;
 			continue;
 		}
 		if(spalte_mla_==-1 && show_mla_)
 		{
-			spalte_mla_=i*abstand+start;
+			spalte_mla_=i*distance0+start;
 			continue;
 		}
 		if(spalte_restmittel_==-1 && show_restmittel_)
 		{
-			spalte_restmittel_=i*abstand+start;
+			spalte_restmittel_=i*distance0+start;
 			continue;
 		}
 		if(spalte_mehr_minder_==-1 && show_mehrminder_)
 		{
-			spalte_mehr_minder_=i*abstand+start;
+			spalte_mehr_minder_=i*distance0+start;
 			continue;
 		}
 		if(spalte_gk_real_==-1 && show_gk_real_)
 		{
-			spalte_gk_real_=i*abstand+start;
+			spalte_gk_real_=i*distance0+start;
 			continue;
 		}
 		if(spalte_gk_kom_==-1 && show_gk_kom_)
 		{
-			spalte_gk_kom_=i*abstand+start;
+			spalte_gk_kom_=i*distance0+start;
 			continue;
 		}
 		if(spalte_gk_priv_==-1 && show_gk_priv_)
 		{
-			spalte_gk_priv_=i*abstand+start;
+			spalte_gk_priv_=i*distance0+start;
 			continue;
 		}
 	}
-	spaltenbreite_=abstand-10;
+	column_width_=distance0-10;
 }
 
 void gesamt_uebersicht_result::generate_header(	String^ stadt, 
 												String^ gebiet, 
 												String^ programm)
 {
-	if(start_!=0)
-		start_+=10;
+	if(start_pos!=0)
+		start_pos+=10;
 
-	start = start_;
-	AddHeaderCell("Stadt         : " + stadt, 5, 1 + start);
-	AddHeaderCell("Gebiet       : " + gebiet, 5, 1 * 13 + 1 + start);
-	AddHeaderCell("Programm : " + programm, 5, 2 * 13 + 1 + start);
+	start_pos = start_pos;
+	AddHeaderCell("Stadt         : " + stadt, 5, 1 + start_pos);
+	AddHeaderCell("Gebiet       : " + gebiet, 5, 1 * 13 + 1 + start_pos);
+	AddHeaderCell("Programm : " + programm, 5, 2 * 13 + 1 + start_pos);
 	AddHeaderDivider(936, 3 * 13 + 1);
-	start_ += 3 * 13 + 10;	
-	start = start_;
+	start_pos += 3 * 13 + 10;	
+	start_pos = start_pos;
 }
 
 void gesamt_uebersicht_result::GenerateTableHeader()
@@ -788,67 +679,38 @@ void gesamt_uebersicht_result::GenerateTableHeader()
 	if(show_jz_)
 	{
 		AddTableHeaderCell("Jahreszuteilung", spalte_jh_);
-		SetLabelSize(spaltenbreite_, 13);
+		SetLabelSize(column_width_, 13);
 	}
 
 	// BundLand
 	if(show_bundland_)
 	{
 		AddTableHeaderCell("Bund/Land", spalte_bundland_);
-		SetLabelSize(spaltenbreite_, 13);
+		SetLabelSize(column_width_, 13);
 	}
 
 	// MLA
 	if(show_mla_)
 	{
 		AddTableHeaderCell("MLA", spalte_mla_);
-		SetLabelSize(spaltenbreite_, 13);
+		SetLabelSize(column_width_, 13);
 	}
 
 	// Restmittel
 	if(show_restmittel_)
 	{
 		AddTableHeaderCell("Restmittel", spalte_restmittel_);
-		SetLabelSize(spaltenbreite_, 13);
+		SetLabelSize(column_width_, 13);
 	}
 
 	// Mehr-/Minderkosten
 	if(show_mehrminder_)
 	{
 		AddTableHeaderCell("Mehr-/Minderkosten", spalte_mehr_minder_);
-		SetLabelSize(spaltenbreite_, 13);
+		SetLabelSize(column_width_, 13);
 	}
 
-	// GK Real
-	if(show_gk_real_)
-	{
-		AddTableHeaderCell("GK Real", spalte_gk_real_);
-		SetLabelSize(spaltenbreite_, 13);
-	}
-
-	// GK Kom
-	if(show_gk_kom_)
-	{
-		AddTableHeaderCell("GK Komunal", spalte_gk_kom_);
-		SetLabelSize(spaltenbreite_, 13);
-	}
-
-	// GK Priv
-	if(show_gk_priv_)
-	{
-		AddTableHeaderCell("GK Privat", spalte_gk_priv_);
-		SetLabelSize(spaltenbreite_, 13);
-	}
-
-	// Hintergrund
-	System::Windows::Forms::Label^  ueberschrift_back = gcnew System::Windows::Forms::Label();
-	ueberschrift_back->Location = System::Drawing::Point(0,start_);
-	ueberschrift_back->AutoSize = false;
-	ueberschrift_back->Size = System::Drawing::Size(936, 20);
-	ueberschrift_back->BackColor = System::Drawing::Color::Silver;
-	this->Controls->Add(ueberschrift_back);
-
-	start_+=20;
+	ResultGk::GenerateTableHeader();
 
 	sumStart = row_ + 1;
 }
@@ -880,69 +742,69 @@ void gesamt_uebersicht_result::generate_entry(	int eintrag,
 	row_++;
 	col_ = 1;
 
-	start = start_ + 2;
+	start_pos = start_pos + 2;
 	AddCellC(jahr_s, spalte_jahr_, rowNum, name,false);
 
-	start = start_ + 3;
+	start_pos = start_pos + 3;
 	// Jahreshaushalt
 	if(show_jz_)
 	{	
 		AddCellC(haushalt_s, spalte_jh_, rowNum, name);
-		SetLabelSize(spaltenbreite_, 13);
+		SetLabelSize(column_width_, 13);
 	}
 
 	// BundLand
 	if(show_bundland_)
 	{
 		AddCellC(bund_land_s, spalte_bundland_, rowNum, name);
-		SetLabelSize(spaltenbreite_, 13);
+		SetLabelSize(column_width_, 13);
 	}
 
 	// MLA
 	if(show_mla_)
 	{
 		AddCellC(mla_s, spalte_mla_, rowNum, name);
-		SetLabelSize(spaltenbreite_, 13);
+		SetLabelSize(column_width_, 13);
 	}
 
 	// Restmittel
 	if(show_restmittel_)
 	{
 		AddCellC(restmittel_s, spalte_restmittel_, rowNum, name);
-		SetLabelSize(spaltenbreite_, 13);
+		SetLabelSize(column_width_, 13);
 	}
 
 	// Mehr-/Minderkosten
 	if(show_mehrminder_)
 	{
 		AddCellC(mehr_minder_s, spalte_mehr_minder_, rowNum, name);
-		SetLabelSize(spaltenbreite_, 13);
+		SetLabelSize(column_width_, 13);
 	}
 
 	// GK Real
 	if(show_gk_real_)
 	{
 		AddCellC(gk_real_s, spalte_gk_real_, rowNum, name);
-		SetLabelSize(spaltenbreite_, 13);
+		SetLabelSize(column_width_, 13);
 	}
 
 	// GK Kom
 	if(show_gk_kom_)
 	{
 		AddCellC(gk_kom_s, spalte_gk_kom_, rowNum, name);
-		SetLabelSize(spaltenbreite_, 13);
+		SetLabelSize(column_width_, 13);
 	}
 
 	// GK Priv
 	if(show_gk_priv_)
 	{
 		AddCellC(gk_priv_s, spalte_gk_priv_, rowNum, name);
-		SetLabelSize(spaltenbreite_, 13);
+		SetLabelSize(column_width_, 13);
 	}
 
 	// Hintergrund
 	System::Windows::Forms::Label^  ueberschrift_back = gcnew System::Windows::Forms::Label();
-	ueberschrift_back->Location = System::Drawing::Point(0,start_+1);
+	ueberschrift_back->Location = System::Drawing::Point(0,start_pos+1);
 	ueberschrift_back->AutoSize = false;
 	ueberschrift_back->Size = System::Drawing::Size(936, 16);
 	ueberschrift_back->Name = name;
@@ -950,7 +812,7 @@ void gesamt_uebersicht_result::generate_entry(	int eintrag,
 	ueberschrift_back->Click += gcnew System::EventHandler(this, &gesamt_uebersicht_result::Click);
 	this->Controls->Add(ueberschrift_back);
 
-	start_+=15;
+	start_pos+=15;
 }
 
 void gesamt_uebersicht_result::generate_footer(	String^ haushalt_s,
@@ -964,83 +826,84 @@ void gesamt_uebersicht_result::generate_footer(	String^ haushalt_s,
 {
 	System::Drawing::Color color=System::Drawing::Color::Silver;
 
-	start_+=1;
+	start_pos+=1;
 
 	row_++;
 	row_++;
 
 	col_ = 1;
-	start = start_+2;
+	start_pos = start_pos+2;
 	AddTableFooter("Summen", spalte_jahr_, 20, 15);
 
-	start = start_+3;
+	start_pos = start_pos+3;
 	// Jahreshaushalt
 	if(show_jz_)
 	{
-		AddTableFooter(haushalt_s, spalte_jh_, spaltenbreite_, 13);
+		AddTableFooter(haushalt_s, spalte_jh_, column_width_, 13);
 	}
 	// BundLand
 	if(show_bundland_)
 	{
-		AddTableFooter(bund_land_s, spalte_bundland_, spaltenbreite_, 13);
+		AddTableFooter(bund_land_s, spalte_bundland_, column_width_, 13);
 	}
 
 	// MLA
 	if(show_mla_)
 	{
-		AddTableFooter(mla_s, spalte_mla_, spaltenbreite_, 13);
+		AddTableFooter(mla_s, spalte_mla_, column_width_, 13);
 	}
 
 	// Restmittel
 	if(show_restmittel_)
 	{
-		AddTableFooter(restmittel_s, spalte_restmittel_, spaltenbreite_, 13);		
+		AddTableFooter(restmittel_s, spalte_restmittel_, column_width_, 13);		
 	}
 
 	// Mehr-/Minderkosten
 	if(show_mehrminder_)
 	{
-		AddTableFooter(mehr_minder_s, spalte_mehr_minder_, spaltenbreite_, 13);		
+		AddTableFooter(mehr_minder_s, spalte_mehr_minder_, column_width_, 13);		
 	}
 
 	// GK Real
 	if(show_gk_real_)
 	{
-		AddTableFooter(gk_real_s, spalte_gk_real_, spaltenbreite_, 13);
+		AddTableFooter(gk_real_s, spalte_gk_real_, column_width_, 13);
 	}
 
 	// GK Kom
 	if(show_gk_kom_)
 	{
-		AddTableFooter(gk_kom_s, spalte_gk_kom_, spaltenbreite_, 13);
+		AddTableFooter(gk_kom_s, spalte_gk_kom_, column_width_, 13);
 	}
 
 	// GK Priv
 	if(show_gk_priv_)
 	{
-		AddTableFooter(gk_priv_s, spalte_gk_priv_, spaltenbreite_, 13);		
+		AddTableFooter(gk_priv_s, spalte_gk_priv_, column_width_, 13);		
 	}
 
 	// Hintergrund
 	System::Windows::Forms::Label^  ueberschrift_back = gcnew System::Windows::Forms::Label();
-	ueberschrift_back->Location = System::Drawing::Point(0,start_);
+	ueberschrift_back->Location = System::Drawing::Point(0,start_pos);
 	ueberschrift_back->AutoSize = false;
 	ueberschrift_back->Size = System::Drawing::Size(936, 17);
 	//ueberschrift_back->BackColor = color;
 	this->Controls->Add(ueberschrift_back);
 
-	start_+=15;
+	start_pos+=15;
+	row_++;
 	row_++;
 }
 
 void gesamt_uebersicht_result::place_print_button()
 {
-	start_=start_+10;
+	start_pos=start_pos+10;
 
-	btn_print->Location=System::Drawing::Point(5, start_);
+	btn_print->Location=System::Drawing::Point(5, start_pos);
 	btn_print->Size = System::Drawing::Size(926, 20);
 	this->Controls->Add(btn_print);
-	start = start_;
+	start_pos = start_pos;
 	ResultForm::place_button();
 }
 
@@ -1119,7 +982,7 @@ void gesamt_uebersicht_result::btn_print_Click(System::Object^  sender, System::
 		calc_print_coloumns();
 
 		print_page_=0;
-		pages_=result_liste_->Count;
+		pages_=total_list->Count;
 
 		// Drucker selbst wählen!
 		printDocument1->PrinterSettings->PrinterName=cache->Text;
@@ -1137,9 +1000,9 @@ void gesamt_uebersicht_result::btn_print_Click(System::Object^  sender, System::
 // Printer Stuff
 void gesamt_uebersicht_result::calc_print_coloumns()
 {
-	// gesamt ca. 1150
+	// total_width ca. 1150
 	// jahr ca. 50
-	// arbeitsfläche ca. 1100 ( start bei 50 )
+	// arbeitsfläche ca. 1100 ( start_pos bei 50 )
 	int gesamt=1100;
 	int start=50;
 
@@ -1228,11 +1091,11 @@ void gesamt_uebersicht_result::printDocument1_PrintPage(System::Object^  sender,
 
 	int begin_at=0;
 
-	if(result_liste_[print_page_]->Count!=0)
+	if(total_list[print_page_]->Count!=0)
 	{
-		String^ stadt=result_liste_[print_page_][0][0];
-		String^ gebiet=result_liste_[print_page_][0][1];
-		String^ programm=result_liste_[print_page_][0][2];
+		String^ stadt=total_list[print_page_][0][0];
+		String^ gebiet=total_list[print_page_][0][1];
+		String^ programm=total_list[print_page_][0][2];
 		create_page_header(e,stadt,gebiet,programm);
 		begin_at+=80;
 
@@ -1246,17 +1109,17 @@ void gesamt_uebersicht_result::printDocument1_PrintPage(System::Object^  sender,
 		Decimal summe_priv_gk=0;
 
 		int count=0;
-		for(int entry_param=0;entry_param<result_liste_[print_page_]->Count;++entry_param)
+		for(int entry_param=0;entry_param<total_list[print_page_]->Count;++entry_param)
 		{		
-			String^ jahr=result_liste_[print_page_][entry_param][3];
-			Decimal haushalt=Decimal(Convert::ToDouble(result_liste_[print_page_][entry_param][4]));
-			Decimal bund_land=Decimal(Convert::ToDouble(result_liste_[print_page_][entry_param][5]));
-			Decimal mla=Decimal(Convert::ToDouble(result_liste_[print_page_][entry_param][6]));
-			Decimal restmittel=Decimal(Convert::ToDouble(result_liste_[print_page_][entry_param][7]));
-			Decimal mehr_minder=Decimal(Convert::ToDouble(result_liste_[print_page_][entry_param][8]));
-			Decimal gk_real=Decimal(Convert::ToDouble(result_liste_[print_page_][entry_param][9]));
-			Decimal gk_kom=Decimal(Convert::ToDouble(result_liste_[print_page_][entry_param][10]));
-			Decimal gk_priv=Decimal(Convert::ToDouble(result_liste_[print_page_][entry_param][11]));
+			String^ jahr=total_list[print_page_][entry_param][3];
+			Decimal haushalt=Decimal(Convert::ToDouble(total_list[print_page_][entry_param][4]));
+			Decimal bund_land=Decimal(Convert::ToDouble(total_list[print_page_][entry_param][5]));
+			Decimal mla=Decimal(Convert::ToDouble(total_list[print_page_][entry_param][6]));
+			Decimal restmittel=Decimal(Convert::ToDouble(total_list[print_page_][entry_param][7]));
+			Decimal mehr_minder=Decimal(Convert::ToDouble(total_list[print_page_][entry_param][8]));
+			Decimal gk_real=Decimal(Convert::ToDouble(total_list[print_page_][entry_param][9]));
+			Decimal gk_kom=Decimal(Convert::ToDouble(total_list[print_page_][entry_param][10]));
+			Decimal gk_priv=Decimal(Convert::ToDouble(total_list[print_page_][entry_param][11]));
 
 			if(haushalt+bund_land+mla+restmittel+mehr_minder+gk_real+gk_kom+gk_priv!=0 && jahr!="XX")
 			{

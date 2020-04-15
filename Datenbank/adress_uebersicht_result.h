@@ -1,22 +1,27 @@
 #pragma once
 
 #include "test.h"
-#include "ExcelExport.h"
+//#include "ExcelExport.h"
+#include "ResultForm.h"
 
 namespace Datenbank {
 
-	using namespace System;
+	/*using namespace System;
 	using namespace System::ComponentModel;
 	using namespace System::Collections;
 	using namespace System::Collections::Generic;
 	using namespace System::Windows::Forms;
 	using namespace System::Data;
 	using namespace System::Drawing;
+	using namespace System::Drawing::Printing;*/
+
+
+	using namespace System::Collections::Generic;
 
 	/// <summary>
 	/// Zusammenfassung für adress_uebersicht_result
 	/// </summary>
-	public ref class adress_uebersicht_result : public System::Windows::Forms::Form
+	public ref class adress_uebersicht_result : public ResultForm
 	{
 	public:
 		adress_uebersicht_result(void)
@@ -27,14 +32,14 @@ namespace Datenbank {
 			//
 		}
 
-		adress_uebersicht_result(String^ stadt, String^ gebiet, String^ adresse,int user_id):
+		adress_uebersicht_result(String^ stadt, String^ gebiet, String^ adresse,int user_id) :
+			ResultForm(),
 			user_id_(user_id),
 			stadt_(stadt),
 			gebiet_(gebiet),
 			adresse_(adresse),
-			main_entries_(gcnew List< List<String^>^ >),
-			entries_(gcnew List< List<String^>^ >),
-			start_(0),
+			main_entries_(gcnew List<List<String^>^ >),
+			entries_(gcnew List<List<String^>^ >),			
 			// Printer Stuff
 			pages_(0),
 			print_page_(0),
@@ -47,11 +52,7 @@ namespace Datenbank {
 			p_s_kosten(0),
 			p_s_foerder(0),
 			done_page_content_(0),
-
-			ladebalken_(gcnew test()),
-
-			exl_(gcnew ExcelExport()),
-			row_(1)
+			ladebalken_(gcnew test())
 		{
 			InitializeComponent();
 			//
@@ -65,16 +66,9 @@ namespace Datenbank {
 		/// </summary>
 		~adress_uebersicht_result()
 		{
-			if (components)
-			{
-				delete components;
-			}
-			delete exl_;
-		}
-	private: System::ComponentModel::IContainer^  components;
+			
+		}	
 	protected: 
-
-	private:
 		/// <summary>
 		/// Erforderliche Designervariable.
 		/// </summary>
@@ -101,18 +95,12 @@ namespace Datenbank {
 		int p_s_vn_gepr;
 		int p_s_kosten;
 		int p_s_foerder;
-		int done_page_content_;
-
-		ExcelExport ^ exl_;
-		int row_;
+		int done_page_content_;		
 
 	private: System::Windows::Forms::Button^  btn_print;
-	private: Microsoft::VisualBasic::PowerPacks::Printing::PrintForm^  printForm1;
+	
 	private: System::Drawing::Printing::PrintDocument^  printDocument1;
-	private: System::Windows::Forms::PrintDialog^  printDialog1;
-	private: System::Windows::Forms::Button^  btn_exportExl;
 
-		int start_;
 
 #pragma region Windows Form Designer generated code
 		/// <summary>
@@ -121,18 +109,14 @@ namespace Datenbank {
 		/// </summary>
 		void InitializeComponent(void)
 		{
-			this->components = (gcnew System::ComponentModel::Container());
 			System::ComponentModel::ComponentResourceManager^  resources = (gcnew System::ComponentModel::ComponentResourceManager(adress_uebersicht_result::typeid));
 			this->btn_print = (gcnew System::Windows::Forms::Button());
-			this->printForm1 = (gcnew Microsoft::VisualBasic::PowerPacks::Printing::PrintForm(this->components));
 			this->printDocument1 = (gcnew System::Drawing::Printing::PrintDocument());
-			this->printDialog1 = (gcnew System::Windows::Forms::PrintDialog());
-			this->btn_exportExl = (gcnew System::Windows::Forms::Button());
 			this->SuspendLayout();
 			// 
 			// btn_print
 			// 
-			this->btn_print->Location = System::Drawing::Point(3, 309);
+			this->btn_print->Location = System::Drawing::Point(79, 322);
 			this->btn_print->Name = L"btn_print";
 			this->btn_print->Size = System::Drawing::Size(808, 20);
 			this->btn_print->TabIndex = 2;
@@ -140,32 +124,9 @@ namespace Datenbank {
 			this->btn_print->UseVisualStyleBackColor = true;
 			this->btn_print->Click += gcnew System::EventHandler(this, &adress_uebersicht_result::btn_print_Click);
 			// 
-			// printForm1
-			// 
-			this->printForm1->DocumentName = L"document";
-			this->printForm1->Form = this;
-			this->printForm1->PrintAction = System::Drawing::Printing::PrintAction::PrintToPreview;
-			this->printForm1->PrinterSettings = (cli::safe_cast<System::Drawing::Printing::PrinterSettings^  >(resources->GetObject(L"printForm1.PrinterSettings")));
-			this->printForm1->PrintFileName = nullptr;
-			// 
 			// printDocument1
 			// 
 			this->printDocument1->PrintPage += gcnew System::Drawing::Printing::PrintPageEventHandler(this, &adress_uebersicht_result::printDocument1_PrintPage);
-			// 
-			// printDialog1
-			// 
-			this->printDialog1->UseEXDialog = true;
-			// 
-			// btn_exportExl
-			// 
-			this->btn_exportExl->ImageAlign = System::Drawing::ContentAlignment::BottomCenter;
-			this->btn_exportExl->Location = System::Drawing::Point(3, 280);
-			this->btn_exportExl->Name = L"btn_exportExl";
-			this->btn_exportExl->Size = System::Drawing::Size(808, 23);
-			this->btn_exportExl->TabIndex = 3;
-			this->btn_exportExl->Text = L"nach Exel exportieren";
-			this->btn_exportExl->UseVisualStyleBackColor = true;
-			this->btn_exportExl->Click += gcnew System::EventHandler(this, &adress_uebersicht_result::btn_exportExl_Click);
 			// 
 			// adress_uebersicht_result
 			// 
@@ -176,10 +137,9 @@ namespace Datenbank {
 			this->AutoSizeMode = System::Windows::Forms::AutoSizeMode::GrowAndShrink;
 			this->BackColor = System::Drawing::Color::White;
 			this->ClientSize = System::Drawing::Size(984, 561);
-			this->Controls->Add(this->btn_exportExl);
 			this->Controls->Add(this->btn_print);
 			this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::FixedSingle;
-			this->Icon = (cli::safe_cast<System::Drawing::Icon^  >(resources->GetObject(L"$this.Icon")));
+			this->Icon = (cli::safe_cast<System::Drawing::Icon^>(resources->GetObject(L"$this.Icon")));
 			this->MaximizeBox = false;
 			this->MaximumSize = System::Drawing::Size(1000, 600);
 			this->Name = L"adress_uebersicht_result";
@@ -213,8 +173,7 @@ namespace Datenbank {
 
 		// Buttons
 		void btn_print_Click(System::Object^  sender, System::EventArgs^  e);
-		void printDocument1_PrintPage(System::Object^  sender, System::Drawing::Printing::PrintPageEventArgs^  e);
-		void btn_exportExl_Click(System::Object^  sender, System::EventArgs^  e);
+		void printDocument1_PrintPage(System::Object^  sender, System::Drawing::Printing::PrintPageEventArgs^  e);		
 
 		// Printer Stuff
 		void create_page_header(System::Drawing::Printing::PrintPageEventArgs^,String^,String^,String^);

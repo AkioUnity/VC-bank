@@ -1,7 +1,7 @@
 #pragma once
 
 #include "test.h"
-#include "ResultForm.h"
+#include "ResultGk.h"
 
 namespace Datenbank {
 
@@ -13,9 +13,9 @@ namespace Datenbank {
 	using namespace System::Drawing;
 
 	/// <summary>
-	/// Zusammenfassung für kostengr_uebersicht_result
+	/// Zusammenfassung für kostengr_uebersicht_result   amg3.3
 	/// </summary>
-	public ref class kostengr_uebersicht_result : public ResultForm
+	public ref class kostengr_uebersicht_result : public ResultGk
 	{
 	public:
 		kostengr_uebersicht_result(void)
@@ -27,16 +27,13 @@ namespace Datenbank {
 			bool show_gk_real,
 			bool show_gk_kom,
 			bool show_gk_priv, int user_id):
-			ResultForm(),
+			ResultGk(show_gk_real,show_gk_kom,show_gk_priv),
 			user_id_(user_id),
 			kostengruppe_(kostengruppe),
 			stadt_(stadt),
 			gebiet_(gebiet),
 			programm_(programm),
 			year_(jahr),
-			show_gk_real_(show_gk_real),
-			show_gk_kom_(show_gk_kom),
-			show_gk_priv_(show_gk_priv),			
 			s_jahr(10),
 			s_zb_nr(50),
 			s_bezeichnung(115),
@@ -52,7 +49,7 @@ namespace Datenbank {
 			// Printer Stuff
 			pages_(0),
 			print_page_(0),
-			page_content_(gcnew List< List< List<String^>^ >^ >),
+
 			p_s_jahr(0),
 			p_s_bew_ztr(0),
 			p_s_bezeichnung(0),
@@ -100,10 +97,6 @@ namespace Datenbank {
 		String^	programm_;
 		String^	year_;
 
-		bool show_gk_real_;
-		bool show_gk_kom_;
-		bool show_gk_priv_;
-		
 		int s_jahr;
 		int s_zb_nr;
 		int s_bezeichnung;
@@ -120,7 +113,7 @@ namespace Datenbank {
 		// Print Stuff
 		int pages_;
 		int print_page_;
-		List< List< List<String^>^ >^ >^ page_content_;
+		
 
 		// Print Spalten
 		int p_s_jahr;
@@ -222,5 +215,6 @@ namespace Datenbank {
 	public:
 		void AddCellC(String^ text, int xPos, int row, String^ name);
 		void AddCellC(String^ text, int xPos, int row, String^ name, bool isDecimal);
+		void calc_coloumns();
 };
 }

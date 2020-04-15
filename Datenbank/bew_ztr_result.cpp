@@ -223,16 +223,16 @@ void bew_ztr_result::bew_ztr_result_Load(System::Object^  sender, System::EventA
 			Decimal summe_mla=0;
 			Decimal summe_bund_land=0;
 			Decimal summe_mehr_minder=0;
-			start=0;
+			start_pos=0;
 
 			for(int i=0;i<approvals_valueList->Count;++i)
 			{
 				if(approvals_valueList[i][2]!=programm || approvals_valueList[i][1]!=gebiet || approvals_valueList[i][0]!=stadt )
 				{
-					if(start!=0)
+					if(start_pos!=0)
 					{
 						generate_footer(summe_bund_land,summe_mla,summe_mehr_minder);
-						start+=20;
+						start_pos+=20;
 					}
 					summe_mla=0;
 					summe_bund_land=0;
@@ -509,11 +509,11 @@ void bew_ztr_result::generate_header(String^ stadt, String^ gebiet, String^ prog
 	header->Add(programm);
 	page_content_[page_content_->Count-1]->Add(header);
 
-	AddHeaderCell("Stadt         : " + stadt, 5, 1 + start);		
-	AddHeaderCell("Gebiet       : " + gebiet, 5, 1 * 13 + 1 + start);	
-	AddHeaderCell("Programm : " + programm, 5, 2 * 13 + 1 + start);
+	AddHeaderCell("Stadt         : " + stadt, 5, 1 + start_pos);		
+	AddHeaderCell("Gebiet       : " + gebiet, 5, 1 * 13 + 1 + start_pos);	
+	AddHeaderCell("Programm : " + programm, 5, 2 * 13 + 1 + start_pos);
 	AddHeaderDivider(936, 3 * 13 + 1);	
-	start+=2*13+25;
+	start_pos+=2*13+25;
 
 	++row_;
 }
@@ -545,13 +545,13 @@ void bew_ztr_result::Generate_TableHeadings()
 	sumStart = row_+1;
 			
 	System::Windows::Forms::Label^  ueberschrift_back = gcnew System::Windows::Forms::Label();
-	ueberschrift_back->Location = System::Drawing::Point(0,start);
+	ueberschrift_back->Location = System::Drawing::Point(0,start_pos);
 	ueberschrift_back->AutoSize = false;
 	ueberschrift_back->Size = System::Drawing::Size(936, 20);
 	ueberschrift_back->BackColor = System::Drawing::Color::Silver;
 	this->Controls->Add(ueberschrift_back);
 
-	start+=20;
+	start_pos+=20;
 }
 
 void bew_ztr_result::GenerateApproval(List<String^>^ werte,int eintrag)
@@ -648,14 +648,14 @@ void bew_ztr_result::generate_footer( Decimal bund_land, Decimal mla, Decimal me
 	col_ += 3;
 	AddTableFooter(Decimal_to_string(mehr_minder), s_mehr_minder, 85, 15);
 
-	start+=20;
+	start_pos+=20;
 }
 
 void bew_ztr_result::place_button()
 {
-	start=start+10;
+	start_pos=start_pos+10;
 
-	btn_print->Location=System::Drawing::Point(5, start);
+	btn_print->Location=System::Drawing::Point(5, start_pos);
 	btn_print->Size = System::Drawing::Size(926, 20);
 	this->Controls->Add(btn_print);
 

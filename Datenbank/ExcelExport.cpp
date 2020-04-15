@@ -102,14 +102,29 @@ void ExcelExport::setCellAutofit(int x, int y) {
 void ExcelExport::setCellSum(int x, int y, int start, int end) {
 	Microsoft::Office::Interop::Excel::Range ^ cells;
 	cells = (Microsoft::Office::Interop::Excel::Range ^) _workSheet->Cells[x, y];
-	String ^ index;
+	String ^ index=getColumnName(y);	
+	cells->Formula = "=SUM(" + index + start.ToString() + ":" + index + end.ToString() + ")";
+	cells->NumberFormat = L"#,##0.00 €";
+}
+
+void ExcelExport::setCellSumCell(int x, int y, int x1, int y1, int x2, int y2){
+	Microsoft::Office::Interop::Excel::Range ^ cells;
+	cells = (Microsoft::Office::Interop::Excel::Range ^) _workSheet->Cells[x, y];
+	String ^ index = getColumnName(y1);
+	cells->Formula = "=" + index + x1.ToString() + "-" + getColumnName(y2) + x2.ToString() ;
+	cells->NumberFormat = L"#,##0.00 €";
+	cells->Font->Bold = true;
+}
+
+String^ ExcelExport::getColumnName(int y) {
+	String^ index;
 	switch (y) {
 	case 2: index = "B";
 		break;
 	case 3: index = "C";
 		break;
 	case 4: index = "D";
-		break;	
+		break;
 	case 5: index = "E";
 		break;
 	case 6: index = "F";
@@ -129,6 +144,5 @@ void ExcelExport::setCellSum(int x, int y, int start, int end) {
 	case 13: index = "M";
 		break;
 	}
-	cells->Formula = "=SUM(" + index + start.ToString() + ":" + index + end.ToString() + ")";
-	cells->NumberFormat = L"#,##0.00 €";
+	return index;
 }

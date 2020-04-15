@@ -2,6 +2,8 @@
 #include "ResultForm.h"
 #include "helper.h"
 
+using namespace Datenbank;
+
 void ResultForm::btn_exportExl_Click(System::Object^  sender, System::EventArgs^  e) {
 	exl_->saveDialoge();
 	btn_exportExl->Enabled = false;
@@ -10,14 +12,14 @@ void ResultForm::btn_exportExl_Click(System::Object^  sender, System::EventArgs^
 
 void ResultForm::place_button()
 {
-	start = start + 30;
+	start_pos = start_pos + 30;
 
-	btn_exportExl->Location = System::Drawing::Point(5, start);
+	btn_exportExl->Location = System::Drawing::Point(5, start_pos);
 	btn_exportExl->Size = System::Drawing::Size(926, 20);
 	this->Controls->Add(btn_exportExl);
 
 	System::Windows::Forms::Label^  label_freespace = gcnew System::Windows::Forms::Label();
-	label_freespace->Location = System::Drawing::Point(0, start + 20);
+	label_freespace->Location = System::Drawing::Point(0, start_pos + 20);
 	label_freespace->AutoSize = false;
 	label_freespace->Size = System::Drawing::Size(5, 10);
 	this->Controls->Add(label_freespace);
@@ -45,7 +47,7 @@ void ResultForm::AddHeaderCell(String^ text, int xPos, int yPos)
 void ResultForm::AddTableHeaderCell(String^ text, int xPos)
 {
 	label = gcnew System::Windows::Forms::Label();
-	label->Location = System::Drawing::Point(xPos, start);
+	label->Location = System::Drawing::Point(xPos, start_pos);
 	label->AutoSize = true;
 	label->Text = text;
 	label->BackColor = System::Drawing::Color::Silver;
@@ -61,7 +63,7 @@ void ResultForm::AddTableHeaderCell(String^ text, int xPos)
 void ResultForm::AddTableFooter(String^ text, int xPos, int width, int height)
 {
 	label = gcnew System::Windows::Forms::Label();
-	label->Location = System::Drawing::Point(xPos, start);
+	label->Location = System::Drawing::Point(xPos, start_pos);
 	label->AutoSize = false;
 	label->Text = text;	
 	label->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 6.75F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
@@ -102,7 +104,7 @@ void ResultForm::AddCell(String^ text, int xPos, int row)
 void ResultForm::AddCell(String^ text, int xPos, int row, bool isDecimal)
 {
 	label = gcnew System::Windows::Forms::Label();
-	label->Location = System::Drawing::Point(xPos, start);
+	label->Location = System::Drawing::Point(xPos, start_pos);
 	label->AutoSize = true;
 	label->Text = text;
 	label->BackColor = (row % 2 != 0) ? System::Drawing::Color::Gainsboro : System::Drawing::Color::White;
@@ -126,7 +128,7 @@ void ResultForm::AddCell(String^ text, int xPos, int row, bool isDecimal)
 void ResultForm::AddHeaderDivider(int width, int height)
 {
 	System::Windows::Forms::Label^  header_back = gcnew System::Windows::Forms::Label();
-	header_back->Location = System::Drawing::Point(0, start);
+	header_back->Location = System::Drawing::Point(0, start_pos);
 	header_back->AutoSize = false;
 	header_back->Size = System::Drawing::Size(width, height);
 	header_back->BackColor = System::Drawing::Color::Silver;
@@ -138,7 +140,7 @@ void ResultForm::AddHeaderDivider(int width, int height)
 void ResultForm::AddLineBreak(System::Drawing::Color color)
 {
 	label = gcnew System::Windows::Forms::Label();
-	label->Location = System::Drawing::Point(0, start - 3);  //-3
+	label->Location = System::Drawing::Point(0, start_pos - 3);  //-3
 	label->AutoSize = false;
 	if (heightCalc < 20)
 		heightCalc = 20;
@@ -146,5 +148,5 @@ void ResultForm::AddLineBreak(System::Drawing::Color color)
 	label->BackColor = color;	
 	this->Controls->Add(label);
 
-	start += heightCalc + 8;
+	start_pos += heightCalc + 8;
 }

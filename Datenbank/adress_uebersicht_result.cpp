@@ -21,7 +21,7 @@ void adress_uebersicht_result::adress_uebersicht_result_Load(System::Object^  se
 	ladebalken_->Controls->Find("texter",true)[0]->Text="Lade Adressübersicht";
 	page_content_->Clear();
 	pages_=0;
-	start_=0;
+	start_pos=0;
 	this->AutoSize=true;
 	this->Controls->Clear();
 
@@ -87,8 +87,8 @@ void adress_uebersicht_result::adress_uebersicht_result_Load(System::Object^  se
 						}
 						
 						cache->Add(adresse);
-						if(bezeichnung->Length>32)
-							bezeichnung=bezeichnung->Substring(0,32);
+						/*if(bezeichnung->Length>32)
+							bezeichnung=bezeichnung->Substring(0,32);*/
 						cache->Add(bezeichnung);
 						cache->Add(bew_anzahl);
 						cache->Add(bew_ztr);
@@ -297,6 +297,8 @@ void adress_uebersicht_result::create_main_entries(String^ stadt, String^ gebiet
 				generate_entry(id,bezeichnung,bew_anzahl,bew_ztr,vn_einger,vn_gepr,kosten_str,foerderung_str,i);
 				
 				exl_->setCell(row_,2,bezeichnung);
+				exl_->setCellAutofit(row_, 2);
+
 				exl_->setCell(row_,3,bew_ztr);
 				exl_->setCell(row_,4,bew_anzahl);
 				exl_->setCell(row_,5,vn_einger);
@@ -337,11 +339,11 @@ void adress_uebersicht_result::generate_header(String^ stadt, String^ gebiet, St
 	header->Add(adresse);
 	page_content_[page_content_->Count-1]->Add(header);
 
-	if(start_!=0)
-		start_+=10;
+	if(start_pos!=0)
+		start_pos+=10;
 
 	System::Windows::Forms::Label^  label = gcnew System::Windows::Forms::Label();
-	label->Location = System::Drawing::Point(5, 1+start_);
+	label->Location = System::Drawing::Point(5, 1+start_pos);
 	label->AutoSize = true;
 	label->Text = adresse+" in "+stadt+" ("+gebiet+")";
 	label->BackColor = System::Drawing::Color::Silver;
@@ -351,18 +353,18 @@ void adress_uebersicht_result::generate_header(String^ stadt, String^ gebiet, St
 	exl_->setCellItalic(row_,1);
 
 	System::Windows::Forms::Label^  header_back = gcnew System::Windows::Forms::Label();
-	header_back->Location = System::Drawing::Point(0, start_);
+	header_back->Location = System::Drawing::Point(0, start_pos);
 	header_back->AutoSize = false;
 	header_back->Size = System::Drawing::Size(936, 15);
 	header_back->BackColor = System::Drawing::Color::Silver;
 	this->Controls->Add(header_back);	
 
-	start_+=15;
+	start_pos+=15;
 }
 
 void adress_uebersicht_result::GenerateTableHeader()
 {
-	start_+=10;
+	start_pos+=10;
 
 	int spalte_bezeichnung=10;
 	int spalte_bew_anz=270;
@@ -373,42 +375,42 @@ void adress_uebersicht_result::GenerateTableHeader()
 	int spalte_foerderung=720;
 
 	System::Windows::Forms::Label^  bez = gcnew System::Windows::Forms::Label();
-	bez->Location = System::Drawing::Point(spalte_bezeichnung, start_);
+	bez->Location = System::Drawing::Point(spalte_bezeichnung, start_pos);
 	bez->AutoSize = true;
 	bez->Text = "Bezeichnung";
 	bez->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.0F, System::Drawing::FontStyle::Underline, System::Drawing::GraphicsUnit::Point,static_cast<System::Byte>(0)));
 	this->Controls->Add(bez);
 
 	System::Windows::Forms::Label^  vom = gcnew System::Windows::Forms::Label();
-	vom->Location = System::Drawing::Point(spalte_bew_ztr, start_);
+	vom->Location = System::Drawing::Point(spalte_bew_ztr, start_pos);
 	vom->AutoSize = true;
 	vom->Text = "BWZ";
 	vom->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.0F, System::Drawing::FontStyle::Underline, System::Drawing::GraphicsUnit::Point,static_cast<System::Byte>(0)));
 	this->Controls->Add(vom);
 
 	System::Windows::Forms::Label^  bew_anz = gcnew System::Windows::Forms::Label();
-	bew_anz->Location = System::Drawing::Point(spalte_bew_anz, start_);
+	bew_anz->Location = System::Drawing::Point(spalte_bew_anz, start_pos);
 	bew_anz->AutoSize = true;
 	bew_anz->Text = "Anzahl der Bew.";
 	bew_anz->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.0F, System::Drawing::FontStyle::Underline, System::Drawing::GraphicsUnit::Point,static_cast<System::Byte>(0)));
 	this->Controls->Add(bew_anz);
 
 	System::Windows::Forms::Label^  einger = gcnew System::Windows::Forms::Label();
-	einger->Location = System::Drawing::Point(spalte_vn_einger, start_);
+	einger->Location = System::Drawing::Point(spalte_vn_einger, start_pos);
 	einger->AutoSize = true;
 	einger->Text = "VN eingereicht am";
 	einger->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.0F, System::Drawing::FontStyle::Underline, System::Drawing::GraphicsUnit::Point,static_cast<System::Byte>(0)));
 	this->Controls->Add(einger);
 
 	System::Windows::Forms::Label^  gepr = gcnew System::Windows::Forms::Label();
-	gepr->Location = System::Drawing::Point(spalte_vn_gepr, start_);
+	gepr->Location = System::Drawing::Point(spalte_vn_gepr, start_pos);
 	gepr->AutoSize = true;
 	gepr->Text = "VN geprüft am";
 	gepr->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.0F, System::Drawing::FontStyle::Underline, System::Drawing::GraphicsUnit::Point,static_cast<System::Byte>(0)));
 	this->Controls->Add(gepr);
 
 	System::Windows::Forms::Label^  label_kosten = gcnew System::Windows::Forms::Label();
-	label_kosten->Location = System::Drawing::Point(spalte_kosten,start_);
+	label_kosten->Location = System::Drawing::Point(spalte_kosten,start_pos);
 	label_kosten->AutoSize = false;
 	label_kosten->Size = System::Drawing::Size(150, 13);
 	label_kosten->TextAlign = System::Drawing::ContentAlignment::TopRight;
@@ -417,7 +419,7 @@ void adress_uebersicht_result::GenerateTableHeader()
 	this->Controls->Add(label_kosten);
 
 	System::Windows::Forms::Label^  label_foerderung = gcnew System::Windows::Forms::Label();
-	label_foerderung->Location = System::Drawing::Point(spalte_foerderung,start_);
+	label_foerderung->Location = System::Drawing::Point(spalte_foerderung,start_pos);
 	label_foerderung->AutoSize = false;
 	label_foerderung->Size = System::Drawing::Size(150, 13);
 	label_foerderung->TextAlign = System::Drawing::ContentAlignment::TopRight;
@@ -437,7 +439,7 @@ void adress_uebersicht_result::GenerateTableHeader()
 		exl_->setCellAutofit(row_,2+j);
 	}
 
-	start_+=20;
+	start_pos+=20;
 }
 
 void adress_uebersicht_result::generate_entry(String^ id,String^ bezeichnung, String^ bew_anzahl, String^ bew_ztr, String^ vn_einger, String^ vn_gepr, String^ kosten, String^ foerderung, int eintrag)
@@ -478,7 +480,7 @@ void adress_uebersicht_result::generate_entry(String^ id,String^ bezeichnung, St
 	int spalte_foerderung=720;
 
 	System::Windows::Forms::Label^  bez = gcnew System::Windows::Forms::Label();
-	bez->Location = System::Drawing::Point(spalte_bezeichnung, start_);
+	bez->Location = System::Drawing::Point(spalte_bezeichnung, start_pos);
 	bez->AutoSize = true;
 	bez->Text = bezeichnung;
 	bez->Name = id;
@@ -486,8 +488,11 @@ void adress_uebersicht_result::generate_entry(String^ id,String^ bezeichnung, St
 	bez->BackColor = color;
 	this->Controls->Add(bez);
 
+	bez->MaximumSize = System::Drawing::Size(180, 0);
+	heightCalc = bez->Size.Height;
+
 	System::Windows::Forms::Label^  vom = gcnew System::Windows::Forms::Label();
-	vom->Location = System::Drawing::Point(spalte_bew_ztr, start_);
+	vom->Location = System::Drawing::Point(spalte_bew_ztr, start_pos);
 	vom->AutoSize = true;
 	vom->Text = bew_ztr;
 	vom->Name = id;
@@ -496,7 +501,7 @@ void adress_uebersicht_result::generate_entry(String^ id,String^ bezeichnung, St
 	this->Controls->Add(vom);
 
 	System::Windows::Forms::Label^  bew_anz = gcnew System::Windows::Forms::Label();
-	bew_anz->Location = System::Drawing::Point(spalte_bew_anz, start_);
+	bew_anz->Location = System::Drawing::Point(spalte_bew_anz, start_pos);
 	bew_anz->AutoSize = true;
 	bew_anz->Text = bew_anzahl;
 	bew_anz->Name = id;
@@ -505,7 +510,7 @@ void adress_uebersicht_result::generate_entry(String^ id,String^ bezeichnung, St
 	this->Controls->Add(bew_anz);
 
 	System::Windows::Forms::Label^  einger = gcnew System::Windows::Forms::Label();
-	einger->Location = System::Drawing::Point(spalte_vn_einger, start_);
+	einger->Location = System::Drawing::Point(spalte_vn_einger, start_pos);
 	einger->AutoSize = true;
 	einger->Text = vn_einger;
 	einger->Name = id;
@@ -514,7 +519,7 @@ void adress_uebersicht_result::generate_entry(String^ id,String^ bezeichnung, St
 	this->Controls->Add(einger);
 
 	System::Windows::Forms::Label^  gepr = gcnew System::Windows::Forms::Label();
-	gepr->Location = System::Drawing::Point(spalte_vn_gepr, start_);
+	gepr->Location = System::Drawing::Point(spalte_vn_gepr, start_pos);
 	gepr->AutoSize = true;
 	gepr->Text = vn_gepr;
 	gepr->Name = id;
@@ -523,7 +528,7 @@ void adress_uebersicht_result::generate_entry(String^ id,String^ bezeichnung, St
 	this->Controls->Add(gepr);
 
 	System::Windows::Forms::Label^  label_kosten = gcnew System::Windows::Forms::Label();
-	label_kosten->Location = System::Drawing::Point(spalte_kosten,start_);
+	label_kosten->Location = System::Drawing::Point(spalte_kosten,start_pos);
 	label_kosten->AutoSize = false;
 	label_kosten->Size = System::Drawing::Size(150, 13);
 	label_kosten->TextAlign = System::Drawing::ContentAlignment::TopRight;
@@ -534,7 +539,7 @@ void adress_uebersicht_result::generate_entry(String^ id,String^ bezeichnung, St
 	this->Controls->Add(label_kosten);
 
 	System::Windows::Forms::Label^  label_foerderung = gcnew System::Windows::Forms::Label();
-	label_foerderung->Location = System::Drawing::Point(spalte_foerderung,start_);
+	label_foerderung->Location = System::Drawing::Point(spalte_foerderung,start_pos);
 	label_foerderung->AutoSize = false;
 	label_foerderung->Size = System::Drawing::Size(150, 13);
 	label_foerderung->TextAlign = System::Drawing::ContentAlignment::TopRight;
@@ -543,17 +548,10 @@ void adress_uebersicht_result::generate_entry(String^ id,String^ bezeichnung, St
 	label_foerderung->Click += gcnew System::EventHandler(this, &adress_uebersicht_result::Click);
 	label_foerderung->BackColor = color;
 	this->Controls->Add(label_foerderung);
-
-	System::Windows::Forms::Label^  line_back = gcnew System::Windows::Forms::Label();
-	line_back->Location = System::Drawing::Point(0,start_-3);
-	line_back->Name = id;
-	line_back->AutoSize = false;
-	line_back->Size = System::Drawing::Size(936, 20);
-	line_back->BackColor = color;
-	line_back->Click += gcnew System::EventHandler(this, &adress_uebersicht_result::Click);
-	this->Controls->Add(line_back);
-
-	start_+=20;
+		
+	AddLineBreak(color);
+	label->Name = id;
+	label->Click += gcnew System::EventHandler(this, &adress_uebersicht_result::Click);
 }
 
 void adress_uebersicht_result::generate_footer(String^ kosten, String^ foerderung)
@@ -568,7 +566,7 @@ void adress_uebersicht_result::generate_footer(String^ kosten, String^ foerderun
 	int spalte_foerderung=720;
 
 	System::Windows::Forms::Label^  label_kosten = gcnew System::Windows::Forms::Label();
-	label_kosten->Location = System::Drawing::Point(spalte_kosten,start_);
+	label_kosten->Location = System::Drawing::Point(spalte_kosten,start_pos);
 	label_kosten->AutoSize = false;
 	label_kosten->Size = System::Drawing::Size(150, 13);
 	label_kosten->TextAlign = System::Drawing::ContentAlignment::TopRight;
@@ -577,7 +575,7 @@ void adress_uebersicht_result::generate_footer(String^ kosten, String^ foerderun
 	this->Controls->Add(label_kosten);
 
 	System::Windows::Forms::Label^  label_foerderung = gcnew System::Windows::Forms::Label();
-	label_foerderung->Location = System::Drawing::Point(spalte_foerderung,start_);
+	label_foerderung->Location = System::Drawing::Point(spalte_foerderung,start_pos);
 	label_foerderung->AutoSize = false;
 	label_foerderung->Size = System::Drawing::Size(150, 13);
 	label_foerderung->TextAlign = System::Drawing::ContentAlignment::TopRight;
@@ -585,32 +583,32 @@ void adress_uebersicht_result::generate_footer(String^ kosten, String^ foerderun
 	label_foerderung->Text = foerderung;
 	this->Controls->Add(label_foerderung);
 
-	start_+=20;
+	start_pos+=20;
 }
 
 void adress_uebersicht_result::place_print_button()
 {
-	start_=start_+10;
+	start_pos=start_pos+10;
 
-	if(start_==10)
+	if(start_pos==10)
 	{
 		ladebalken_->Close();
 		Windows::Forms::MessageBox::Show("Es wurden keine Einträge zu ihrer Anfrage gefunden.","Ungültige Suche");
 		Close();
 	}
 
-	btn_print->Location=System::Drawing::Point(5, start_);
+	btn_print->Location=System::Drawing::Point(5, start_pos);
 	btn_print->Size = System::Drawing::Size(926, 20);
 	this->Controls->Add(btn_print);
 
-	start_=start_+30;
+	start_pos=start_pos+30;
 
-	btn_exportExl->Location=System::Drawing::Point(5, start_);
+	btn_exportExl->Location=System::Drawing::Point(5, start_pos);
 	btn_exportExl->Size = System::Drawing::Size(926, 20);
 	this->Controls->Add(btn_exportExl);
 
 	System::Windows::Forms::Label^  label_freespace = gcnew System::Windows::Forms::Label();
-	label_freespace->Location = System::Drawing::Point(0,start_+20);
+	label_freespace->Location = System::Drawing::Point(0,start_pos+20);
 	label_freespace->AutoSize = false;
 	label_freespace->Size = System::Drawing::Size(5, 10);
 	this->Controls->Add(label_freespace);
@@ -678,12 +676,6 @@ void adress_uebersicht_result::btn_print_Click(System::Object^  sender, System::
 		printDocument1->OriginAtMargins=true;
 		printDocument1->Print();
 	}
-}
-
-void adress_uebersicht_result::btn_exportExl_Click(System::Object^  sender, System::EventArgs^  e)
-{
-	exl_->saveDialoge();
-	btn_exportExl->Enabled = false;
 }
 
 // Printer Stuff

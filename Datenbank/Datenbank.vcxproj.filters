@@ -144,6 +144,12 @@
     <ClCompile Include="ResultForm.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="ResultForm0.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="ResultGk.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -261,6 +267,12 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="ResultForm.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="ResultForm0.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="ResultGk.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>

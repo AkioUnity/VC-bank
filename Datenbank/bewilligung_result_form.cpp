@@ -230,16 +230,16 @@ void bewilligung_result_form::bewilligung_result_form_Load(System::Object^  send
 			Decimal summe_bund_land = 0;
 			Decimal summe_mehr_minder = 0;
 			Decimal jahreshaushalt = -1;  //annual budget
-			start = 0;
+			start_pos = 0;
 
 			for (int i = 0;i < approvals_values->Count;++i)
 			{
 				if (approvals_values[i][3] != year || approvals_values[i][2] != programm || approvals_values[i][1] != gebiet || approvals_values[i][0] != stadt)
 				{
-					if (start != 0)
+					if (start_pos != 0)
 					{
 						generate_footer(jahreshaushalt, summe_bund_land, summe_mla, summe_mehr_minder);
-						start += 20;
+						start_pos += 20;
 					}
 					summe_mla = 0;
 					summe_bund_land = 0;
@@ -452,7 +452,7 @@ void bewilligung_result_form::generate_header(String^ stadt, String^ gebiet, Str
 	page_content_[page_content_->Count - 1]->Add(header);
 
 	System::Windows::Forms::Label^  stadt_label = gcnew System::Windows::Forms::Label();
-	stadt_label->Location = System::Drawing::Point(5, 1 + start);
+	stadt_label->Location = System::Drawing::Point(5, 1 + start_pos);
 	stadt_label->AutoSize = true;
 	stadt_label->Text = "Stadt         : " + stadt;
 	stadt_label->BackColor = System::Drawing::Color::Silver;
@@ -460,7 +460,7 @@ void bewilligung_result_form::generate_header(String^ stadt, String^ gebiet, Str
 	this->Controls->Add(stadt_label);
 
 	System::Windows::Forms::Label^  gebiet_label = gcnew System::Windows::Forms::Label();
-	gebiet_label->Location = System::Drawing::Point(5, 1 * 13 + 1 + start);
+	gebiet_label->Location = System::Drawing::Point(5, 1 * 13 + 1 + start_pos);
 	gebiet_label->AutoSize = true;
 	gebiet_label->Text = "Gebiet       : " + gebiet;
 	gebiet_label->BackColor = System::Drawing::Color::Silver;
@@ -468,7 +468,7 @@ void bewilligung_result_form::generate_header(String^ stadt, String^ gebiet, Str
 	this->Controls->Add(gebiet_label);
 
 	System::Windows::Forms::Label^  programm_label = gcnew System::Windows::Forms::Label();
-	programm_label->Location = System::Drawing::Point(5, 2 * 13 + 1 + start);
+	programm_label->Location = System::Drawing::Point(5, 2 * 13 + 1 + start_pos);
 	programm_label->AutoSize = true;
 	programm_label->Text = "Programm : " + programm;
 	programm_label->BackColor = System::Drawing::Color::Silver;
@@ -476,7 +476,7 @@ void bewilligung_result_form::generate_header(String^ stadt, String^ gebiet, Str
 	this->Controls->Add(programm_label);
 
 	System::Windows::Forms::Label^  jahr_label = gcnew System::Windows::Forms::Label();
-	jahr_label->Location = System::Drawing::Point(5, 3 * 13 + 1 + start);
+	jahr_label->Location = System::Drawing::Point(5, 3 * 13 + 1 + start_pos);
 	jahr_label->AutoSize = true;
 	jahr_label->BackColor = System::Drawing::Color::Silver;
 	jahr_label->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 6.75F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
@@ -514,13 +514,13 @@ void bewilligung_result_form::generate_header(String^ stadt, String^ gebiet, Str
 	++row_;
 
 	System::Windows::Forms::Label^  header_back = gcnew System::Windows::Forms::Label();
-	header_back->Location = System::Drawing::Point(0, start);
+	header_back->Location = System::Drawing::Point(0, start_pos);
 	header_back->AutoSize = false;
 	header_back->Size = System::Drawing::Size(936, 4 * 13 + 1);
 	header_back->BackColor = System::Drawing::Color::Silver;
 	this->Controls->Add(header_back);
 
-	start += 3 * 13 + 25;
+	start_pos += 3 * 13 + 25;
 }
 
 Decimal bewilligung_result_form::generate_haushalt(String^ stadt, String^ gebiet, String^ programm, String^ jahr)
@@ -536,7 +536,7 @@ Decimal bewilligung_result_form::generate_haushalt(String^ stadt, String^ gebiet
 	int s_grund = 210;
 
 	System::Windows::Forms::Label^  jahreshh_label = gcnew System::Windows::Forms::Label();
-	jahreshh_label->Location = System::Drawing::Point(5, eintrag * 13 + 1 + start);
+	jahreshh_label->Location = System::Drawing::Point(5, eintrag * 13 + 1 + start_pos);
 	jahreshh_label->AutoSize = true;
 	jahreshh_label->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 6.75F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
 	this->Controls->Add(jahreshh_label);
@@ -554,7 +554,7 @@ Decimal bewilligung_result_form::generate_haushalt(String^ stadt, String^ gebiet
 	exl_->setCell(row_, 2, jahreshh_label->Text);
 	exl_->setCellBold(row_, 2);
 	exl_->setCellAutofit(row_, 2);
-	int jahreshh_row = row_;
+	year_price_row = row_;
 	++row_;
 
 	List<String^>^ jz_label = gcnew List<String^>;
@@ -563,7 +563,7 @@ Decimal bewilligung_result_form::generate_haushalt(String^ stadt, String^ gebiet
 	page_content_[page_content_->Count - 1]->Add(jz_label);
 
 	System::Windows::Forms::Label^  jahreshh_ges_label = gcnew System::Windows::Forms::Label();
-	jahreshh_ges_label->Location = System::Drawing::Point(s_betrag, eintrag * 13 + 1 + start);
+	jahreshh_ges_label->Location = System::Drawing::Point(s_betrag, eintrag * 13 + 1 + start_pos);
 	jahreshh_ges_label->AutoSize = false;
 	jahreshh_ges_label->Size = System::Drawing::Size(85, 15);
 	jahreshh_ges_label->TextAlign = System::Drawing::ContentAlignment::TopRight;
@@ -577,14 +577,14 @@ Decimal bewilligung_result_form::generate_haushalt(String^ stadt, String^ gebiet
 		eintrag++;
 		// Datum
 		System::Windows::Forms::Label^  jahreshh_datum = gcnew System::Windows::Forms::Label();
-		jahreshh_datum->Location = System::Drawing::Point(s_datum, eintrag * 13 + 1 + start);
+		jahreshh_datum->Location = System::Drawing::Point(s_datum, eintrag * 13 + 1 + start_pos);
 		jahreshh_datum->AutoSize = true;
 		jahreshh_datum->Text = RC_JH.get_val(i, 5);
 		jahreshh_datum->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 6.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
 		this->Controls->Add(jahreshh_datum);
 		// Betrag
 		System::Windows::Forms::Label^  jahreshh_betrag = gcnew System::Windows::Forms::Label();
-		jahreshh_betrag->Location = System::Drawing::Point(s_betrag, eintrag * 13 + 1 + start);
+		jahreshh_betrag->Location = System::Drawing::Point(s_betrag, eintrag * 13 + 1 + start_pos);
 		jahreshh_betrag->AutoSize = false;
 		jahreshh_betrag->Size = System::Drawing::Size(85, 15);
 		jahreshh_betrag->TextAlign = System::Drawing::ContentAlignment::TopRight;
@@ -595,7 +595,7 @@ Decimal bewilligung_result_form::generate_haushalt(String^ stadt, String^ gebiet
 		this->Controls->Add(jahreshh_betrag);
 		// Grund
 		System::Windows::Forms::Label^  jahreshh_grund = gcnew System::Windows::Forms::Label();
-		jahreshh_grund->Location = System::Drawing::Point(s_grund, eintrag * 13 + 1 + start);
+		jahreshh_grund->Location = System::Drawing::Point(s_grund, eintrag * 13 + 1 + start_pos);
 		jahreshh_grund->AutoSize = true;
 		jahreshh_grund->Text = RC_JH.get_val(i, 3);
 		jahreshh_grund->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 6.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
@@ -621,12 +621,12 @@ Decimal bewilligung_result_form::generate_haushalt(String^ stadt, String^ gebiet
 	//Windows::Forms::MessageBox::Show(Convert::ToString((page_content_[page_content_->Count-1])->Count)+"\n"+Convert::ToString(RC_JH.get_row())+"\n"+Convert::ToString(label_index));
 	page_content_[page_content_->Count - 1][label_index]->Add(Decimal_to_string(jahreshaushalt));
 	jahreshh_ges_label->Text = Decimal_to_string(jahreshaushalt);
-	exl_->setCellSum(jahreshh_row, 3, jahreshh_row + 1, row_ - 2);
-	exl_->setCellAutofit(jahreshh_row, 3);
+	exl_->setCellSum(year_price_row, 3, year_price_row + 1, row_ - 2);
+	exl_->setCellAutofit(year_price_row, 3);
 	if (jahreshaushalt != 0)
 		jahreshaushalt_ = jahreshaushalt;
 	eintrag += 2;
-	start += eintrag * 13 + 1;
+	start_pos += eintrag * 13 + 1;
 
 	List<String^>^ ueberschrift = gcnew List<String^>;
 	ueberschrift->Add("ueberschrift");
@@ -653,7 +653,7 @@ void bewilligung_result_form::GenerateHeadings()  //generate_headings
 
 	// kostenart    -cost type
 	System::Windows::Forms::Label^  kostenart = gcnew System::Windows::Forms::Label();
-	kostenart->Location = System::Drawing::Point(s_kostenart, start);
+	kostenart->Location = System::Drawing::Point(s_kostenart, start_pos);
 	kostenart->AutoSize = true;
 	kostenart->Text = headStrList[0];// "Kostengr.";  //Cost Gr
 	kostenart->Name = "kostengr";
@@ -663,7 +663,7 @@ void bewilligung_result_form::GenerateHeadings()  //generate_headings
 
 	// zb_nr
 	System::Windows::Forms::Label^  zb_nr = gcnew System::Windows::Forms::Label();
-	zb_nr->Location = System::Drawing::Point(s_zb_nr, start);
+	zb_nr->Location = System::Drawing::Point(s_zb_nr, start_pos);
 	zb_nr->AutoSize = true;
 	zb_nr->Text = headStrList[1];//  "ZB-Nr.";
 	zb_nr->Name = "zb_nr";
@@ -673,7 +673,7 @@ void bewilligung_result_form::GenerateHeadings()  //generate_headings
 
 	// bezeichnung       description
 	System::Windows::Forms::Label^  bezeichnung = gcnew System::Windows::Forms::Label();
-	bezeichnung->Location = System::Drawing::Point(s_bezeichnung, start);
+	bezeichnung->Location = System::Drawing::Point(s_bezeichnung, start_pos);
 	bezeichnung->AutoSize = false;
 	bezeichnung->Size = System::Drawing::Size(110, 15);
 	bezeichnung->TextAlign = System::Drawing::ContentAlignment::TopCenter;
@@ -685,7 +685,7 @@ void bewilligung_result_form::GenerateHeadings()  //generate_headings
 
 	// TB
 	System::Windows::Forms::Label^  tb = gcnew System::Windows::Forms::Label();
-	tb->Location = System::Drawing::Point(s_tb, start);
+	tb->Location = System::Drawing::Point(s_tb, start_pos);
 	tb->AutoSize = true;
 	tb->Text = "TB";
 	tb->Name = "tb";
@@ -695,7 +695,7 @@ void bewilligung_result_form::GenerateHeadings()  //generate_headings
 
 	// vom
 	System::Windows::Forms::Label^  vom = gcnew System::Windows::Forms::Label();
-	vom->Location = System::Drawing::Point(s_vom, start);
+	vom->Location = System::Drawing::Point(s_vom, start_pos);
 	vom->AutoSize = true;
 	vom->Text = "vom";
 	vom->Name = "vom";
@@ -705,7 +705,7 @@ void bewilligung_result_form::GenerateHeadings()  //generate_headings
 
 	// foerderbetrag
 	System::Windows::Forms::Label^  foerderbetrag = gcnew System::Windows::Forms::Label();
-	foerderbetrag->Location = System::Drawing::Point(s_foerder, start);
+	foerderbetrag->Location = System::Drawing::Point(s_foerder, start_pos);
 	foerderbetrag->AutoSize = false;
 	foerderbetrag->Size = System::Drawing::Size(85, 15);
 	foerderbetrag->TextAlign = System::Drawing::ContentAlignment::TopRight;
@@ -717,7 +717,7 @@ void bewilligung_result_form::GenerateHeadings()  //generate_headings
 
 	// bund_land
 	System::Windows::Forms::Label^  bund_land = gcnew System::Windows::Forms::Label();
-	bund_land->Location = System::Drawing::Point(s_bund_land, start);
+	bund_land->Location = System::Drawing::Point(s_bund_land, start_pos);
 	bund_land->AutoSize = false;
 	bund_land->Size = System::Drawing::Size(85, 15);
 	bund_land->TextAlign = System::Drawing::ContentAlignment::TopRight;
@@ -729,7 +729,7 @@ void bewilligung_result_form::GenerateHeadings()  //generate_headings
 
 	// mla
 	System::Windows::Forms::Label^  mla = gcnew System::Windows::Forms::Label();
-	mla->Location = System::Drawing::Point(s_mla, start);
+	mla->Location = System::Drawing::Point(s_mla, start_pos);
 	mla->AutoSize = false;
 	mla->Size = System::Drawing::Size(85, 15);
 	mla->TextAlign = System::Drawing::ContentAlignment::TopRight;
@@ -741,7 +741,7 @@ void bewilligung_result_form::GenerateHeadings()  //generate_headings
 
 	// bew_ztr
 	System::Windows::Forms::Label^  bew_ztr = gcnew System::Windows::Forms::Label();
-	bew_ztr->Location = System::Drawing::Point(s_bew_ztr, start);
+	bew_ztr->Location = System::Drawing::Point(s_bew_ztr, start_pos);
 	bew_ztr->AutoSize = true;
 	bew_ztr->Text = "BWZ";
 	bew_ztr->Name = "bew_ztr";
@@ -751,7 +751,7 @@ void bewilligung_result_form::GenerateHeadings()  //generate_headings
 
 	// vn_einger
 	System::Windows::Forms::Label^  vn_einger = gcnew System::Windows::Forms::Label();
-	vn_einger->Location = System::Drawing::Point(s_einger, start);
+	vn_einger->Location = System::Drawing::Point(s_einger, start_pos);
 	vn_einger->AutoSize = true;
 	vn_einger->Text = "VN eingereicht";
 	vn_einger->Name = "vn_einger";
@@ -761,7 +761,7 @@ void bewilligung_result_form::GenerateHeadings()  //generate_headings
 
 	// vn_gepr
 	System::Windows::Forms::Label^  vn_gepr = gcnew System::Windows::Forms::Label();
-	vn_gepr->Location = System::Drawing::Point(s_gepr, start);
+	vn_gepr->Location = System::Drawing::Point(s_gepr, start_pos);
 	vn_gepr->AutoSize = true;
 	vn_gepr->Text = "VN geprüft";
 	vn_gepr->Name = "vn_gepr";
@@ -771,7 +771,7 @@ void bewilligung_result_form::GenerateHeadings()  //generate_headings
 
 	// mehr_minder
 	System::Windows::Forms::Label^  mehr_minder = gcnew System::Windows::Forms::Label();
-	mehr_minder->Location = System::Drawing::Point(s_mehr_minder, start);
+	mehr_minder->Location = System::Drawing::Point(s_mehr_minder, start_pos);
 	mehr_minder->AutoSize = true;
 	mehr_minder->Text = "Mehr-/Minderkosten";
 	mehr_minder->Name = "mehr_minder";
@@ -780,7 +780,7 @@ void bewilligung_result_form::GenerateHeadings()  //generate_headings
 	this->Controls->Add(mehr_minder);
 
 	System::Windows::Forms::Label^  ueberschrift_back = gcnew System::Windows::Forms::Label();
-	ueberschrift_back->Location = System::Drawing::Point(0, start);
+	ueberschrift_back->Location = System::Drawing::Point(0, start_pos);
 	ueberschrift_back->AutoSize = false;
 	ueberschrift_back->Size = System::Drawing::Size(936, 20);
 	ueberschrift_back->BackColor = System::Drawing::Color::Silver;
@@ -792,7 +792,7 @@ void bewilligung_result_form::GenerateHeadings()  //generate_headings
 		exl_->setCellAutofit(row_, j);
 	}
 
-	start += 20;
+	start_pos += 20;
 	sumStart = row_ + 1;
 }
 //generate_approval
@@ -897,7 +897,7 @@ void bewilligung_result_form::generate_footer(Decimal jahreshaushalt, Decimal bu
 		col_ = 4;
 
 		System::Windows::Forms::Label^  restmittel_label = gcnew System::Windows::Forms::Label();
-		restmittel_label->Location = System::Drawing::Point(s_foerder - 100, start + 20);
+		restmittel_label->Location = System::Drawing::Point(s_foerder - 100, start_pos + 20);
 		restmittel_label->AutoSize = true;
 		restmittel_label->Text = "Restmittel";
 		restmittel_label->Name = "restmittel_label";
@@ -905,7 +905,7 @@ void bewilligung_result_form::generate_footer(Decimal jahreshaushalt, Decimal bu
 		this->Controls->Add(restmittel_label);
 
 		System::Windows::Forms::Label^  restmittel = gcnew System::Windows::Forms::Label();
-		restmittel->Location = System::Drawing::Point(s_foerder, start + 20);
+		restmittel->Location = System::Drawing::Point(s_foerder, start_pos + 20);
 		restmittel->AutoSize = false;
 		restmittel->Size = System::Drawing::Size(85, 15);
 		restmittel->Text = Decimal_to_string(jahreshaushalt - (bund_land + mla));
@@ -914,38 +914,37 @@ void bewilligung_result_form::generate_footer(Decimal jahreshaushalt, Decimal bu
 		restmittel->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 6.75F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
 		this->Controls->Add(restmittel);
 
-		start = start + 20;
+		start_pos = start_pos + 20;
 		exl_->setCell(row_, col_, "Restmittel");		
 		exl_->setCellBold(row_, col_);
 		//AddTableFooter("Restmittel", s_foerder - 100, 85, 15);
 		col_++;
 		col_++;
-		exl_->setCell(row_, col_, Decimal_to_string(jahreshaushalt - (bund_land + mla)));
-		exl_->setCellBold(row_, col_);
+		exl_->setCellSumCell(row_, col_, year_price_row,3, row_-1,col_);
 		//AddTableFooter(Decimal_to_string(jahreshaushalt - (bund_land + mla)), s_foerder , 85, 15);
-		start = start - 20;
+		start_pos = start_pos - 20;
 	}
-	start += 30;
+	start_pos += 30;
 	row_++;
 	row_++;
 }
 
 void bewilligung_result_form::place_button()
 {
-	start = start + 10;
+	start_pos = start_pos + 10;
 
-	btn_print->Location = System::Drawing::Point(5, start);
+	btn_print->Location = System::Drawing::Point(5, start_pos);
 	btn_print->Size = System::Drawing::Size(926, 20);
 	this->Controls->Add(btn_print);
 
-	start = start + 30;
+	start_pos = start_pos + 30;
 
-	btn_exportExl->Location = System::Drawing::Point(5, start);
+	btn_exportExl->Location = System::Drawing::Point(5, start_pos);
 	btn_exportExl->Size = System::Drawing::Size(926, 20);
 	this->Controls->Add(btn_exportExl);
 
 	System::Windows::Forms::Label^  label_freespace = gcnew System::Windows::Forms::Label();
-	label_freespace->Location = System::Drawing::Point(0, start + 20);
+	label_freespace->Location = System::Drawing::Point(0, start_pos + 20);
 	label_freespace->AutoSize = false;
 	label_freespace->Size = System::Drawing::Size(5, 10);
 	this->Controls->Add(label_freespace);

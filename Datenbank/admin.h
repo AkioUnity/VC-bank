@@ -224,6 +224,7 @@ private: System::Windows::Forms::Label^  edit_mode_lbl;
 			this->label24 = (gcnew System::Windows::Forms::Label());
 			this->label23 = (gcnew System::Windows::Forms::Label());
 			this->db_tab = (gcnew System::Windows::Forms::TabPage());
+			this->btn_copy = (gcnew System::Windows::Forms::Button());
 			this->btn_back = (gcnew System::Windows::Forms::Button());
 			this->btn_search_path = (gcnew System::Windows::Forms::Button());
 			this->tb_path = (gcnew System::Windows::Forms::TextBox());
@@ -232,7 +233,6 @@ private: System::Windows::Forms::Label^  edit_mode_lbl;
 			this->label8 = (gcnew System::Windows::Forms::Label());
 			this->label6 = (gcnew System::Windows::Forms::Label());
 			this->label19 = (gcnew System::Windows::Forms::Label());
-			this->btn_copy = (gcnew System::Windows::Forms::Button());
 			this->tabControl1->SuspendLayout();
 			this->tabPage1->SuspendLayout();
 			this->tabPage2->SuspendLayout();
@@ -1004,6 +1004,16 @@ private: System::Windows::Forms::Label^  edit_mode_lbl;
 			this->db_tab->TabIndex = 7;
 			this->db_tab->Text = L"Datenbank";
 			// 
+			// btn_copy
+			// 
+			this->btn_copy->Location = System::Drawing::Point(12, 174);
+			this->btn_copy->Name = L"btn_copy";
+			this->btn_copy->Size = System::Drawing::Size(304, 23);
+			this->btn_copy->TabIndex = 10;
+			this->btn_copy->Text = L"Kopie speichern unter";
+			this->btn_copy->UseVisualStyleBackColor = true;
+			this->btn_copy->Click += gcnew System::EventHandler(this, &admin::btn_copy_Click);
+			// 
 			// btn_back
 			// 
 			this->btn_back->Location = System::Drawing::Point(11, 132);
@@ -1077,16 +1087,6 @@ private: System::Windows::Forms::Label^  edit_mode_lbl;
 			this->label19->Size = System::Drawing::Size(83, 13);
 			this->label19->TabIndex = 45;
 			this->label19->Text = L"© 2012 by MKS";
-			// 
-			// btn_copy
-			// 
-			this->btn_copy->Location = System::Drawing::Point(12, 174);
-			this->btn_copy->Name = L"btn_copy";
-			this->btn_copy->Size = System::Drawing::Size(304, 23);
-			this->btn_copy->TabIndex = 10;
-			this->btn_copy->Text = L"Save copy to";
-			this->btn_copy->UseVisualStyleBackColor = true;
-			this->btn_copy->Click += gcnew System::EventHandler(this, &admin::btn_copy_Click);
 			// 
 			// admin
 			// 

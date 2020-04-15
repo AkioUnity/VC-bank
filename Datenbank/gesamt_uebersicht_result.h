@@ -1,7 +1,7 @@
 #pragma once
 
 #include "test.h"
-#include "ResultForm.h"
+#include "ResultGk.h"
 
 namespace Datenbank {
 
@@ -14,9 +14,9 @@ namespace Datenbank {
 	using namespace System::Drawing;
 
 	/// <summary>
-	/// Zusammenfassung für gesamt_uebersicht_result
+	/// Zusammenfassung für gesamt_uebersicht_result  amg3.5
 	/// </summary>
-	public ref class gesamt_uebersicht_result : public ResultForm
+	public ref class gesamt_uebersicht_result : public ResultGk
 	{
 	public:
 		gesamt_uebersicht_result(void)
@@ -35,8 +35,8 @@ namespace Datenbank {
 									bool show_gk_real,
 									bool show_gk_kom,
 									bool show_gk_priv,
-									int user_id):
-			ResultForm(),
+									int user_id):	
+			ResultGk(show_gk_real, show_gk_kom, show_gk_priv),
 			user_id_(user_id),
 			stadt_(stadt),
 			gebiet_(gebiet),
@@ -46,27 +46,19 @@ namespace Datenbank {
 			show_mla_(show_mla),
 			show_restmittel_(show_restmittel),
 			show_mehrminder_(show_mehrminder),
-			show_gk_real_(show_gk_real),
-			show_gk_kom_(show_gk_kom),
-			show_gk_priv_(show_gk_priv),
-			start_(0),
-
+			
+			
 			spalte_jahr_(20),
 			spalte_jh_(-1),
 			spalte_bundland_(-1),
 			spalte_mla_(-1),
 			spalte_restmittel_(-1),
 			spalte_mehr_minder_(-1),
-			spalte_gk_real_(-1),
-			spalte_gk_kom_(-1),
-			spalte_gk_priv_(-1),
-			spaltenbreite_(-1),
-
+			
 			bewilligung_liste(gcnew List< List<String^>^ >),
 			staedte_(gcnew List<String^>),
 			gebiete_(gcnew List<String^>),
-			programme_(gcnew List<String^>),
-			result_liste_(gcnew List< List< List<String^>^ >^ >),
+			programme_(gcnew List<String^>),			
 			haushalte_(gcnew List<String^>),
 
 			// Printer Stuff
@@ -123,22 +115,14 @@ namespace Datenbank {
 		bool show_mla_;
 		bool show_restmittel_;
 		bool show_mehrminder_;
-		bool show_gk_real_;
-		bool show_gk_kom_;
-		bool show_gk_priv_;
-		int start_;
+
 		int spalte_jahr_;
 		int spalte_jh_;
 		int spalte_bundland_;
 		int spalte_mla_;
 		int spalte_restmittel_;
 		int spalte_mehr_minder_;
-		int spalte_gk_real_;
-		int spalte_gk_kom_;
-		int spalte_gk_priv_;
-		int spaltenbreite_;
 		
-		List< List< List<String^>^ >^ >^ result_liste_;
 		List< List<String^>^ >^ bewilligung_liste;
 		List<String^>^ staedte_;
 		List<String^>^ gebiete_;
@@ -223,10 +207,7 @@ namespace Datenbank {
 		void sort_for_year(List<String^>^);
 		bool is_existent_in(List<String^>^,String^);
 		Decimal get_haushalt(String^,String^,String^,String^);
-		List<Decimal>^  get_gk_real(String^ stadt,String^ gebiet,String^ programm,List<String^>^ jahr);
-		List<Decimal>^  get_gk_kom(String^ stadt,String^ gebiet,String^ programm,List<String^>^ jahr);
-		List<Decimal>^  get_gk_priv(String^ stadt,String^ gebiet,String^ programm,List<String^>^ jahr);
-
+		
 		// Auswertungselemente
 		void calc_coloumns();
 		void generate_header(String^ stadt, String^ gebiet, String^ programm);

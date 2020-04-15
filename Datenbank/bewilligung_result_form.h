@@ -87,6 +87,7 @@ namespace Datenbank {
 		}
 
 		Form^ ladebalken_;  //loading bar_
+		int year_price_row;
 
 		int user_id_;
 		String^ stadt_;
@@ -133,13 +134,9 @@ namespace Datenbank {
 	private: System::Windows::Forms::Button^  btn_print;
 	private: System::Drawing::Printing::PrintDocument^  printDocument1;
 
-
-	protected:
-
-
+	
 	private: System::ComponentModel::IContainer^  components;
 
-	protected:
 
 	private:
 		/// <summary>
