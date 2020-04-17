@@ -188,7 +188,7 @@ namespace Datenbank {
 
 		// Loader
 		void kostengr_uebersicht_result_Load(System::Object^  sender, System::EventArgs^  e);
-		List< List<String^>^ >^ load_bewilligungen();
+		List< List<String^>^ >^ load_approvals_db();
 		bool is_existent_in(List<String^>^,String^);
 		void sort_for_year(List<String^>^);
 		void sort_for_ZB_NR(List< List<String^>^ >^);
@@ -197,7 +197,7 @@ namespace Datenbank {
 		// Auswertungselemente
 		void generate_header(String^,String^,String^,String^);
 		void GenerateTableHeader();
-		void generate_entry(String^,String^,String^,String^,String^,String^,String^,String^,String^,String^,String^,String^,String^,int);
+		void generate_entry(String^,String^,String^,String^,String^,String^,String^,String^,String^,String^,String^,String^,String^,int, String^, String^, String^);
 		void generate_footer(String^,String^,String^,String^);
 		void place_print_button();
 

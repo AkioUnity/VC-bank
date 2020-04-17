@@ -126,21 +126,21 @@ void ResultGk::GenerateTableHeader() {
 	if (show_gk_real_)
 	{
 		AddTableHeaderCell("GK Real", spalte_gk_real_);
-		SetLabelSize(column_width_, 13);
+		//SetLabelSize(column_width_, 13);
 	}
 
 	// GK Kom
 	if (show_gk_kom_)
 	{
 		AddTableHeaderCell("GK Komunal", spalte_gk_kom_);
-		SetLabelSize(column_width_, 13);
+		//SetLabelSize(column_width_, 13);
 	}
 
 	// GK Priv
 	if (show_gk_priv_)
 	{
 		AddTableHeaderCell("GK Privat", spalte_gk_priv_);
-		SetLabelSize(column_width_, 13);
+		//SetLabelSize(column_width_, 13);
 	}
 
 	System::Windows::Forms::Label^  ueberschrift_back = gcnew System::Windows::Forms::Label();

@@ -660,14 +660,11 @@ void gesamt_uebersicht_result::generate_header(	String^ stadt,
 {
 	if(start_pos!=0)
 		start_pos+=10;
-
-	start_pos = start_pos;
 	AddHeaderCell("Stadt         : " + stadt, 5, 1 + start_pos);
 	AddHeaderCell("Gebiet       : " + gebiet, 5, 1 * 13 + 1 + start_pos);
 	AddHeaderCell("Programm : " + programm, 5, 2 * 13 + 1 + start_pos);
 	AddHeaderDivider(936, 3 * 13 + 1);
 	start_pos += 3 * 13 + 10;	
-	start_pos = start_pos;
 }
 
 void gesamt_uebersicht_result::GenerateTableHeader()
@@ -804,7 +801,7 @@ void gesamt_uebersicht_result::generate_entry(	int eintrag,
 
 	// Hintergrund
 	System::Windows::Forms::Label^  ueberschrift_back = gcnew System::Windows::Forms::Label();
-	ueberschrift_back->Location = System::Drawing::Point(0,start_pos+1);
+	ueberschrift_back->Location = System::Drawing::Point(0,start_pos-1);
 	ueberschrift_back->AutoSize = false;
 	ueberschrift_back->Size = System::Drawing::Size(936, 16);
 	ueberschrift_back->Name = name;
@@ -902,8 +899,7 @@ void gesamt_uebersicht_result::place_print_button()
 
 	btn_print->Location=System::Drawing::Point(5, start_pos);
 	btn_print->Size = System::Drawing::Size(926, 20);
-	this->Controls->Add(btn_print);
-	start_pos = start_pos;
+	this->Controls->Add(btn_print);	
 	ResultForm::place_button();
 }
 

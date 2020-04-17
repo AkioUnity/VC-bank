@@ -28,7 +28,7 @@ void kostengr_uebersicht_result::kostengr_uebersicht_result_Load(System::Object^
 	start_pos=0;
 	this->Controls->Clear();
 
-	List< List<String^>^ >^ bewilligungen = load_bewilligungen();
+	List< List<String^>^ >^ bewilligungen = load_approvals_db();
 	if(bewilligungen->Count==0)
 	{
 		ladebalken_->Close();
@@ -138,15 +138,7 @@ void kostengr_uebersicht_result::kostengr_uebersicht_result_Load(System::Object^
 								bewilligungen[bew_index][4]== jahr)
 							{
 								List<String^>^ tmp_small = gcnew List<String^>;
-
-								String^ id=bewilligungen[bew_index][5];
-								String^ bew_ztr=bewilligungen[bew_index][6];
-								String^ bezeichnung=bewilligungen[bew_index][7];
-								String^ vn_einger=bewilligungen[bew_index][8];
-								String^ vn_gepr=bewilligungen[bew_index][9];
-								String^ tb=bewilligungen[bew_index][10];
-								String^ ZB_NR=bewilligungen[bew_index][11];
-								String^ vom=bewilligungen[bew_index][12];
+					
 								Decimal mla=Decimal(Convert::ToDouble(bewilligungen[bew_index][13]));
 								Decimal bund_land=Decimal(Convert::ToDouble(bewilligungen[bew_index][14]));
 								Decimal foerderbetrag=Decimal(Convert::ToDouble(bewilligungen[bew_index][15]));
@@ -158,24 +150,26 @@ void kostengr_uebersicht_result::kostengr_uebersicht_result_Load(System::Object^
 								String^ foerderbetrag_s=Decimal_to_string(foerderbetrag);
 								String^ mehr_minder_s=Decimal_to_string(mehr_minder);
 
-								tmp_small->Add(id);
-								tmp_small->Add(bew_ztr);
-								tmp_small->Add(bezeichnung);
-								tmp_small->Add(vn_einger);
-								tmp_small->Add(vn_gepr);
-								tmp_small->Add(tb);
-								tmp_small->Add(ZB_NR);
-								tmp_small->Add(vom);
+								tmp_small->Add(bewilligungen[bew_index][5]);  //id
+								tmp_small->Add(bewilligungen[bew_index][6]);  //bew_ztr
+								tmp_small->Add(bewilligungen[bew_index][7]);  //bezeichnung
+								tmp_small->Add(bewilligungen[bew_index][8]);  //vn_einger
+								tmp_small->Add(bewilligungen[bew_index][9]);  //vn_gepr
+								tmp_small->Add(bewilligungen[bew_index][10]);   //tb value
+								tmp_small->Add(bewilligungen[bew_index][11]);  //ZB_NR
+								tmp_small->Add(bewilligungen[bew_index][12]);  //vom
 								tmp_small->Add(mla_s);
 								tmp_small->Add(bund_land_s);
 								tmp_small->Add(foerderbetrag_s);
 								tmp_small->Add(mehr_minder_s);
 								tmp_small->Add(jahr);
 
+								tmp_small->Add(Decimal_to_string(Decimal(Convert::ToDouble(bewilligungen[bew_index][17]))));   //gk_real
+								tmp_small->Add(Decimal_to_string(Decimal(Convert::ToDouble(bewilligungen[bew_index][18]))));  //gk_kom
+								tmp_small->Add(Decimal_to_string(Decimal(Convert::ToDouble(bewilligungen[bew_index][19]))));  //gk_priv
+
 								tmp->Add(tmp_small);
-
 								//Windows::Forms::MessageBox::Show(Convert::ToString(tmp->Count));
-
 								//bewilligungen->RemoveAt(bew_index);
 								// Löscht zu viel .. wenn Zeit neu!
 
@@ -200,7 +194,7 @@ void kostengr_uebersicht_result::kostengr_uebersicht_result_Load(System::Object^
 						String^ bezeichnung=tmp[i][2];
 						String^ vn_einger=tmp[i][3];
 						String^ vn_gepr=tmp[i][4];
-						String^ tb=tmp[i][5];
+						String^ tb=tmp[i][5];  //tb value -5
 						String^ ZB_NR=tmp[i][6];
 						String^ vom=tmp[i][7];
 						String^ mla_s=tmp[i][8];
@@ -208,8 +202,11 @@ void kostengr_uebersicht_result::kostengr_uebersicht_result_Load(System::Object^
 						String^ foerderbetrag_s=tmp[i][10];
 						String^ mehr_minder_s=tmp[i][11];
 						String^ jahr=tmp[i][12];
+						String^ gk_real = tmp[i][13];
+						String^ gk_kom = tmp[i][14];
+						String^ gk_priv = tmp[i][15];
 
-						generate_entry(id, jahr, bew_ztr, bezeichnung, vn_einger, vn_gepr, tb, ZB_NR, vom, mla_s, bund_land_s, foerderbetrag_s, mehr_minder_s,entry_count);
+						generate_entry(id, jahr, bew_ztr, bezeichnung, vn_einger, vn_gepr, tb, ZB_NR, vom, mla_s, bund_land_s, foerderbetrag_s, mehr_minder_s,entry_count,gk_real,gk_kom,gk_priv);
 						entry_count++;
 					}
 
@@ -269,7 +266,7 @@ bool kostengr_uebersicht_result::year_is_bigger(String^ j1, String^ j2)
 	return jahr1>jahr2;
 }
 
-List< List<String^>^ >^ kostengr_uebersicht_result::load_bewilligungen()  //load approvals
+List< List<String^>^ >^ kostengr_uebersicht_result::load_approvals_db()  //load approvals
 {
 	List< List<String^>^ >^ permits = gcnew List< List<String^>^ >;
 
@@ -332,7 +329,7 @@ List< List<String^>^ >^ kostengr_uebersicht_result::load_bewilligungen()  //load
 					String^ bew_ztr=R_Projekte->get_val(projekt_param,7);		// Bew_Ztr ( PROJ )
 					String^ bezeichnung=R_Projekte->get_val(projekt_param,5);	// Vorhaben ( PROJ )
 					String^ vn_einger=R_Projekte->get_val(projekt_param,11);	// VN_einger ( PROJ )
-					String^ vn_gepr=R_Projekte->get_val(projekt_param,12); 		// VN_Gepr ( PROJ )
+					String^ vn_gepr=R_Projekte->get_val(projekt_param,12); 		// VN_Gepr ( PROJ )					
 
 					List<String^>^ programme=gcnew List<String^>;
 					if(programm_=="-1")
@@ -372,7 +369,7 @@ List< List<String^>^ >^ kostengr_uebersicht_result::load_bewilligungen()  //load
 									String^ vom=R_Bewilligungen->get_val(bew_param,5);			// vom ( BEW )
 									
 									String^ mla=R_Bewilligungen->get_val(bew_param,6);			// MLA ( BEW )
-									String^ mla_vn=R_Bewilligungen->get_val(bew_param,7); 
+									String^ mla_vn=R_Bewilligungen->get_val(bew_param,7);    //sk_bha  private or local
 									String^ bund_land=R_Bewilligungen->get_val(bew_param,8);	// Bund/Land ( BEW )
 									String^ bund_land_vn=R_Bewilligungen->get_val(bew_param,9);
 									String^ mehrminder="";										// MehrMinder ( BEW )
@@ -401,14 +398,21 @@ List< List<String^>^ >^ kostengr_uebersicht_result::load_bewilligungen()  //load
 									cache->Add(bezeichnung);
 									cache->Add(vn_einger);
 									cache->Add(vn_gepr);
-									cache->Add(tb);
+									cache->Add(tb);  //mean that this are the 1. and 2. part of the same project. 
 									cache->Add(ZB_NR);
 									cache->Add(vom);
 									cache->Add(mla);
 									cache->Add(bund_land);
 									cache->Add(foerderbetrag);
-									cache->Add(mehrminder);
+									cache->Add(mehrminder);									
 
+									String^ gk_real = R_Projekte->get_val(projekt_param, 1); 		// gk_real
+									String^ local_or_private = R_Projekte->get_val(projekt_param, 10); 
+
+									cache->Add(gk_real);  // gk_real
+									cache->Add(local_or_private== "Gemeinde"?gk_real : "0");  // gk_kom
+									cache->Add(local_or_private == "Privat" ? gk_real : "0");  // gk_priv
+									
 									permits->Add(cache);
 									
 									ladebalken_->Controls->Find("progress",true)[0]->Text="a";
@@ -514,11 +518,15 @@ void kostengr_uebersicht_result::GenerateTableHeader()
 	SetLabelSize(85, 15);
 	AddTableHeaderCell("MLA Gemeinde", s_mla);
 	SetLabelSize(85, 15);
-	AddTableHeaderCell("BWZ", s_bew_ztr);
-	AddTableHeaderCell("VN eingereicht", s_einger);
-	AddTableHeaderCell("VN geprüft", s_gepr);
-	AddTableHeaderCell("Mehr-/Minderkosten", s_mehr_minder);
 
+	if (!show_gk_real_)
+		AddTableHeaderCell("BWZ", s_bew_ztr);
+	if (!show_gk_kom_)
+		AddTableHeaderCell("VN eingereicht", s_einger);
+	AddTableHeaderCell("VN geprüft", s_gepr);
+	if (!show_gk_priv_)
+		AddTableHeaderCell("Mehr-/Minderkosten", s_mehr_minder);
+	
 	sumStart = row_ + 1;
 
 	ResultGk::GenerateTableHeader();
@@ -537,7 +545,7 @@ void kostengr_uebersicht_result::generate_entry(	String^ id,
 													String^ bund_land_t,
 													String^ foerderbetrag_t,
 													String^ mehr_minder_t,
-													int eintrag)
+													int eintrag, String^ gk_real, String^  gk_kom, String^ gk_priv)
 {
 	List<String^>^ entry=gcnew List<String^>;
 	entry->Add("eintrag");
@@ -553,6 +561,9 @@ void kostengr_uebersicht_result::generate_entry(	String^ id,
 	entry->Add(bund_land_t);
 	entry->Add(foerderbetrag_t);
 	entry->Add(mehr_minder_t);
+	entry->Add(gk_real);
+	entry->Add(gk_kom);
+	entry->Add(gk_priv);
 	total_list[total_list->Count-1]->Add(entry);
 
 	System::Drawing::Color color;
@@ -585,11 +596,33 @@ void kostengr_uebersicht_result::generate_entry(	String^ id,
 	SetLabelSize(85, 15);
 	AddCellC(mla_t, s_mla, rowNum, id,true);
 	SetLabelSize(85, 15);
-	AddCellC(bew_ztr_t, s_bew_ztr, rowNum, id);
-	AddCellC(vn_einger_t, s_einger, rowNum, id);
+	
+	if (!show_gk_real_)
+		AddCellC(bew_ztr_t, s_bew_ztr, rowNum, id);
+	if (!show_gk_kom_)
+		AddCellC(vn_einger_t, s_einger, rowNum, id);
 	AddCellC(vn_gepr_t, s_gepr, rowNum, id);
-	AddCellC(mehr_minder_t, s_mehr_minder, rowNum, id,true);
-	SetLabelSize(85, 15);	
+	if (!show_gk_priv_)
+		AddCellC(mehr_minder_t, s_mehr_minder, rowNum, id, true);
+	//SetLabelSize(85, 15);	
+	
+	// GK Real
+	if (show_gk_real_)
+	{
+		AddCellC(gk_real, spalte_gk_real_, rowNum, id);
+	}
+
+	// GK Kom
+	if (show_gk_kom_)
+	{
+		AddCellC(gk_kom, spalte_gk_kom_, rowNum, id);
+	}
+
+	// GK Priv
+	if (show_gk_priv_)
+	{
+		AddCellC(gk_priv, spalte_gk_priv_, rowNum, id);
+	}
 
 	AddLineBreak(color);
 	label->Name = id;
@@ -947,18 +980,22 @@ void kostengr_uebersicht_result::calc_coloumns()
 	int total_width = 890;
 	int start = 50;
 
-	/*int s_jahr;
-	int s_zb_nr;
-	int s_bezeichnung;
-	int s_tb;
-	int s_vom;
-	int s_foerder;
-	int s_bund_land;
-	int s_mla;
-	int s_bew_ztr;  //1
-	int s_einger;  //2
-	int s_gepr;
-	int s_mehr_minder;*/
+	spalte_gk_real_= s_bew_ztr;
+	spalte_gk_kom_= s_einger;
+	spalte_gk_priv_= s_mehr_minder;
+
+		/*s_jahr(10),
+		s_zb_nr(50),
+		s_bezeichnung(115),
+		s_tb(230),
+		s_vom(260),
+		s_foerder(315),
+		s_bund_land(405),
+		s_mla(495),
+		s_bew_ztr(605),
+		s_einger(680),
+		s_gepr(755),
+		s_mehr_minder(830),*/
 
 	//spalte_jh_ = -1;
 	//spalte_bundland_ = -1;
@@ -970,26 +1007,14 @@ void kostengr_uebersicht_result::calc_coloumns()
 	//spalte_gk_kom_ = -1;
 	//spalte_gk_priv_ = -1;
 
-	//// anzahl spalten
-	//int column_count0 = 0;
-
-	//if (show_jz_)
-	//	++column_count0;
-	//if (show_bundland_)
-	//	++column_count0;
-	//if (show_mla_)
-	//	++column_count0;
-	//if (show_restmittel_)
-	//	++column_count0;
-	//if (show_mehrminder_)
-	//	++column_count0;
-
-	//if (show_gk_real_)
-	//	++column_count0;
-	//if (show_gk_kom_)
-	//	++column_count0;
-	//if (show_gk_priv_)
-	//	++column_count0;
+	int column_count0 = 0;
+	if (show_gk_real_) {
+		++column_count0;
+	}		
+	if (show_gk_kom_)
+		++column_count0;
+	if (show_gk_priv_)
+		++column_count0;
 
 	//int distance0 = Convert::ToInt32(total_width / column_count0);
 
@@ -1037,4 +1062,6 @@ void kostengr_uebersicht_result::calc_coloumns()
 	//	}
 	//}
 	//column_width_ = distance0 - 10;
+
+	column_width_ = 80;
 }

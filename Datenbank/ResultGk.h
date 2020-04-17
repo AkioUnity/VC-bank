@@ -15,9 +15,6 @@ namespace Datenbank {
 			show_gk_real_(show_gk_real),
 			show_gk_kom_(show_gk_kom),
 			show_gk_priv_(show_gk_priv),
-			spalte_gk_real_(-1),
-			spalte_gk_kom_(-1),
-			spalte_gk_priv_(-1),
 			total_list(gcnew List< List< List<String^>^ >^ >)
 		{};
 
