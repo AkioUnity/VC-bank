@@ -409,10 +409,17 @@ List< List<String^>^ >^ kostengr_uebersicht_result::load_approvals_db()  //load 
 									String^ gk_real = R_Projekte->get_val(projekt_param, 1); 		// gk_real
 									String^ local_or_private = R_Projekte->get_val(projekt_param, 10); 
 
-									cache->Add(gk_real);  // gk_real
-									cache->Add(local_or_private== "Gemeinde"?gk_real : "0");  // gk_kom
-									cache->Add(local_or_private == "Privat" ? gk_real : "0");  // gk_priv
-									
+									if (tb == "-" || tb == "1. TB") {
+										cache->Add(gk_real);  // gk_real
+										cache->Add(local_or_private == "Gemeinde" ? gk_real : "0");  // gk_kom
+										cache->Add(local_or_private == "Privat" ? gk_real : "0");  // gk_priv
+									}
+									else {
+										cache->Add("0");  // gk_real
+										cache->Add("0");  // gk_kom
+										cache->Add("0");  // gk_priv
+									}
+
 									permits->Add(cache);
 									
 									ladebalken_->Controls->Find("progress",true)[0]->Text="a";
@@ -597,32 +604,34 @@ void kostengr_uebersicht_result::generate_entry(	String^ id,
 	AddCellC(mla_t, s_mla, rowNum, id,true);
 	SetLabelSize(85, 15);
 	
-	if (!show_gk_real_)
-		AddCellC(bew_ztr_t, s_bew_ztr, rowNum, id);
-	if (!show_gk_kom_)
-		AddCellC(vn_einger_t, s_einger, rowNum, id);
+	AddGkCell(bew_ztr_t, s_bew_ztr, rowNum, show_gk_real_,false);
+	label->Name = id;
+	label->Click += gcnew System::EventHandler(this, &kostengr_uebersicht_result::Click);
+	
+	AddGkCell(vn_einger_t, s_einger, rowNum, show_gk_kom_,false);
+	label->Name = id;
+	label->Click += gcnew System::EventHandler(this, &kostengr_uebersicht_result::Click);
 	AddCellC(vn_gepr_t, s_gepr, rowNum, id);
-	if (!show_gk_priv_)
-		AddCellC(mehr_minder_t, s_mehr_minder, rowNum, id, true);
+	
+	AddGkCell(mehr_minder_t, s_mehr_minder, rowNum, show_gk_priv_, true);
+	label->Name = id;
+	label->Click += gcnew System::EventHandler(this, &kostengr_uebersicht_result::Click);
 	//SetLabelSize(85, 15);	
 	
 	// GK Real
-	if (show_gk_real_)
-	{
-		AddCellC(gk_real, spalte_gk_real_, rowNum, id);
-	}
+	AddGkCell(gk_real, spalte_gk_real_, rowNum, !show_gk_real_,true);
+	label->Name = id;
+	label->Click += gcnew System::EventHandler(this, &kostengr_uebersicht_result::Click);
 
 	// GK Kom
-	if (show_gk_kom_)
-	{
-		AddCellC(gk_kom, spalte_gk_kom_, rowNum, id);
-	}
+	AddGkCell(gk_kom, spalte_gk_kom_, rowNum, !show_gk_kom_, true);
+	label->Name = id;
+	label->Click += gcnew System::EventHandler(this, &kostengr_uebersicht_result::Click);
 
 	// GK Priv
-	if (show_gk_priv_)
-	{
-		AddCellC(gk_priv, spalte_gk_priv_, rowNum, id);
-	}
+	AddGkCell(gk_priv, spalte_gk_priv_, rowNum, !show_gk_priv_, true);
+	label->Name = id;
+	label->Click += gcnew System::EventHandler(this, &kostengr_uebersicht_result::Click);
 
 	AddLineBreak(color);
 	label->Name = id;
@@ -974,94 +983,30 @@ void kostengr_uebersicht_result::AddCellC(String^ text, int xPos, int row, Strin
 // Evaluation elements
 void kostengr_uebersicht_result::calc_coloumns()
 {
-	// total_width 1000
-	// jahr ca. 50
-	// work surface ca. 900 ( start_pos bei 50 )
-	int total_width = 890;
-	int start = 50;
-
-	spalte_gk_real_= s_bew_ztr;
-	spalte_gk_kom_= s_einger;
-	spalte_gk_priv_= s_mehr_minder;
-
-		/*s_jahr(10),
-		s_zb_nr(50),
-		s_bezeichnung(115),
-		s_tb(230),
-		s_vom(260),
-		s_foerder(315),
-		s_bund_land(405),
-		s_mla(495),
-		s_bew_ztr(605),
-		s_einger(680),
-		s_gepr(755),
-		s_mehr_minder(830),*/
-
-	//spalte_jh_ = -1;
-	//spalte_bundland_ = -1;
-	//spalte_mla_ = -1;
-	//spalte_restmittel_ = -1;
-	//spalte_mehr_minder_ = -1;
-
-	//spalte_gk_real_ = -1;
-	//spalte_gk_kom_ = -1;
-	//spalte_gk_priv_ = -1;
-
-	int column_count0 = 0;
+	int end_pos = s_mehr_minder;
+	int distance0 = 75;
+	if (show_gk_priv_) {
+		spalte_gk_priv_ = end_pos;
+		end_pos -= distance0;
+	}
+	if (show_gk_kom_) {
+		spalte_gk_kom_ = end_pos;
+		end_pos -= distance0;
+	}	
 	if (show_gk_real_) {
-		++column_count0;
-	}		
-	if (show_gk_kom_)
-		++column_count0;
-	if (show_gk_priv_)
-		++column_count0;
+		spalte_gk_real_ = end_pos;
+		end_pos -= distance0;
+	}	
+	s_mehr_minder = end_pos;
 
-	//int distance0 = Convert::ToInt32(total_width / column_count0);
-
-	//for (int i = 0;i < column_count0;++i)
-	//{
-	//	if (spalte_jh_ == -1 && show_jz_)
-	//	{
-	//		spalte_jh_ = i * distance0 + start_pos;
-	//		continue;
-	//	}
-	//	if (spalte_bundland_ == -1 && show_bundland_)
-	//	{
-	//		spalte_bundland_ = i * distance0 + start_pos;
-	//		continue;
-	//	}
-	//	if (spalte_mla_ == -1 && show_mla_)
-	//	{
-	//		spalte_mla_ = i * distance0 + start_pos;
-	//		continue;
-	//	}
-	//	if (spalte_restmittel_ == -1 && show_restmittel_)
-	//	{
-	//		spalte_restmittel_ = i * distance0 + start_pos;
-	//		continue;
-	//	}
-	//	if (spalte_mehr_minder_ == -1 && show_mehrminder_)
-	//	{
-	//		spalte_mehr_minder_ = i * distance0 + start_pos;
-	//		continue;
-	//	}
-	//	if (spalte_gk_real_ == -1 && show_gk_real_)
-	//	{
-	//		spalte_gk_real_ = i * distance0 + start_pos;
-	//		continue;
-	//	}
-	//	if (spalte_gk_kom_ == -1 && show_gk_kom_)
-	//	{
-	//		spalte_gk_kom_ = i * distance0 + start_pos;
-	//		continue;
-	//	}
-	//	if (spalte_gk_priv_ == -1 && show_gk_priv_)
-	//	{
-	//		spalte_gk_priv_ = i * distance0 + start_pos;
-	//		continue;
-	//	}
-	//}
-	//column_width_ = distance0 - 10;
-
+	s_gepr = end_pos- distance0;	
+	if (show_gk_priv_) {
+		s_gepr = s_mehr_minder;
+	}
+	s_einger = s_gepr-distance0;
+	s_bew_ztr = s_einger - distance0;
+	if (show_gk_kom_) {
+		s_bew_ztr = s_einger;
+	}
 	column_width_ = 80;
 }

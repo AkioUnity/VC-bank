@@ -150,3 +150,28 @@ void ResultForm::AddLineBreak(System::Drawing::Color color)
 
 	start_pos += heightCalc + 8;
 }
+
+
+void Datenbank::ResultForm::AddGkCell(String^ text, int xPos, int row, bool isGK,bool isDecimal)
+{
+	if (!isGK) {
+		label = gcnew System::Windows::Forms::Label();
+		label->Location = System::Drawing::Point(xPos, start_pos);
+		label->AutoSize = true;
+		label->Text = text;
+		label->BackColor = (row % 2 != 0) ? System::Drawing::Color::Gainsboro : System::Drawing::Color::White;
+		label->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 6.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
+		this->Controls->Add(label);
+	}
+
+	if (isDecimal)
+		exl_->setCellCurrency(row_, col_, String_to_Decimal(text));
+	else {
+		if (col_ == 1)
+			exl_->setCellYear(row_, col_, text);
+		else
+			exl_->setCell(row_, col_, text);
+	}
+	exl_->setCellAutofit(row_, col_);
+	col_++;
+}

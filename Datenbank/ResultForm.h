@@ -69,6 +69,7 @@ namespace Datenbank {
 		void place_button();
 		void AddCell(String^ text, int xPos, int row);
 		void AddCell(String^ text, int xPos, int row, bool isDecimal);
+		void AddGkCell(String^ text, int xPos, int row, bool isGK, bool isDecimal);
 		void AddHeaderCell(String^ text, int xPos, int yPos);
 		void AddTableHeaderCell(String^ text, int xPos);
 		void AddTableFooter(String^ text, int xPos, int width, int height);
